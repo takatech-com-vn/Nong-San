@@ -7,20 +7,21 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = require("dotenv");
 const mySQL_1 = require("./config/database/mySQL");
+const route = require("./routers");
 (0, mySQL_1.connectToDatabase)();
 (0, dotenv_1.config)();
 const app = (0, express_1.default)();
-const port = Number(process.env.PORT);
+const port = 3000;
 app.use((0, cors_1.default)());
 app.use(express_1.default.json({ limit: "50mb" }));
 app.use(express_1.default.urlencoded({ limit: "50mb", extended: true }));
+route(app);
 app.get('/', (req, res) => {
-    res.send('Hello work');
+    res.send('Hello');
 });
 app.post('/', (req, res) => {
-    res.send({
-        data: req.body
-    });
+    const data = req.body;
+    console.log("data" + data);
 });
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);

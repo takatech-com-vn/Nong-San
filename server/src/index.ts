@@ -18,13 +18,12 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 route(app);
 
 app.get('/', (req: Request, res: Response) => {
-    res.send('Hello work')
+    res.send('Hello')
 })
 
 app.post('/', (req: Request, res: Response) => {
-  res.send({
-    data: req.body
-  });
+  const data = req.body;
+  console.log("data" + data)
 });
 
 app.listen(port, () => {
