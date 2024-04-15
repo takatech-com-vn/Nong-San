@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.excuteQuery = void 0;
 const mySQL_1 = require("../config/database/mySQL");
-const query = (query, params) => {
+const excuteQuery = (query, params) => {
     return new Promise((resolve, reject) => {
         mySQL_1.connection.query(query, params, (error, results, fields) => {
             if (error) {
@@ -11,4 +12,4 @@ const query = (query, params) => {
         });
     });
 };
-exports = { query };
+exports.excuteQuery = excuteQuery;
