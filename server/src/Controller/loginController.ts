@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { connection } from "../config/database/mySQL";
-import { excuteQuery } from "../util/callbackToPromise";
+import { excuteQuery } from "../services/callbackToPromise";
 import bcryptjs, { hashSync } from 'bcryptjs';
 
 class loginController {
@@ -9,10 +9,11 @@ class loginController {
         const password = data.password;
         const hashedPassword = bcryptjs.hashSync(password,10);
         data.password = hashedPassword;
+        data.role = 'Customer';
 
-        const query = 'Insert Into users (username, password, email, phone, role, created_at, updated_at) Values (?, ?, ?, ?, ?, NOW(), NOW())';
+        const query = 'Insert Into users (username, password, phone, role, created_at, updated_at) Values (?, ?, ?, ?, NOW(), NOW())';
 
-        const params = [data.username, data.password, data.email, data.phone, data.role];
+        const params = [data.username, data.password, data.phone, data.role];
 
         try {         
             const result = await excuteQuery(query, params);

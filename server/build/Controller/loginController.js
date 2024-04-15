@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-const callbackToPromise_1 = require("../util/callbackToPromise");
+const callbackToPromise_1 = require("../services/callbackToPromise");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 class loginController {
     Register(req, res) {
@@ -20,8 +20,9 @@ class loginController {
             const password = data.password;
             const hashedPassword = bcryptjs_1.default.hashSync(password, 10);
             data.password = hashedPassword;
-            const query = 'Insert Into users (username, password, email, phone, role, created_at, updated_at) Values (?, ?, ?, ?, ?, NOW(), NOW())';
-            const params = [data.username, data.password, data.email, data.phone, data.role];
+            data.role = 'Customer';
+            const query = 'Insert Into users (username, password, phone, role, created_at, updated_at) Values (?, ?, ?, ?, NOW(), NOW())';
+            const params = [data.username, data.password, data.phone, data.role];
             try {
                 const result = yield (0, callbackToPromise_1.excuteQuery)(query, params);
                 res.json({ success: true, message: 'Đăng ký tài khoản thành công', result });
