@@ -8,22 +8,23 @@ const mysql2_1 = __importDefault(require("mysql2"));
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
 // create the connection to database
-const connection = mysql2_1.default.createConnection({
+const pool = mysql2_1.default.createPool({
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT),
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
 });
-exports.connection = connection;
+exports.connection = pool;
 // Hàm để kết nối tới cơ sở dữ liệu
 const connectToDatabase = () => {
-    connection.connect((err) => {
+    pool.getConnection((err, connection) => {
         if (err) {
             console.error("Lỗi kết nối:", err);
         }
         else {
             console.log("Kết nối thành công đến MySQL");
+            connection.release();
         }
     });
 };
