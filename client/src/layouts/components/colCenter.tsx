@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
 
 
-const colCenter = () => {
+const ColCenter = () => {
     const [selectedValue, setSelectedValue] = useState('');
      // Hàm xử lý sự kiện thay đổi giá trị được chọn
      const handleSelectChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
@@ -15,20 +15,20 @@ const colCenter = () => {
         setSearchTerm(event.target.value);
     };
     return (
-        <div className='w-[714.61px]'>
+        <div className=''>
         <div className="col-center">
-            <form id="form24" className="search-form relative">
+            <form id="form24" className="search-form relative"> 
                 <div className="search-body relative border-solid border-2 rounded-2xl
-                 border-green-700 flex justify-between items-center h-[55.6px] text-black">
+                 border-green-700 flex justify-between items-center  h-[43px] md:h-[56px] text-black">
                     <div className="flex w-32 h-14p-2 justify-center items-center ">
                         <select value={selectedValue} onChange={handleSelectChange} className='form-control uppercase'>
-                            <option value="">Danh mục mặt hànfwee fEFEvsd ưef</option>
+                            <option value="">Danh mục mặt hàng</option>
                             <option value="option1">Tùy chọn 1</option>
                             <option value="option2">Tùy chọn 2</option>
                             <option value="option3">Tùy chọn 3</option>
                         </select>
                     </div>
-                    <div className="grow p-3 border-l-2 border-r-2 border-green-700">
+                    <div className="grow p-[10px] md:p-3 border-l-2 border-r-2 border-green-700">
                         <input
                             className="w-full"
                             type="text"
@@ -38,12 +38,12 @@ const colCenter = () => {
                         />
                     </div>
 
-                    <button className="flex w-[70px] text-white h-14  bg-green-700 rounded-r-2xl justify-center items-center text-[30px]">
+                    <button className="flex w-[50px] md:w-[70px] text-white h-10 md:h-14  bg-green-700 rounded-r-2xl justify-center items-center md:text-[30px]">
                         <FiSearch />
                     </button>
                 </div>
             </form>
-            <div className="text-green-700  text-[24px] font-medium mt-[10px]">
+            <div className="text-green-700 text-[16px] md:text-[23px] font-medium mt-[10px] text-center">
                 CÙNG NHAU XÂY DỰNG THƯƠNG HIỆU NÔNG SẢN ĐẮK LẮK
             </div>
         </div>
@@ -51,4 +51,4 @@ const colCenter = () => {
     );
 };
 
-export default colCenter;
+export default ColCenter;
