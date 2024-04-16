@@ -13,18 +13,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 const callbackToPromise_1 = require("../services/callbackToPromise");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 class loginController {
     Register(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = req.body;
-            console.log("data" + JSON.stringify(data));
             const password = data.password;
             const hashedPassword = bcryptjs_1.default.hashSync(password, 10);
             data.password = hashedPassword;
             data.role = 'Customer';
-            const query = 'Insert Into users (username, password, phone, role, created_at, updated_at) Values (?, ?, ?, ?, NOW(), NOW())';
-            const params = [data.username, data.password, data.phone, data.role];
             try {
+                // Kiểm tra xem username hoặc số điện thoại đã được sử dụng hay chưa
+                const checkQuery = 'Select * from users where username = ? or phone = ?';
+                const checkParams = [data.username, data.phone];
+                const existingUsers = (yield (0, callbackToPromise_1.excuteQuery)(checkQuery, checkParams));
+                if (existingUsers.length > 0) {
+                    // Nếu tìm thấy người dùng hiện có, trả về lỗi
+                    return res.status(400).json({ success: false, message: 'Tên người dùng hoặc số điện thoại đã được sử dụng' });
+                }
+                // Nếu không tìm thấy người dùng hiện có, tiếp tục đăng ký
+                const query = 'Insert Into users (username, password, phone, role, created_at, updated_at) Values (?, ?, ?, ?, NOW(), NOW())';
+                const params = [data.username, data.password, data.phone, data.role];
                 const result = yield (0, callbackToPromise_1.excuteQuery)(query, params);
                 res.json({ success: true, message: 'Đăng ký tài khoản thành công', result });
             }
@@ -45,16 +54,78 @@ class loginController {
                     const user = users[0];
                     //Kiểm tra mật khẩu
                     const passwordIsValid = bcryptjs_1.default.compareSync(password, user.password);
+                    if (passwordIsValid) {
+                        console.log("Người dùng đã đăng nhập thành công");
+                        const token = jsonwebtoken_1.default.sign({ id: user.id }, process.env.JWT_SECRET || 'your_default_secret', {
+                            expiresIn: 2592000 // expires in 1 month
+                        });
+                        //Kiểm tra người dùng đã đăng nhập hay chưa
+                        if (req.isAuthenticated()) {
+                            //Người dùng đã đăng nhập, không cần tạo phiên mới
+                            return res.status(200).json({ auth: true, token: token });
+                        }
+                        else {
+                            //Người dùng chưa đăng nhập, tạo phiên mới
+                            // Lưu ID người dùng vào session
+                            req.login(user, function (err) {
+                                if (err) {
+                                    return res.status(500).json({ message: "Lỗi máy chủ" });
+                                }
+                                return res.status(200).json({ auth: true, token: token });
+                            });
+                        }
+                    }
                     if (!passwordIsValid) {
+                        console.log("Mật khẩu không chính xác");
                         return res.status(401).json({ message: 'Mật khẩu không chính xác' });
                     }
                 }
                 else {
+                    console.log("Người dùng không tồn tại");
                     return res.status(404).json({ message: 'Người dùng không tồn tại' });
                 }
             }
             catch (error) {
+                console.log("Lỗi máy chủ");
                 return res.status(500).json({ message: 'Lỗi máy chủ' });
+            }
+        });
+    }
+    Logout(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            req.logout();
+            res.redirect('/login');
+        });
+    }
+    ForgotPassword(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { phone, newPassword } = req.body;
+            try {
+                // Tìm kiếm người dùng dựa trên số điện thoại từ cơ sở dữ liệu
+                const query = 'Select * from users where phone = ?';
+                const users = (yield (0, callbackToPromise_1.excuteQuery)(query, [phone]));
+                if (users.length > 0) {
+                    const user = users[0];
+                    // Kiểm tra xem mật khẩu hiện tại có khớp với số điện thoại hay không
+                    const passwordIsValid = bcryptjs_1.default.compareSync(phone, user.password);
+                    if (passwordIsValid) {
+                        // Nếu mật khẩu hiện tại khớp với số điện thoại, cho phép người dùng đổi mật khẩu
+                        const hashedPassword = bcryptjs_1.default.hashSync(newPassword, 10);
+                        const updateQuery = 'Update users set password = ? where id = ?';
+                        yield (0, callbackToPromise_1.excuteQuery)(updateQuery, [hashedPassword, user.id]);
+                        res.json({ success: true, message: 'Đổi mật khẩu thành công' });
+                    }
+                    else {
+                        res.status(400).json({ success: false, message: 'Số điện thoại không khớp với mật khẩu hiện tại' });
+                    }
+                }
+                else {
+                    res.status(404).json({ success: false, message: 'Không tìm thấy người dùng với số điện thoại này' });
+                }
+            }
+            catch (error) {
+                console.log(error);
+                res.status(500).json({ success: false, message: 'Lỗi máy chủ' });
             }
         });
     }
