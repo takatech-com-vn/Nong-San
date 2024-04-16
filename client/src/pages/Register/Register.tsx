@@ -21,22 +21,30 @@ const Register: React.FC = () => {
     const [phone, setPhone] = useState('');
     const [errors, setErrors] = useState<RegisterState['errors']>({});
     const [isSuccess, setIsSuccess] = useState(false);
+    const [successMessage, setSuccessMessage] = useState(''); // Added for success message
+  const [errorMessage, setErrorMessage] = useState('');
     const [position] = useState<ToastPosition>('top-end');
-
     const validateForm = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const newErrors = {} as RegisterState['errors'];
 
 
         if (!username) {
-            newErrors.username = 'Username is required';
+            newErrors.username = 'Vui lòng nhập tên người dùng';
         }
 
         if (!password || password.length < 8) {
-            newErrors.password = 'Password must be at least 8 characters long';
+            newErrors.password = 'Mật khẩu phải dài ít nhất 8 ký tự';
         }
 
-        // Add more validation rules as needed (e.g., phone number format)
+        if (!phone || !validatePhoneNumber(phone)) {
+            newErrors.phone = 'Số điện thoại không hợp lệ';
+        }
+
+        function validatePhoneNumber(phone: string) {
+            const regex = /^\d{10,11}$/;  
+            return regex.test(phone);
+        }
 
         setErrors(newErrors);
 
@@ -47,17 +55,23 @@ const Register: React.FC = () => {
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post(`${import.meta.env.VITE_APP_API_URL}/login/register`, {
-                username,
-                password,
-                phone,
-            });
-            console.log(response.data);
-            setIsSuccess(true); // Set success state for toast
+          const response = await axios.post(`${import.meta.env.VITE_APP_API_URL}/login/register`, {
+            username,
+            password,
+            phone,
+          });
+      
+          if (response.status === 200 && response.data.success) {
+            setSuccessMessage(response.data.message); // Extract and set success message
+            setIsSuccess(true);
+          } else {
+            setErrorMessage('Đăng ký thất bại!'); // Set error message if not successful
+          }
         } catch (error) {
-            console.error(error);
+          console.error(error);
+          setErrorMessage('Đăng ký thất bại!'); // Set error message in case of errors
         }
-    };
+      };
 
     // Reset success state after toast timeout (optional, adjust timeout as needed)
     useEffect(() => {
@@ -86,7 +100,7 @@ const Register: React.FC = () => {
                                         Tài khoản
                                     </label>
                                     <input
-                                        className={`mt-1 p-2 w-full bg-gray-700 border rounded-md text-white ${errors.username ? 'border-red-500' : 'border-gray-600'}`}
+                                        className={`mt-1 p-2 w-full bg-gray-700  rounded-md text-white ${errors.username ? 'border-red-500 border-[1px]' : 'border-gray-600 border'}`}
                                         type="text"
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}
@@ -99,14 +113,14 @@ const Register: React.FC = () => {
                                         Mật khẩu
                                     </label>
                                     <input
-                                        className="mt-1 p-2 w-full bg-gray-700 border border-gray-600 rounded-md text-white"
+                                        className={`mt-1 p-2 w-full bg-gray-700  rounded-md text-white ${errors.username ? 'border-red-500 border-[1px]' : 'border-gray-600 border'}`}
                                         name="password"
                                         id="password"
                                         type="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                     />
-                                     {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
+                                    {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
                                 </div>
 
                                 <div className="mb-4">
@@ -114,13 +128,14 @@ const Register: React.FC = () => {
                                         Số điện thoại
                                     </label>
                                     <input
-                                        className="mt-1 p-2 w-full bg-gray-700 border border-gray-600 rounded-md text-white"
+                                        className={`mt-1 p-2 w-full bg-gray-700  rounded-md text-white ${errors.phone ? 'border-red-500 border-[1px]' : 'border-gray-600 border'}`}
                                         name="phone"
                                         id="phone"
                                         type="text"
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
                                     />
+                                     {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
                                 </div>
 
                                 <div className="flex justify-center mb-4">
@@ -164,13 +179,22 @@ const Register: React.FC = () => {
                     </div>
                 </div>
                 <ToastContainer className="p-3 z-50" position={position} >
-                    {isSuccess && ( // Display toast only when isSuccess is true
+                    {isSuccess && (
                         <Toast autohide className="bg-green-500 text-white">
                             <Toast.Header closeButton={false}>
-                                <strong className="me-auto">Success!</strong>
-                                <small>Registration Successful</small>
+                                <strong className="me-auto">Thông báo</strong>
+                                <small>{successMessage}</small>
                             </Toast.Header>
-                            <Toast.Body>Bạn đã đăng ký thành công</Toast.Body>
+                            <Toast.Body>{successMessage}</Toast.Body>
+                        </Toast>
+                    )}
+                    {errorMessage  && ( 
+                        <Toast autohide className="bg-green-500 text-white">
+                            <Toast.Header closeButton={false}>
+                                <strong className="me-auto">Thông báo</strong>
+                                <small>{errorMessage}</small>
+                            </Toast.Header>
+                            <Toast.Body>{errorMessage}</Toast.Body>
                         </Toast>
                     )}
                 </ToastContainer>
