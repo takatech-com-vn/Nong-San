@@ -14,10 +14,9 @@ const Login = () => {
         event.preventDefault();
 
         axios
-            .post(`${import.meta.env.VITE_APP_API_URL}/login/register`, {
+            .post(`${import.meta.env.VITE_APP_API_URL}/login/listlogin`, {
                 username,
                 password,
-                role
             })
             .then((res) => {
                 console.log(res.data);
