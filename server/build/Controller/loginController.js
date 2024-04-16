@@ -54,6 +54,7 @@ class loginController {
                     const user = users[0];
                     //Kiểm tra mật khẩu
                     const passwordIsValid = bcryptjs_1.default.compareSync(password, user.password);
+                    console.log(password);
                     if (passwordIsValid) {
                         console.log("Người dùng đã đăng nhập thành công");
                         const token = jsonwebtoken_1.default.sign({ id: user.id }, process.env.JWT_SECRET || 'your_default_secret', {

@@ -48,6 +48,7 @@ class loginController {
 
                 //Kiểm tra mật khẩu
                 const passwordIsValid = bcryptjs.compareSync(password, user.password);
+                console.log(password)
                 
                 if (passwordIsValid) {
                     console.log("Người dùng đã đăng nhập thành công");

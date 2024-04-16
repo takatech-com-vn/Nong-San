@@ -22,6 +22,8 @@ const Register: React.FC = () => {
     const [errors, setErrors] = useState<RegisterState['errors']>({});
     const [isSuccess, setIsSuccess] = useState(false);
     const [successMessage, setSuccessMessage] = useState(''); // Added for success message
+    const [isError, setIsError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const [position] = useState<ToastPosition>('top-end');
     
     const validateForm = (event: React.FormEvent<HTMLFormElement>) => {
@@ -60,13 +62,14 @@ const Register: React.FC = () => {
                 password,
                 phone,
             });
-
-           
-                setSuccessMessage(response.data.message); // Extract and set success message
-                setIsSuccess(true);        
-                console.log("mes",successMessage)
+    
+            setSuccessMessage(response.data.message); // Extract and set success message
+            setIsSuccess(true);        
         } catch (error) {
             console.error(error);
+            // Set error state and message
+            setIsError(true);
+            setErrorMessage(error.response.data.message);
         }
     };
 
@@ -180,12 +183,20 @@ const Register: React.FC = () => {
                         <Toast autohide className="bg-green-500 text-white">
                             <Toast.Header >
                                 <strong className="me-auto">Thông báo</strong>
-                                <small>{successMessage}</small>
+                                <small></small>
                             </Toast.Header>
                             <Toast.Body>{successMessage}</Toast.Body>
                         </Toast>
                     )}
-                
+                    {isError && (
+                        <Toast autohide className="bg-red-500 text-white">
+                            <Toast.Header >
+                                <strong className="me-auto">Lỗi</strong>
+                                <small></small>
+                            </Toast.Header>
+                            <Toast.Body>{errorMessage}</Toast.Body>
+                        </Toast>
+                    )}
                 </ToastContainer>
             </div>
         </div>
