@@ -48,12 +48,15 @@ class loginController {
 
                 //Kiểm tra mật khẩu
                 const passwordIsValid = bcryptjs.compareSync(password, user.password);
+                console.log(password)
                 
                 if (passwordIsValid) {
                     console.log("Người dùng đã đăng nhập thành công");
                     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || 'your_default_secret', {
                         expiresIn: 2592000 // expires in 1 month
                     });
+
+                    console.log("token" + JSON.stringify(token));
 
                     //Kiểm tra người dùng đã đăng nhập hay chưa
                     if (req.isAuthenticated()) {
