@@ -22,8 +22,8 @@ const Register: React.FC = () => {
     const [errors, setErrors] = useState<RegisterState['errors']>({});
     const [isSuccess, setIsSuccess] = useState(false);
     const [successMessage, setSuccessMessage] = useState(''); // Added for success message
-  const [errorMessage, setErrorMessage] = useState('');
     const [position] = useState<ToastPosition>('top-end');
+    
     const validateForm = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const newErrors = {} as RegisterState['errors'];
@@ -42,7 +42,7 @@ const Register: React.FC = () => {
         }
 
         function validatePhoneNumber(phone: string) {
-            const regex = /^\d{10,11}$/;  
+            const regex = /^\d{10,11}$/;
             return regex.test(phone);
         }
 
@@ -55,23 +55,20 @@ const Register: React.FC = () => {
 
     const handleSubmit = async () => {
         try {
-          const response = await axios.post(`${import.meta.env.VITE_APP_API_URL}/login/register`, {
-            username,
-            password,
-            phone,
-          });
-      
-          if (response.status === 200 && response.data.success) {
-            setSuccessMessage(response.data.message); // Extract and set success message
-            setIsSuccess(true);
-          } else {
-            setErrorMessage('Đăng ký thất bại!'); // Set error message if not successful
-          }
+            const response = await axios.post(`${import.meta.env.VITE_APP_API_URL}/login/register`, {
+                username,
+                password,
+                phone,
+            });
+
+           
+                setSuccessMessage(response.data.message); // Extract and set success message
+                setIsSuccess(true);        
+                console.log("mes",successMessage)
         } catch (error) {
-          console.error(error);
-          setErrorMessage('Đăng ký thất bại!'); // Set error message in case of errors
+            console.error(error);
         }
-      };
+    };
 
     // Reset success state after toast timeout (optional, adjust timeout as needed)
     useEffect(() => {
@@ -135,7 +132,7 @@ const Register: React.FC = () => {
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
                                     />
-                                     {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
+                                    {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
                                 </div>
 
                                 <div className="flex justify-center mb-4">
@@ -181,22 +178,14 @@ const Register: React.FC = () => {
                 <ToastContainer className="p-3 z-50" position={position} >
                     {isSuccess && (
                         <Toast autohide className="bg-green-500 text-white">
-                            <Toast.Header closeButton={false}>
+                            <Toast.Header >
                                 <strong className="me-auto">Thông báo</strong>
                                 <small>{successMessage}</small>
                             </Toast.Header>
                             <Toast.Body>{successMessage}</Toast.Body>
                         </Toast>
                     )}
-                    {errorMessage  && ( 
-                        <Toast autohide className="bg-green-500 text-white">
-                            <Toast.Header closeButton={false}>
-                                <strong className="me-auto">Thông báo</strong>
-                                <small>{errorMessage}</small>
-                            </Toast.Header>
-                            <Toast.Body>{errorMessage}</Toast.Body>
-                        </Toast>
-                    )}
+                
                 </ToastContainer>
             </div>
         </div>
