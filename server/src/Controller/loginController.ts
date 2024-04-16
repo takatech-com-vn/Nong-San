@@ -55,6 +55,8 @@ class loginController {
                         expiresIn: 2592000 // expires in 1 month
                     });
 
+                    console.log("token" + JSON.stringify(token));
+
                     //Kiểm tra người dùng đã đăng nhập hay chưa
                     if (req.isAuthenticated()) {
                         //Người dùng đã đăng nhập, không cần tạo phiên mới
