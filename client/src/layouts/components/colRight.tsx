@@ -23,7 +23,7 @@ const ColRight = () => {
             onClick={() => handleToggle(0)}
           >
             <BsChatLeftText className="mr-1 text-[30px] group-hover:text-blue-500" />
-            <p className="text-[10px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
+            <p className="text-[10px] opacity-0 group-hover:!opacity-100 transition-opacity duration-300 ease-in-out">
               Liên hệ
             </p>
           </a>
@@ -40,15 +40,10 @@ const ColRight = () => {
             onClick={() => handleToggle(1)}
           >
             <GoHeart className="mr-1 text-[30px] group-hover:text-blue-500" />
-            <p className="text-[10px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
+            <p className="text-[10px] opacity-0 group-hover:!opacity-100 transition-opacity duration-300 ease-in-out">
               Yêu thích
             </p>
-          </a>
-          {activeIndex === 1 && (
-            <div className="absolute bg-white border border-gray-300 p-2 rounded-lg bottom-0 left-0 transform -translate-x-1/2 translate-y-full">
-              {/* Nội dung dropdown của mục "Yêu thích" */}
-            </div>
-          )}
+          </a>         
         </li>
         <li className="relative group">
           <a
@@ -57,7 +52,7 @@ const ColRight = () => {
             onClick={() => handleToggle(2)}
           >
             <PiShoppingCartSimpleLight className="mr-1 text-[30px] group-hover:text-blue-500" />
-            <p className="text-[10px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
+            <p className="text-[10px] opacity-0 group-hover:!opacity-100 transition-opacity duration-300 ease-in-out">
               Giỏ hàng
             </p>
           </a>

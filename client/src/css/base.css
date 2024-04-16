@@ -29,8 +29,23 @@ body {
     -webkit-box-orient: vertical;
     /* Chiều hiển thị của box */
 }
-
-
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: none;
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
 /* custom css */
 .li-navbar {
     @apply p-[10px] text-[16px] uppercase text-[#fff200] hover:bg-[#004d00] hover:border-b-2 border-white hover:text-white;
