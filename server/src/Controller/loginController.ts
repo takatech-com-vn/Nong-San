@@ -6,6 +6,7 @@ import bcryptjs, { hashSync } from 'bcryptjs';
 class loginController {
     async Register (req: Request, res: Response) {
         const data = req.body;
+        console.log("data" + JSON.stringify(data));
         const password = data.password;
         const hashedPassword = bcryptjs.hashSync(password,10);
         data.password = hashedPassword;
