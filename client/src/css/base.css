@@ -1,0 +1,154 @@
+html,
+body {
+    @apply bg-white text-black font-font1
+}
+
+.wrapper {
+    max-width: 1330px;
+    width: 100%;
+    margin-inline: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+.form-control {
+    width: 123px;
+    height: auto;
+    font-size: 14px;
+    background-color: #fff;
+    background-image: none;
+    font-weight: bold;
+    color: green !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    /* Hiển thị dạng block */
+    -webkit-line-clamp: 2;
+    /* Số dòng tối đa được hiển thị */
+    -webkit-box-orient: vertical;
+    /* Chiều hiển thị của box */
+}
+
+
+/* custom css */
+.li-navbar {
+    @apply p-[10px] text-[16px] uppercase text-[#fff200] hover:bg-[#004d00] hover:border-b-2 border-white hover:text-white;
+}
+
+/* custom slick-dots */
+.slick-dots {
+    @apply bottom-[10px] h-[5px] md:bottom-[10px]
+}
+
+.slick-dots li button {
+    font-size: 15px;
+}
+
+.slick-dots li button:before {
+    background-color: #999999;
+    width: 35px;
+    height: 4px;
+    border-radius: 5px;
+    content: "";
+}
+
+.slick-dots li.slick-active button:before {
+    background-color: green;
+    width: 35px;
+    height: 4px;
+    border-radius: 5px;
+    content: "";
+}
+
+.slick-dots li {
+    margin-right: 20px;
+}
+/* end custom slick-dots */
+
+
+/* custom slick-prev slick-next */
+.slick-slider {
+    position: relative;
+}
+
+.slick-prev,
+.slick-next {
+    width: 50px;
+    height: 50px;
+    z-index: 1;
+    top: 40%;
+    opacity: 1;
+    transition: all 0.3s ease;
+    
+}
+
+.slick-prev {
+    left: 10px;
+    transform: translateX(-100%);
+}
+
+.slick-next {
+    right: 10px;
+    transform: translateX(100%);
+}
+
+.slick-slider:hover .slick-prev {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.slick-slider:hover .slick-next {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* end custom slick-prev slick-next */
+
+/* custom react-bootstrap */
+.offcanvas {
+    position: fixed;
+    bottom: 0;
+    z-index: var(--bs-offcanvas-zindex);
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+    color: var(--bs-offcanvas-color);
+    visibility: hidden;
+    background-color: var(--bs-offcanvas-bg);
+    background-clip: padding-box;
+    outline: 0;
+    transition: var(--bs-offcanvas-transition);
+}
+
+.accordion-button {
+    position: relative;
+    display: flex;
+    align-items: center ;
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    color: var(--bs-accordion-btn-color);
+    text-align: left;
+    background-color: #31b0d5;
+    border: 0;
+    border-radius: 0;
+    overflow-anchor: none;
+    transition: var(--bs-accordion-transition);
+    justify-content: center;
+}
+.accordion-button::after {
+    flex-shrink: 0;
+    width: var(--bs-accordion-btn-icon-width);
+    height: var(--bs-accordion-btn-icon-width);
+    margin-left: 0%;
+    content: none;
+    background-image: var(--bs-accordion-btn-icon);
+    background-repeat: no-repeat;
+    background-size: var(--bs-accordion-btn-icon-width);
+    transition: var(--bs-accordion-btn-icon-transition);
+}
+/* end custom react-bootstrap */
+
+
+/* end custom css */
