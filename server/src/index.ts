@@ -1,15 +1,18 @@
-import express, {Application, Request, Response} from 'express';
+import express, {Express, Request, Response} from 'express';
 import cors from 'cors';
 import { config as dotenvConfig } from 'dotenv';
 import { connection, connectToDatabase } from './config/database/mySQL';
+import { configSession } from './config/configSession';
 import route = require('./routers');
+
+const app: Express = express();
+const port: number = 3000;
 
 connectToDatabase();
 
 dotenvConfig();
 
-const app: Application = express();
-const port: number = 3000;
+configSession(app);
 
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
