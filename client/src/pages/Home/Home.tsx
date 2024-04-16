@@ -1,19 +1,13 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Offcanvas from 'react-bootstrap/Offcanvas';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Nav from 'react-bootstrap/Nav';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Slider from "react-slick";
 import Card from "./Card";
 import { NextArrow, PrevArrow } from "../../components/slick/index";
-import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
+import Menu from "./Menu";
+import CardProduct from "./CardProduct";
 
 const Home: React.FC = () => {
-  const location = useLocation();
-  const isHomePage = location.pathname === "/";
 
   const [isScrolled, setIsScrolled] = useState(false);
   const checkScroll = () => {
@@ -30,15 +24,6 @@ const Home: React.FC = () => {
       window.removeEventListener("scroll", checkScroll);
     };
   }, []);
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [isProductOpen, setIsProductOpen] = useState(false);
-  // const [isOpenMenu, setIsOpenMenu] = useState(false);
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   // slider setting
   const settings = {
     dots: true,
@@ -53,6 +38,46 @@ const Home: React.FC = () => {
       throw new Error("Function not implemented.");
     }} />,
   };
+
+  const settingProduct = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    nextArrow: <NextArrow onClick={function (): void {
+      throw new Error("Function not implemented.");
+    }} />,
+    prevArrow: <PrevArrow onClick={function (): void {
+      throw new Error("Function not implemented.");
+    }} />,
+    responsive: [
+      {
+        breakpoint: 1100,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: false
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ],
+  };
   const data = [
     {
       imageUrl:
@@ -65,95 +90,68 @@ const Home: React.FC = () => {
       buttonText: "Hội chợ trực tuyến",
     },
   ];
+
+  const products = [
+    {
+      name: 'Bột Cacao',
+      image: 'https://chonongsandaklak.vn/publish/thumbnail/2006294/400x400xdefault/upload/2006294/20240116/id-1-coc-ca-cao-nong-tang-cuong-10-luong-mau-len-nao-01_4bb6c.jpg',
+      discount: '-47%',
+      price: '80.000 ₫ ',
+      originalPrice: '150.000 ₫',
+    },
+    {
+      name: 'Sầu riêng sấy thăng hoa 70G',
+      image: 'https://chonongsandaklak.vn/publish/thumbnail/2006294/400x400xdefault/upload/2006294/20231125/402650845_2632038576954949_7867052642130283026_n_e60b8.jpg',
+      discount: '',
+      price: '85.000₫',
+      originalPrice: '',
+    },
+    {
+      name: 'Tiêu xanh sấy thăng hoa 40g',
+      image: 'https://chonongsandaklak.vn/publish/thumbnail/2006294/400x400xdefault/upload/2006294/20231122/401848570_2632038563621617_4050259910135169988_n_9a8ac.jpg',
+      discount: '',
+      price: '65.000₫',
+      originalPrice: '',
+    },
+    {
+      name: 'Mít sấy thăng hoa',
+      image: 'https://chonongsandaklak.vn/publish/thumbnail/2006294/400x400xdefault/upload/2006294/20231122/z4859386710658_07c8bb4a9cc44aff744ec6b38fbaf887_56851.jpg',
+      discount: '-47%',
+      price: '99.000₫',
+      originalPrice: '150.000 ₫',
+    },
+    {
+      name: 'Măng cụt sấy thăng hoa',
+      image: 'https://chonongsandaklak.vn/publish/thumbnail/2006294/400x400xdefault/upload/2006294/20231122/MANG_CUT_14c2c.png',
+      discount: '',
+      price: '210.000₫',
+      originalPrice: '',
+    },
+    {
+      name: 'Dâu tây sấy thăng hoa',
+      image: 'https://chonongsandaklak.vn/publish/thumbnail/2006294/400x400xdefault/upload/2006294/20231122/DAU_d288a.jpg',
+      discount: '',
+      price: '120.000₫',
+      originalPrice: '',
+    },
+    {
+      name: 'Sầu riêng sấy thăng hoa',
+      image: 'https://chonongsandaklak.vn/publish/thumbnail/2006294/400x400xdefault/upload/2006294/20231122/sau_29f7c.jpg',
+      discount: '',
+      price: '180.000₫',
+      originalPrice: '',
+    },
+
+
+  ];
   return (
-    <div
-      className={`wrapper h-[1000px]  ${isScrolled ? "pt-[280px] md:pt-[260px]" : "pt-3 md:pt-0"}`}
-    >
+    <div className={`wrapper h-[1000px]  ${isScrolled ? "pt-[280px] md:pt-[260px]" : "pt-3 md:pt-0"}`} >
+      {/* menu - slider */}
       <div className="flex flex-col">
-        <div className="h-auto  bg-[#008000] z-10 md:block hidden">
-          <div>
-            <ul className="flex flex-row justify-center">
-              <li
-                className={`li-navbar relative group ${isHomePage
-                  ? "text-white bg-[#006700] border-b-2 border-white"
-                  : ""
-                  }`}
-                onMouseEnter={() => setIsOpen(true)}
-                onMouseLeave={() => setIsOpen(false)}
-              >
-                <a href="/">Trang Chủ</a>
-                <div
-                  className={`absolute left-0 transform transition duration-200 ease-in-out ${isOpen
-                    ? "translate-y-1 opacity-100"
-                    : "translate-y-1/2 opacity-0 invisible"
-                    }`}
-                >
-                  <ul className="mt-2 space-y-2 bg-white text-black p-2 rounded-[12px] shadow-lg w-max normal-case">
-                    <li>Nông sản đặc trưng tỉnh Đắk Lắk</li>
-                    <li>Sản phẩm Ocop tỉnh Đắk Lắk</li>
-                    <li>Sản phẩm Ocop 62 tỉnh, thành phố</li>
-                    <li>Danh sách cửa hàng</li>
-                  </ul>
-                </div>
-              </li>
-              <li
-                className="li-navbar relative group"
-                onMouseEnter={() => setIsProductOpen(true)}
-                onMouseLeave={() => setIsProductOpen(false)}
-              >
-                Sản phẩm
-                <div
-                  className={`absolute left-0 transform transition duration-200 ease-in-out ${isProductOpen
-                    ? "translate-y-1 opacity-100"
-                    : "translate-y-1/2 opacity-0 invisible"
-                    }`}
-                >
-                  <ul className="mt-2 space-y-2 bg-white text-black p-2 rounded-[12px] shadow-lg w-max normal-case">
-                    <li>Sầu riêng</li>
-                    <li>Bơ</li>
-                    <li>Tiêu</li>
-                    <li>Rau củ</li>
-                    <li>Cacao</li>
-                    <li>Hạt ngũ cốc</li>
-                    <li>Phân hữu cơ</li>
-                    <li>Phân bón</li>
-                    <li>Khác</li>
-                    <li>Macca</li>
-                    <li>Mít thái</li>
-                  </ul>
-                </div>
-              </li>
-              <li className="li-navbar">Mời liên kết sản xuất - kinh doanh</li>
-              <li className="li-navbar">Câu truyện sản phẩm</li>
-              <li className="li-navbar">Nông sản mùa vụ</li>
-              <li className="li-navbar">Thông tin thị trường</li>
-            </ul>
-          </div>
+        <div className="z-10">
+          <Menu />
         </div>
-        <div className="flex flex-row md:hidden">
-          <div className="flex  h-[50px] overflow-x-auto  ">
-            <ul className="flex flex-row space-x-4 whitespace-nowrap items-center justify-center uppercase text-[14px] font-medium ">
-              <li
-                className={` ${isHomePage
-                  ? " text-[#006700]"
-                  : "text-white"
-                  }`}>Trang chủ</li>
-              <li className="hover:text-[#006700]">Sản phẩm</li>
-              <li className="hover:text-[#006700]">Mời liên kết sản xuất - kinh doanh</li>
-              <li className="hover:text-[#006700]">Câu chuyện sản xuất</li>
-              <li className="hover:text-[#006700]">Nông sản mùa vụ</li>
-              <li className="hover:text-[#006700]">Thông tin thị trường</li>
-            </ul>
-          </div>
-          <button className="w-[60px] text-[50px] pl-2" onClick={handleShow}>
-            {show ? <AiOutlineMenuFold /> : <AiOutlineMenuUnfold />}
-          </button>
-
-        </div>
-
-
-
-        <div className="max-h-[380px]">
+        <div className="max-h-[380px] items-center  justify-between">
           <Slider {...settings}>
             {data.map((item, index) => (
               <Card
@@ -165,33 +163,27 @@ const Home: React.FC = () => {
           </Slider>
         </div>
       </div>
-      {/* mobile nav */}
-      <Offcanvas show={show} onHide={handleClose} className="w-[50%]">
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title></Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-          <NavDropdown title="Trang chủ" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Trang chủ</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.1">Nông sản đặc trưng tỉnh Đắk Lắk</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">Sản phẩm Ocop tỉnh Đắk Lắk</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Sản phẩm Ocop 62 tỉnh, thành phố</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Danh sách gian hàng</NavDropdown.Item>
-          </NavDropdown>
-          <NavDropdown title="Sản phẩm" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Trang chủ</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.1">Nông sản đặc trưng tỉnh Đắk Lắk</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">Sản phẩm Ocop tỉnh Đắk Lắk</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Sản phẩm Ocop 62 tỉnh, thành phố</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Danh sách gian hàng</NavDropdown.Item>
-          </NavDropdown>
 
-          <Nav.Link href="#home" className="hover:text-[#006700]">Mời liên kết sản xuất - kinh doanh</Nav.Link>
-          <Nav.Link href="#link">Câu chuyện sản xuất</Nav.Link>
-          <Nav.Link href="#link">Nông sản mùa vụ</Nav.Link>
-          <Nav.Link href="#link">Thông tin thị trường</Nav.Link>
-        </Offcanvas.Body>
-      </Offcanvas>
+
+      <div>
+        {/* Deal hot */}
+        <div className="mt-[40px]">
+          <div className="w-full h-[38px] bg-[#008000] rounded-t-[3px]  py-[10px] px-[15px]
+          flex flex-row justify-between items-center
+          text-[#fff200]">
+            <div className="font-bold text-[16px]">Deal hot</div>
+            <div className="text-[14px]">Xem tất cả</div>
+          </div>
+
+          <div className="w-full h-auto p-[15px] ">
+            <Slider {...settingProduct}>
+              {products.map((product, index) => (
+                <CardProduct key={index} product={product} />
+              ))}
+            </Slider>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

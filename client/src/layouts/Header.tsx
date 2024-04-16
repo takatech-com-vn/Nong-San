@@ -4,6 +4,7 @@ import ColLeft from "./components/colLeft";
 import ColCenter from "./components/colCenter";
 import ColRight from "./components/colRight";
 import { RiMenu2Line } from "react-icons/ri";
+import { CiCircleAlert, CiLogin, CiUser } from "react-icons/ci";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -56,10 +57,10 @@ const Header = () => {
         </div>
       )}
         </div>
-        <div className="flex flex-row gap-4">
-          <a href="">Hỗ trợ</a>
-          <a href="/register">Đăng ký</a>
-          <a href="/login">Đăng nhập</a>
+        <div className="flex flex-row gap-4 text-[14px]">
+          <a href="" className="flex justify-center items-center"><CiCircleAlert className="text-[20px] mr-1"/> Hỗ trợ</a>
+          <a href="/register" className="flex justify-center items-center"> <CiUser className="text-[20px] mr-1"/>  Đăng ký</a>
+          <a href="/login" className="flex justify-center items-center"><CiLogin className="text-[20px] mr-1"/> Đăng nhập</a>
         </div>
       </div>
       <div
