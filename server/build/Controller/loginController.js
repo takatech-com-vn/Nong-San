@@ -17,6 +17,7 @@ class loginController {
     Register(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = req.body;
+            console.log("data" + JSON.stringify(data));
             const password = data.password;
             const hashedPassword = bcryptjs_1.default.hashSync(password, 10);
             data.password = hashedPassword;
