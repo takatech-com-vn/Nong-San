@@ -20,9 +20,15 @@ function App() {
         username: parsedData.username,
         expiryTime: Number(parsedData.expiryTime),
         auth: parsedData.auth,
+        id: parsedData.id,
+        phone: parsedData.phone,
+        role: parsedData.role,
+        created_at: parsedData.created_at,
+        updated_at: parsedData.updated_at,
       }));
     }
   }, [dispatch]);
+
 
 
   return (
