@@ -40,9 +40,20 @@ export const userSlice = createSlice({
       state.created_at = action.payload.created_at;
       state.updated_at = action.payload.updated_at;
     },
+    logout: (state) => {
+      state.username = '';
+      state.token = '';
+      state.expiryTime = 0;
+      state.auth = false;
+      state.id= 0;
+      state.phone= '';
+      state.role= '';
+      state.created_at= '';
+      state.updated_at= '';
+    },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser,logout  } = userSlice.actions;
 
 export default userSlice.reducer;
