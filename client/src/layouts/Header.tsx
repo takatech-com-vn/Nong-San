@@ -6,8 +6,16 @@ import ColCenter from "./components/colCenter";
 import ColRight from "./components/colRight";
 import { RiMenu2Line } from "react-icons/ri";
 import { CiCircleAlert, CiLogin, CiUser } from "react-icons/ci";
+import { HiOutlineBellAlert, HiOutlineShoppingBag } from "react-icons/hi2";
+import { Dropdown } from 'react-bootstrap';
+import { PiShoppingCartSimpleLight } from "react-icons/pi";
+import { IoIosLogOut } from "react-icons/io";
+import { useDispatch } from 'react-redux';
+import { logout } from "../redux/useSlice";
 
 const Header = () => {
+  const dispatch = useDispatch();
+
   const login = useSelector((state: RootState) => state.user);
   const [isScrolled, setIsScrolled] = useState(false);
   const checkScroll = () => {
@@ -31,6 +39,11 @@ const Header = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("data");
+    dispatch(logout());
+  };
+
   return (
     <header className=" h-auto bg-white md:px-5 w-full z-50 mb-3">
       <div className="wrapper w-full h-[46.8px] flex flex-row justify-between items-center text-[14px] border-b border-gray-300">
@@ -46,8 +59,8 @@ const Header = () => {
           {isOpen && (
             <div
               className={`absolute z-50 left-0 transform transition duration-200 ease-in-out ${isOpen
-                  ? "translate-y-0 opacity-100"
-                  : "-translate-y-full opacity-0 invisible"
+                ? "translate-y-0 opacity-100"
+                : "-translate-y-full opacity-0 invisible"
                 }`}
             >
               <ul className="mt-2 space-y-2 bg-white text-black p-2 rounded-[12px] shadow-lg w-max normal-case flex flex-col">
@@ -61,9 +74,41 @@ const Header = () => {
         <div className="flex flex-row gap-4 text-[14px]">
           {login.auth ? (
             <>
-              <a href="" className="flex justify-center items-center"><CiCircleAlert className="text-[20px] mr-1" />Thông báo</a>
-              <a href="/register" className="flex justify-center items-center"> <CiUser className="text-[20px] mr-1" />Hỗ trợ</a>
-              <a href="/login" className="flex justify-center items-center"><CiLogin className="text-[20px] mr-1" />Tài khoản</a>
+              <a href="" className="flex justify-center items-center"><HiOutlineBellAlert className="text-[20px] mr-1" />Thông báo</a>
+              <a href="" className="flex justify-center items-center"> <CiCircleAlert className="text-[20px] mr-1" />Hỗ trợ</a>
+              <Dropdown>
+                <Dropdown.Toggle as="a" className="flex justify-center items-center" id="dropdown-basic">
+                  <CiUser className="text-[20px] mr-1" />{login.username}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu  className="w-[200px]">
+                  <Dropdown.Item href="#/action-1">
+                    <div className="flex items-center">
+                      <CiUser />
+                      <span>Trang cá nhân</span>
+                    </div>
+                  </Dropdown.Item>
+                  <Dropdown.Item href="#/action-2">
+                    <div className="flex items-center">
+                      <PiShoppingCartSimpleLight />
+                      <span>Đơn hàng của tôi</span>
+                    </div>
+                  </Dropdown.Item>
+                  <Dropdown.Item href="#/action-3">
+                    <div className="flex items-center">
+                      <HiOutlineShoppingBag />
+                      <span>Trở thành người bán</span>
+                    </div>
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={handleLogout }>
+                    <div className="flex items-center">
+                      <IoIosLogOut />
+                      <span>Đăng xuất</span>
+                    </div>
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+
             </>
           ) : (
             <>
