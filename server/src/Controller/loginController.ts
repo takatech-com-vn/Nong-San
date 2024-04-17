@@ -76,7 +76,8 @@ class loginController {
                             return res.status(200).json({ 
                                 auth: true, 
                                 token: token, 
-                                expiryTime: expiryTime, 
+                                expiryTime: expiryTime,
+                                id: user.id,
                                 username: user.username, 
                                 phone: user.phone, 
                                 role: user.role, 

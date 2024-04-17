@@ -80,6 +80,7 @@ class loginController {
                                     auth: true,
                                     token: token,
                                     expiryTime: expiryTime,
+                                    id: user.id,
                                     username: user.username,
                                     phone: user.phone,
                                     role: user.role,
