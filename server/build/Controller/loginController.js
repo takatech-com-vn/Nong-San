@@ -61,10 +61,12 @@ class loginController {
                             expiresIn: 2592000 // expires in 1 month
                         });
                         console.log("token" + JSON.stringify(token));
+                        // Calculate the expiry time
+                        const expiryTime = new Date().getTime() + 300 * 1000;
                         //Kiểm tra người dùng đã đăng nhập hay chưa
                         if (req.isAuthenticated()) {
                             //Người dùng đã đăng nhập, không cần tạo phiên mới
-                            return res.status(200).json({ auth: true, token: token });
+                            return res.status(200).json({ auth: true, token: token, expiryTime: expiryTime });
                         }
                         else {
                             //Người dùng chưa đăng nhập, tạo phiên mới
@@ -73,7 +75,7 @@ class loginController {
                                 if (err) {
                                     return res.status(500).json({ message: "Lỗi máy chủ" });
                                 }
-                                return res.status(200).json({ auth: true, token: token });
+                                return res.status(200).json({ auth: true, token: token, expiryTime: expiryTime });
                             });
                         }
                     }

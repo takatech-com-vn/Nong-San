@@ -17,20 +17,20 @@ export const configSession = (app: Express) => {
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
       clearExpired: true,
-      checkExpirationInterval: 1000 * 60 * 60 * 2,
-      expiration: 30 * 24 * 60 * 60 * 1000, // expires in 1 month
+      checkExpirationInterval: 1000 * 60 * 5, // Check every 5 minutes
+      expiration: 5 * 60 * 1000, // expires in 5 minutes
     };
   
     const sessionStore = new MySQLStore(options);
   
     app.use(
       session({
-        secret: "98765",
+        secret: process.env.SESSION_SECRET || 'your_default_secret',
         resave: false,
         saveUninitialized: false,
         store: sessionStore,
         proxy: true,
-        cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // expires in 1 month
+        cookie: { maxAge: 5 * 60 * 1000 }, // expires in 5 minutes
       })
     );
 
