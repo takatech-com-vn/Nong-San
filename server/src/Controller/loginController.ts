@@ -53,7 +53,7 @@ class loginController {
                 if (passwordIsValid) {
                     console.log("Người dùng đã đăng nhập thành công");
                     const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET || 'your_default_secret', {
-                        expiresIn: 2592000 // expires in 1 month
+                        expiresIn: 300 // expires in 5 minutes
                     });
                 
                     console.log("token" + JSON.stringify(token));
@@ -72,7 +72,17 @@ class loginController {
                             if (err) {
                                 return res.status(500).json({ message: "Lỗi máy chủ"});
                             }
-                            return res.status(200).json({ auth: true, token: token, expiryTime: expiryTime, username: user.username });
+                            // Trả về thông tin người dùng
+                            return res.status(200).json({ 
+                                auth: true, 
+                                token: token, 
+                                expiryTime: expiryTime, 
+                                username: user.username, 
+                                phone: user.phone, 
+                                role: user.role, 
+                                created_at: user.created_at, 
+                                updated_at: user.updated_at 
+                            });
                         });
                     }
                 }
@@ -92,10 +102,23 @@ class loginController {
         }
     }
 
-    async Logout (req: Request, res: Response) {
-        (req as any).logout();
-        res.redirect('/login');
+
+    async Logout(req: Request, res: Response) {
+        // Gửi yêu cầu đăng xuất tới server
+        const response = await fetch('/logout', { method: 'POST' });
+
+        if (response.ok) {
+            // Xóa token khỏi localStorage
+            localStorage.removeItem('token');
+
+            // Chuyển hướng người dùng về trang đăng nhập
+            window.location.href = '/login';
+        } else {
+            // Xử lý lỗi nếu có
+            console.error('Lỗi khi đăng xuất');
+        }
     }
+    
 
     async ForgotPassword ( req: Request, res: Response) {
         const { phone, newPassword } = req.body;
