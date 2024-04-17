@@ -58,7 +58,7 @@ class loginController {
                     if (passwordIsValid) {
                         console.log("Người dùng đã đăng nhập thành công");
                         const token = jsonwebtoken_1.default.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET || 'your_default_secret', {
-                            expiresIn: 2592000 // expires in 1 month
+                            expiresIn: 300 // expires in 5 minutes
                         });
                         console.log("token" + JSON.stringify(token));
                         // Calculate the expiry time
@@ -75,7 +75,18 @@ class loginController {
                                 if (err) {
                                     return res.status(500).json({ message: "Lỗi máy chủ" });
                                 }
-                                return res.status(200).json({ auth: true, token: token, expiryTime: expiryTime, username: user.username });
+                                // Trả về thông tin người dùng
+                                return res.status(200).json({
+                                    auth: true,
+                                    token: token,
+                                    expiryTime: expiryTime,
+                                    id: user.id,
+                                    username: user.username,
+                                    phone: user.phone,
+                                    role: user.role,
+                                    created_at: user.created_at,
+                                    updated_at: user.updated_at
+                                });
                             });
                         }
                     }
@@ -97,8 +108,18 @@ class loginController {
     }
     Logout(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            req.logout();
-            res.redirect('/login');
+            // Gửi yêu cầu đăng xuất tới server
+            const response = yield fetch('/logout', { method: 'POST' });
+            if (response.ok) {
+                // Xóa token khỏi localStorage
+                localStorage.removeItem('token');
+                // Chuyển hướng người dùng về trang đăng nhập
+                window.location.href = '/login';
+            }
+            else {
+                // Xử lý lỗi nếu có
+                console.error('Lỗi khi đăng xuất');
+            }
         });
     }
     ForgotPassword(req, res) {
