@@ -34,8 +34,8 @@ const Login = () => {
         .catch((error) => console.log(error));
     };
 
-    const token = localStorage.getItem('token');
-    const expiryTime = Number(localStorage.getItem('expiryTime'));
+    // const token = localStorage.getItem('token');
+    // const expiryTime = Number(localStorage.getItem('expiryTime'));
 
     // if (new Date().getTime() > expiryTime) {
     //     // Token đã hết hạn, yêu cầu người dùng đăng nhập lại
