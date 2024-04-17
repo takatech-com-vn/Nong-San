@@ -15,23 +15,37 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [role, setRole] = useState('');
-
     const handleSubmit = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
-
+    
         axios
-            .post(`${import.meta.env.VITE_APP_API_URL}/login/listlogin`, {
-                username,
-                password,
-            })
-            .then((res) => {
-                console.log(res.data);
-                dispatch(setUser(res.data));
-                navigate('/');
-            })
-            .catch((error) => console.log(error));
+        .post(`${import.meta.env.VITE_APP_API_URL}/login/listlogin`, {
+            username,
+            password,
+        })
+        .then((res) => {
+            console.log(res.data);
+            // Lưu token và thời gian hết hạn vào localStorage
+            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('expiryTime', res.data.expiryTime);
+            dispatch(setUser(res.data.username));
+            navigate('/');
+        })
+        .catch((error) => console.log(error));
     };
+
+    const token = localStorage.getItem('token');
+    const expiryTime = Number(localStorage.getItem('expiryTime'));
+
+    // if (new Date().getTime() > expiryTime) {
+    //     // Token đã hết hạn, yêu cầu người dùng đăng nhập lại
+    //     alert('Phiên làm việc của bạn đã hết hạn. Vui lòng đăng nhập lại.');
+    //     window.location.href = '/login'; // Chuyển hướng người dùng đến trang đăng nhập
+    // } else {
+    //     // Token vẫn còn hiệu lực, tiếp tục sử dụng token
+    //     // Tiếp tục thực hiện yêu cầu đến server sử dụng token
+    // }
+    
     return (
         <div>
             <div className=" bg-bg-login bg-cover min-h-screen flex justify-center items-center relative">
