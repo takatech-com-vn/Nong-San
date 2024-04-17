@@ -3,15 +3,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserState {
   username: string;
-  password: string;
-  phone: string;
+  token: string;
+  expiryTime: number;
+  auth: boolean;
 }
 
 const initialState: UserState = {
   username: '',
-  password: '',
-  phone: '',
-
+  token: '',
+  expiryTime: 0,
+  auth: false, 
 };
 
 export const userSlice = createSlice({
@@ -20,9 +21,9 @@ export const userSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<UserState>) => {
       state.username = action.payload.username;
-      state.password = action.payload.password;
-      state.phone = action.payload.phone;
-
+      state.token = action.payload.token;
+      state.expiryTime = action.payload.expiryTime;
+      state.auth = true;
     },
   },
 });

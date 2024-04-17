@@ -1,11 +1,29 @@
 import { Routes, Route } from 'react-router-dom'
-// import './App.css'
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setUser } from './redux/useSlice';
 import HomePage from './pages/Home/Home'
 import ProductPage from './pages/Product/Product'
 import Header from './layouts/Header'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const data = localStorage.getItem('data');
+
+    if (data) {
+      const parsedData = JSON.parse(data);
+      dispatch(setUser({
+        token: parsedData.token,
+        username: parsedData.username,
+        expiryTime: Number(parsedData.expiryTime),
+        auth: parsedData.auth,
+      }));
+    }
+  }, [dispatch]);
+
 
   return (
     <>
