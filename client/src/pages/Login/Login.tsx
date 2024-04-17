@@ -1,10 +1,17 @@
 import { useState, } from "react";
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../redux/useSlice';
 import imglogin from "../../../src/assets/images/imglogin.png";
 import logo from "../../../src/assets/images/logo.png";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import Accordion from 'react-bootstrap/Accordion';
+import { useNavigate } from 'react-router-dom'; 
+
 const Login = () => {
+    const dispatch = useDispatch();
+    const navigate  = useNavigate();
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -18,10 +25,11 @@ const Login = () => {
         })
         .then((res) => {
             console.log(res.data);
-
             // Lưu token và thời gian hết hạn vào localStorage
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('expiryTime', res.data.expiryTime);
+            dispatch(setUser(res.data));
+            navigate('/');
         })
         .catch((error) => console.log(error));
     };
