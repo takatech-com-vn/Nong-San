@@ -8,7 +8,7 @@ import { RiMenu2Line } from "react-icons/ri";
 import { CiCircleAlert, CiLogin, CiUser } from "react-icons/ci";
 
 const Header = () => {
-  const username = useSelector((state: RootState) => state.user.username);
+  const login = useSelector((state: RootState) => state.user);
   const [isScrolled, setIsScrolled] = useState(false);
   const checkScroll = () => {
     if (window.pageYOffset > 1) {
@@ -44,26 +44,34 @@ const Header = () => {
             <RiMenu2Line />
           </button>
           {isOpen && (
-        <div
-          className={`absolute z-50 left-0 transform transition duration-200 ease-in-out ${
-            isOpen
-              ? "translate-y-0 opacity-100"
-              : "-translate-y-full opacity-0 invisible"
-          }`}
-        >
-          <ul className="mt-2 space-y-2 bg-white text-black p-2 rounded-[12px] shadow-lg w-max normal-case flex flex-col">
-            <a href="">Kênh người bán</a>
-            <a href="">Tin tức</a>
-            <a href="">Tải ứng dụng</a>
-          </ul>
-        </div>
-      )}
+            <div
+              className={`absolute z-50 left-0 transform transition duration-200 ease-in-out ${isOpen
+                  ? "translate-y-0 opacity-100"
+                  : "-translate-y-full opacity-0 invisible"
+                }`}
+            >
+              <ul className="mt-2 space-y-2 bg-white text-black p-2 rounded-[12px] shadow-lg w-max normal-case flex flex-col">
+                <a href="">Kênh người bán</a>
+                <a href="">Tin tức</a>
+                <a href="">Tải ứng dụng</a>
+              </ul>
+            </div>
+          )}
         </div>
         <div className="flex flex-row gap-4 text-[14px]">
-          <a href="" className="flex justify-center items-center"><CiCircleAlert className="text-[20px] mr-1"/> Hỗ trợ</a>
-          <a href="/register" className="flex justify-center items-center"> <CiUser className="text-[20px] mr-1"/>  Đăng ký</a>
-          <a href="/login" className="flex justify-center items-center"><CiLogin className="text-[20px] mr-1"/> Đăng nhập</a>
-          <h1>Xin chào, {username}!</h1>
+          {login.auth ? (
+            <>
+              <a href="" className="flex justify-center items-center"><CiCircleAlert className="text-[20px] mr-1" />Thông báo</a>
+              <a href="/register" className="flex justify-center items-center"> <CiUser className="text-[20px] mr-1" />Hỗ trợ</a>
+              <a href="/login" className="flex justify-center items-center"><CiLogin className="text-[20px] mr-1" />Tài khoản</a>
+            </>
+          ) : (
+            <>
+              <a href="" className="flex justify-center items-center"><CiCircleAlert className="text-[20px] mr-1" /> Hỗ trợ</a>
+              <a href="/register" className="flex justify-center items-center"> <CiUser className="text-[20px] mr-1" />  Đăng ký</a>
+              <a href="/login" className="flex justify-center items-center"><CiLogin className="text-[20px] mr-1" /> Đăng nhập</a>
+            </>
+          )}
         </div>
       </div>
       <div
