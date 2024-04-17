@@ -27,8 +27,8 @@ const configSession = (app) => {
         password: process.env.DB_PASS,
         database: process.env.DB_NAME,
         clearExpired: true,
-        checkExpirationInterval: 1000 * 60 * 5, // Check every 5 minutes
-        expiration: 5 * 60 * 1000, // expires in 5 minutes
+        checkExpirationInterval: 60 * 1000, // Check every 1 minute
+        expiration: 60 * 1000, // expires in 1 minute
     };
     const sessionStore = new MySQLStore(options);
     app.use(session({
@@ -37,7 +37,7 @@ const configSession = (app) => {
         saveUninitialized: false,
         store: sessionStore,
         proxy: true,
-        cookie: { maxAge: 5 * 60 * 1000 }, // expires in 5 minutes
+        cookie: { maxAge: 60 * 1000 }, // expires in 1 minute
     }));
     // Initialize Passport.js
     app.use(passport_1.default.initialize());

@@ -53,7 +53,7 @@ class loginController {
                 if (passwordIsValid) {
                     console.log("Người dùng đã đăng nhập thành công");
                     const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET || 'your_default_secret', {
-                        expiresIn: 300 // expires in 5 minutes
+                        expiresIn: 60 // expires in 1 minutes
                     });
                 
                     console.log("token" + JSON.stringify(token));
@@ -105,19 +105,16 @@ class loginController {
 
 
     async Logout(req: Request, res: Response) {
-        // Gửi yêu cầu đăng xuất tới server
-        const response = await fetch('/logout', { method: 'POST' });
-
-        if (response.ok) {
-            // Xóa token khỏi localStorage
-            localStorage.removeItem('token');
-
-            // Chuyển hướng người dùng về trang đăng nhập
-            window.location.href = '/login';
-        } else {
-            // Xử lý lỗi nếu có
-            console.error('Lỗi khi đăng xuất');
-        }
+        req.session.destroy(err => {
+            if (err) {
+                // Xử lý lỗi nếu có
+                console.log(err);
+                return res.status(500).json({ message: "Lỗi máy chủ khi đăng xuất" });
+            }
+    
+            // Trả về thông báo thành công
+            res.status(200).json({ message: 'Đăng xuất thành công' });
+        });
     }
     
 

@@ -35,17 +35,17 @@ const Login = () => {
             .catch((error) => console.log(error));
     };
 
-    // const token = localStorage.getItem('token');
-    // const expiryTime = Number(localStorage.getItem('expiryTime'));
+    const token = localStorage.getItem('token');
+    const expiryTime = Number(localStorage.getItem('expiryTime'));
 
-    // if (new Date().getTime() > expiryTime) {
-    //     // Token đã hết hạn, yêu cầu người dùng đăng nhập lại
-    //     alert('Phiên làm việc của bạn đã hết hạn. Vui lòng đăng nhập lại.');
-    //     window.location.href = '/login'; // Chuyển hướng người dùng đến trang đăng nhập
-    // } else {
-    //     // Token vẫn còn hiệu lực, tiếp tục sử dụng token
-    //     // Tiếp tục thực hiện yêu cầu đến server sử dụng token
-    // }
+    if (new Date().getTime() > expiryTime) {
+        // Token đã hết hạn, yêu cầu người dùng đăng nhập lại
+        alert('Phiên làm việc của bạn đã hết hạn. Vui lòng đăng nhập lại.');
+        window.location.href = '/login'; // Chuyển hướng người dùng đến trang đăng nhập
+    } else {
+        // Token vẫn còn hiệu lực, tiếp tục sử dụng token
+        // Tiếp tục thực hiện yêu cầu đến server sử dụng token
+    }
 
     return (
         <div>
