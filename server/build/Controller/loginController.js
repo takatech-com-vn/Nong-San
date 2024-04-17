@@ -57,7 +57,7 @@ class loginController {
                     console.log(password);
                     if (passwordIsValid) {
                         console.log("Người dùng đã đăng nhập thành công");
-                        const token = jsonwebtoken_1.default.sign({ id: user.id }, process.env.JWT_SECRET || 'your_default_secret', {
+                        const token = jsonwebtoken_1.default.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET || 'your_default_secret', {
                             expiresIn: 2592000 // expires in 1 month
                         });
                         console.log("token" + JSON.stringify(token));
@@ -75,7 +75,7 @@ class loginController {
                                 if (err) {
                                     return res.status(500).json({ message: "Lỗi máy chủ" });
                                 }
-                                return res.status(200).json({ auth: true, token: token, expiryTime: expiryTime });
+                                return res.status(200).json({ auth: true, token: token, expiryTime: expiryTime, username: user.username });
                             });
                         }
                     }

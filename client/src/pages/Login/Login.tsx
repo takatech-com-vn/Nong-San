@@ -28,7 +28,7 @@ const Login = () => {
             // Lưu token và thời gian hết hạn vào localStorage
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('expiryTime', res.data.expiryTime);
-            dispatch(setUser(res.data));
+            dispatch(setUser(res.data.username));
             navigate('/');
         })
         .catch((error) => console.log(error));
@@ -37,14 +37,14 @@ const Login = () => {
     const token = localStorage.getItem('token');
     const expiryTime = Number(localStorage.getItem('expiryTime'));
 
-    if (new Date().getTime() > expiryTime) {
-        // Token đã hết hạn, yêu cầu người dùng đăng nhập lại
-        alert('Phiên làm việc của bạn đã hết hạn. Vui lòng đăng nhập lại.');
-        window.location.href = '/login'; // Chuyển hướng người dùng đến trang đăng nhập
-    } else {
-        // Token vẫn còn hiệu lực, tiếp tục sử dụng token
-        // Tiếp tục thực hiện yêu cầu đến server sử dụng token
-    }
+    // if (new Date().getTime() > expiryTime) {
+    //     // Token đã hết hạn, yêu cầu người dùng đăng nhập lại
+    //     alert('Phiên làm việc của bạn đã hết hạn. Vui lòng đăng nhập lại.');
+    //     window.location.href = '/login'; // Chuyển hướng người dùng đến trang đăng nhập
+    // } else {
+    //     // Token vẫn còn hiệu lực, tiếp tục sử dụng token
+    //     // Tiếp tục thực hiện yêu cầu đến server sử dụng token
+    // }
     
     return (
         <div>
