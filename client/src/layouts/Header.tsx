@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 import ColLeft from "./components/colLeft";
 import ColCenter from "./components/colCenter";
 import ColRight from "./components/colRight";
@@ -7,6 +8,7 @@ import { RiMenu2Line } from "react-icons/ri";
 import { CiCircleAlert, CiLogin, CiUser } from "react-icons/ci";
 
 const Header = () => {
+  const username = useSelector((state: RootState) => state.user.username);
   const [isScrolled, setIsScrolled] = useState(false);
   const checkScroll = () => {
     if (window.pageYOffset > 1) {
@@ -61,6 +63,7 @@ const Header = () => {
           <a href="" className="flex justify-center items-center"><CiCircleAlert className="text-[20px] mr-1"/> Hỗ trợ</a>
           <a href="/register" className="flex justify-center items-center"> <CiUser className="text-[20px] mr-1"/>  Đăng ký</a>
           <a href="/login" className="flex justify-center items-center"><CiLogin className="text-[20px] mr-1"/> Đăng nhập</a>
+          <h1>Xin chào, {username}!</h1>
         </div>
       </div>
       <div

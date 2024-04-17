@@ -7,6 +7,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import { ToastPosition } from "react-bootstrap/ToastContainer";
+import { BiSolidHide, BiSolidShow } from "react-icons/bi";
 interface RegisterState {
     username: string;
     password: string;
@@ -25,7 +26,8 @@ const Register: React.FC = () => {
     const [isError, setIsError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [position] = useState<ToastPosition>('top-end');
-    
+    const [showPassword, setShowPassword] = useState(false); // Add this line
+
     const validateForm = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const newErrors = {} as RegisterState['errors'];
@@ -62,24 +64,30 @@ const Register: React.FC = () => {
                 password,
                 phone,
             });
-    
+
             setSuccessMessage(response.data.message); // Extract and set success message
-            setIsSuccess(true);        
-        } catch (error) {
+            setIsSuccess(true);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
             console.error(error);
             // Set error state and message
             setIsError(true);
-            setErrorMessage(error.response.data.message);
+            setErrorMessage(error.response?.data.message || 'Unexpected error');
         }
     };
 
+
     // Reset success state after toast timeout (optional, adjust timeout as needed)
     useEffect(() => {
+        let timeout: string | number | NodeJS.Timeout | undefined;
         if (isSuccess) {
-            const timeout = setTimeout(() => setIsSuccess(false), 3000); // 3 seconds
-            return () => clearTimeout(timeout);
+            timeout = setTimeout(() => setIsSuccess(false), 3000); // 3 seconds
         }
-    }, [isSuccess]);
+        if (isError) {
+            timeout = setTimeout(() => setIsError(false), 3000); // 3 seconds
+        }
+        return () => clearTimeout(timeout);
+    }, [isSuccess, isError]);
 
 
     return (
@@ -112,16 +120,27 @@ const Register: React.FC = () => {
                                     <label className="block text-sm font-medium text-gray-300" htmlFor="password">
                                         Mật khẩu
                                     </label>
-                                    <input
-                                        className={`mt-1 p-2 w-full bg-gray-700  rounded-md text-white ${errors.username ? 'border-red-500 border-[1px]' : 'border-gray-600 border'}`}
-                                        name="password"
-                                        id="password"
-                                        type="password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                    />
+                                    <div className="relative mt-1 ">
+                                        <input
+                                            className={`p-2 w-full bg-gray-700 rounded-md text-white ${errors.username ? 'border-red-500 border-[1px]' : 'border-gray-600 border'
+                                                }`}
+                                            name="password"
+                                            id="password"
+                                            type={showPassword ? "text" : "password"}
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                        />
+                                        <i
+                                            className={`absolute inset-y-3 right-3 cursor-pointer text-[20px] hover:text-gray-400 ${showPassword ? 'text-gray-400' : ''
+                                                }`}
+                                            onClick={() => setShowPassword(!showPassword)}
+                                        >
+                                            {showPassword ? <BiSolidShow /> : <BiSolidHide />}
+                                        </i>
+                                    </div>
                                     {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
                                 </div>
+
 
                                 <div className="mb-4">
                                     <label className="block text-sm font-medium text-gray-300" htmlFor="phone">
