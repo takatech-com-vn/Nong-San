@@ -58,7 +58,7 @@ class loginController {
                     if (passwordIsValid) {
                         console.log("Người dùng đã đăng nhập thành công");
                         const token = jsonwebtoken_1.default.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET || 'your_default_secret', {
-                            expiresIn: 60 // expires in 1 minutes
+                            expiresIn: 30 * 24 * 60 * 60 // expires in 1 month
                         });
                         console.log("token" + JSON.stringify(token));
                         // Calculate the expiry time

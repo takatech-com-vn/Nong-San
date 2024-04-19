@@ -28,8 +28,6 @@ const Login = () => {
                 // Lưu token và thời gian hết hạn vào localStorage
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('expiryTime', res.data.expiryTime);
-                localStorage.setItem('data', JSON.stringify(res.data));
-                localStorage.setItem('isLogin', JSON.stringify(res.data.role));
                 dispatch(setUser(res.data));
                 navigate('/');
             })
