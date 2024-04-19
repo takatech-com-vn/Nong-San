@@ -3,7 +3,10 @@ import { MenuFoldOutlined, MenuUnfoldOutlined, } from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
 import { Link, Route, Routes } from 'react-router-dom';
 import { FaBalanceScale, FaChartLine, FaGift, FaListUl, FaStore, FaTachometerAlt, FaUserAlt, FaWarehouse } from 'react-icons/fa';
-import QuanLyHonHang from './Pages/QuanLyHonHang';
+import QuanLyHonHang from './Pages/Quanlydonhang/QuanLyHonHang';
+import Sanpham from './Pages/Quanlykhohang/Sanpham';
+import Themsanpham from './Pages/Quanlykhohang/Themsanpham';
+import Khohang from './Pages/Quanlykhohang/Khohang';
 
 const { Header, Sider, Content } = Layout;
 
@@ -41,12 +44,31 @@ const Brands: React.FC = () => {
                                   icon: <FaListUl />,
                                   label: <Link to="quanlydonhang">Danh sách đơn hàng</Link>,
                                 },
-                              ],
+                            ],
                         },
                         {
                             key: '3',
                             icon: <FaWarehouse />,
                             label: 'Quản lý kho hàng',
+                            children: [
+                                {
+                                  key: "10",
+                                  icon: <FaListUl />,
+                                  label: <Link to="sanpham">Sản phẩm</Link>,
+                                },
+
+                                {
+                                    key: "11",
+                                    icon: <FaListUl />,
+                                    label: <Link to="themsanpham">Thêm sản phẩm</Link>,
+                                },
+
+                                {
+                                    key: "12",
+                                    icon: <FaListUl />,
+                                    label: <Link to="khohang">Kho hàng</Link>,
+                                },
+                            ],
                         },
                         {
                             key: '4',
@@ -67,6 +89,43 @@ const Brands: React.FC = () => {
                             key: '7',
                             icon: <FaChartLine />,
                             label: 'Báo cáo',
+                            children: [
+                                {
+                                  key: "13",
+                                  icon: <FaListUl />,
+                                  label: <Link to="baocaodoanhthu">Doanh thu</Link>,
+                                },
+
+                                {
+                                    key: "14",
+                                    icon: <FaListUl />,
+                                    label: <Link to="baocaokhohang">Kho hàng</Link>,
+                                },
+
+                                {
+                                    key: "15",
+                                    icon: <FaListUl />,
+                                    label: <Link to="baocaobanhang">Bán hàng</Link>,
+                                },
+
+                                {
+                                    key: "16",
+                                    icon: <FaListUl />,
+                                    label: <Link to="baocaosanpham">sanpham</Link>,
+                                },
+
+                                {
+                                    key: "17",
+                                    icon: <FaListUl />,
+                                    label: <Link to="baocaovanchuyen">Vận chuyển</Link>,
+                                },
+
+                                {
+                                    key: "18",
+                                    icon: <FaListUl />,
+                                    label: <Link to="baocaokhachhang">Khách hàng</Link>,
+                                },
+                            ],
                         },
                         {
                             key: '8',
@@ -104,6 +163,9 @@ const Brands: React.FC = () => {
                 >
                     <Routes>
                         <Route path="quanlydonhang" element={<QuanLyHonHang />} />
+                        <Route path="sanpham" element={<Sanpham />} />
+                        <Route path="themsanpham" element={<Themsanpham />} />
+                        <Route path="khohang" element ={<Khohang />} />
                     </Routes>
                 </Content>
             </Layout>

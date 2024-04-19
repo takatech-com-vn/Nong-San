@@ -47,6 +47,8 @@ const Header = () => {
     dispatch(logout());
   };
 
+  
+
   return (
     <header className=" h-auto bg-white md:px-5 w-full z-50 mb-3">
       <div className="wrapper w-full h-[46.8px] flex flex-row justify-between items-center text-[14px] border-b border-gray-300">
