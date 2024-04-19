@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, } from 'react-router-dom'
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { logout, setUser } from './redux/useSlice';
@@ -7,16 +7,25 @@ import ProductPage from './pages/Product/Product'
 import Header from './layouts/Header'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import Brands from './Brands/Brands';
+import Admin from './Admin/Admin';
 
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const islogin = localStorage.getItem('isLogin');
+  const data: string | null = localStorage.getItem('data');
+  let parsedData = null;
+
+  if (data !== null) {
+    parsedData = JSON.parse(data);
+  }
+
+  const role = parsedData?.role;
 
   useEffect(() => {
     const data = localStorage.getItem('data');
-
     if (data) {
       const parsedData = JSON.parse(data);
       dispatch(setUser({
@@ -46,6 +55,7 @@ function App() {
         localStorage.removeItem("data");
         localStorage.removeItem("expiryTime");
         localStorage.removeItem("token");
+        localStorage.removeItem("isLogin");
         dispatch(logout());
         navigate('/login');
         clearInterval(checkExpiry);
@@ -60,9 +70,36 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path='/login' element={<Login />} />
+        <Route
+          path="/login"
+          element={islogin ? <Navigate to="/" /> : <Login />}
+        />
         <Route path='/register' element={<Register />} />
-        <Route path='/brands/*' element={<Brands />} />
+        <Route
+          path="/brands/*"
+          element={
+            role === "Brand" ? (
+              <>
+                <Brands />
+              </>
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route
+          path="/admin/*"
+          element={
+            role === "Admin" ? (
+              <>
+                <Admin />
+              </>
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        
         <Route path='*' element={
           <>
             <Header />

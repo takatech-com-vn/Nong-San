@@ -29,6 +29,7 @@ const Login = () => {
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('expiryTime', res.data.expiryTime);
                 localStorage.setItem('data', JSON.stringify(res.data));
+                localStorage.setItem('isLogin', JSON.stringify(res.data.role));
                 dispatch(setUser(res.data));
                 navigate('/');
             })
