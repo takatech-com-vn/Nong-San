@@ -1,4 +1,4 @@
-import { useState, } from "react";
+import { useState } from "react";
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/useSlice';
@@ -35,18 +35,8 @@ const Login = () => {
             .catch((error) => console.log(error));
     };
 
-    const token = localStorage.getItem('token');
-    const expiryTime = Number(localStorage.getItem('expiryTime'));
-
-    if (new Date().getTime() > expiryTime) {
-        // Token đã hết hạn, yêu cầu người dùng đăng nhập lại
-        alert('Phiên làm việc của bạn đã hết hạn. Vui lòng đăng nhập lại.');
-        window.location.href = '/login'; // Chuyển hướng người dùng đến trang đăng nhập
-    } else {
-        // Token vẫn còn hiệu lực, tiếp tục sử dụng token
-        // Tiếp tục thực hiện yêu cầu đến server sử dụng token
-    }
-
+    // const token = localStorage.getItem('token');
+   
     return (
         <div>
             <div className=" bg-bg-login bg-cover min-h-screen flex justify-center items-center relative">
