@@ -41,6 +41,8 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("data");
+    localStorage.removeItem("expiryTime");
+    localStorage.removeItem("token");
     dispatch(logout());
   };
 
@@ -81,7 +83,7 @@ const Header = () => {
                   <CiUser className="text-[20px] mr-1" />{login.username}
                 </Dropdown.Toggle>
 
-                <Dropdown.Menu  className="w-[200px]">
+                <Dropdown.Menu className="w-[200px]">
                   <Dropdown.Item href="#/action-1">
                     <div className="flex items-center">
                       <CiUser />
@@ -100,7 +102,7 @@ const Header = () => {
                       <span>Trở thành người bán</span>
                     </div>
                   </Dropdown.Item>
-                  <Dropdown.Item onClick={handleLogout }>
+                  <Dropdown.Item onClick={handleLogout}>
                     <div className="flex items-center">
                       <IoIosLogOut />
                       <span>Đăng xuất</span>
