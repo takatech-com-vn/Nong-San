@@ -62,7 +62,7 @@ class loginController {
                         });
                         console.log("token" + JSON.stringify(token));
                         // Calculate the expiry time
-                        const expiryTime = new Date().getTime() + 30 * 1000;
+                        const expiryTime = new Date().getTime() + 300 * 1000;
                         //Kiểm tra người dùng đã đăng nhập hay chưa
                         if (req.isAuthenticated()) {
                             //Người dùng đã đăng nhập, không cần tạo phiên mới

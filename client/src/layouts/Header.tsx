@@ -15,7 +15,7 @@ import { logout } from "../redux/useSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
-
+  const userRole = useSelector((state: RootState) => state.user.role);
   const login = useSelector((state: RootState) => state.user);
   const [isScrolled, setIsScrolled] = useState(false);
   const checkScroll = () => {
@@ -43,6 +43,7 @@ const Header = () => {
     localStorage.removeItem("data");
     localStorage.removeItem("expiryTime");
     localStorage.removeItem("token");
+    localStorage.removeItem("isLogin");
     dispatch(logout());
   };
 
@@ -96,18 +97,39 @@ const Header = () => {
                       <span>Đơn hàng của tôi</span>
                     </div>
                   </Dropdown.Item>
+                  {userRole === 'Customer' && (
                   <Dropdown.Item href="#/action-3">
                     <div className="flex items-center">
                       <HiOutlineShoppingBag />
                       <span>Trở thành người bán</span>
                     </div>
                   </Dropdown.Item>
+                  )}
+                  <Dropdown>
+                    {userRole === 'Admin' && (
+                      <Dropdown.Item href="/admin">
+                        <div className="flex items-center">
+                          <HiOutlineShoppingBag />
+                          <span>Admin</span>
+                        </div>
+                      </Dropdown.Item>
+                    )}
+                    {userRole === 'Brand' && (
+                      <Dropdown.Item href="/brands">
+                        <div className="flex items-center">
+                          <HiOutlineShoppingBag />
+                          <span>Brand</span>
+                        </div>
+                      </Dropdown.Item>
+                    )}
+                  </Dropdown>
                   <Dropdown.Item onClick={handleLogout}>
                     <div className="flex items-center">
                       <IoIosLogOut />
                       <span>Đăng xuất</span>
                     </div>
                   </Dropdown.Item>
+
                 </Dropdown.Menu>
               </Dropdown>
 
