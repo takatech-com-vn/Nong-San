@@ -1,19 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MenuFoldOutlined, MenuUnfoldOutlined, } from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { FaBalanceScale, FaChartLine, FaGift, FaListUl, FaStore, FaTachometerAlt, FaUserAlt, FaWarehouse } from 'react-icons/fa';
 import QuanLyHonHang from './Pages/QuanLyHonHang';
+import Loader from '../components/Loader/Loader';
+import { RootState } from '../redux/store';
+import { useSelector } from 'react-redux';
 
 const { Header, Sider, Content } = Layout;
 
 const Admin: React.FC = () => {
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(true);
+
+    const user = useSelector((state: RootState) => state.user.user);
+    console.log('admin', user)
+    useEffect(() => {
+        if (user) {
+            // Kiểm tra role của người dùng
+            if (user.role === 'Admin') {
+                setIsLoading(false);
+            } else {
+                // Nếu người dùng không phải là Brand, điều hướng về trang chính
+                navigate('/');
+            }
+        }
+    }, [user, navigate]);
+
     const [collapsed, setCollapsed] = useState(false);
     const [currentItem, setCurrentItem] = useState('');
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
-
+    if (isLoading) {
+        return <div><Loader /></div>;
+    }
     return (
         <Layout>
             <Sider trigger={null} collapsible collapsed={collapsed} style={{ height: '100vh', position: 'fixed' }}
@@ -56,31 +78,31 @@ const Admin: React.FC = () => {
                             key: '4',
                             icon: <FaUserAlt />,
                             label: 'Quản lý khách hàng',
-                             onClick: () => setCurrentItem('Quản lý khách hàng')
+                            onClick: () => setCurrentItem('Quản lý khách hàng')
                         },
                         {
                             key: '5',
                             icon: <FaGift />,
                             label: 'Quản lý khuyến mãi',
-                             onClick: () => setCurrentItem('Quản lý khuyến mãi')
+                            onClick: () => setCurrentItem('Quản lý khuyến mãi')
                         },
                         {
                             key: '6',
                             icon: <FaBalanceScale />,
                             label: 'Đối soát',
-                             onClick: () => setCurrentItem('Đối soát')
+                            onClick: () => setCurrentItem('Đối soát')
                         },
                         {
                             key: '7',
                             icon: <FaChartLine />,
                             label: 'Báo cáo',
-                             onClick: () => setCurrentItem('Báo cáo')
+                            onClick: () => setCurrentItem('Báo cáo')
                         },
                         {
                             key: '8',
                             icon: <FaStore />,
                             label: 'Thiết lập gian hàng',
-                             onClick: () => setCurrentItem('Thiết lập gian hàng')
+                            onClick: () => setCurrentItem('Thiết lập gian hàng')
                         },
 
 

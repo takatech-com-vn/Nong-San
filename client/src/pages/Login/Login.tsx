@@ -24,11 +24,12 @@ const Login = () => {
                 password,
             })
             .then((res) => {
-                console.log(res.data);
+                // console.log(res.data);
                 // Lưu token và thời gian hết hạn vào localStorage
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('expiryTime', res.data.expiryTime);
                 dispatch(setUser(res.data));
+                console.log('login',res.data)
                 navigate('/');
             })
             .catch((error) => console.log(error));

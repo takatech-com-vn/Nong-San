@@ -23,20 +23,10 @@ useEffect(() => {
     try {
       const response = await axios({
         method: 'GET',
-        url: 'https://real-time-amazon-data.p.rapidapi.com/search',
-        params: {
-          query: 'Phone',
-          page: '1',
-          country: 'US',
-          category_id: 'aps'
-        },
-        headers: {
-          'X-RapidAPI-Key': '310bd9def5msh374440a826ea8a6p11a731jsn9e76896a3e9b',
-          'X-RapidAPI-Host': 'real-time-amazon-data.p.rapidapi.com'
-        }
+        url: 'https://dummyjson.com/products' 
       });
-      dispatch(setProducts(response.data.data.products))
-      console.log(response.data.data.products);
+      dispatch(setProducts(response.data.products)); 
+      console.log(response.data.products); 
     } catch (error) {
       console.error('Lỗi khi lấy dữ liệu từ API:', error);
     }
@@ -247,8 +237,8 @@ useEffect(() => {
           </div>
           <div className="border-4 mb-[20px]"></div>
           <div className="w-full  h-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {productsdata.map((product, ) => (
-              <CardProduct2 key={product.asin} product={product} />
+            {productsdata.map((product ) => (
+              <CardProduct2 key={product.id} product={product} />
             ))}
           </div>
 

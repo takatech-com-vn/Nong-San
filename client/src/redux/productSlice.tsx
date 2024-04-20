@@ -2,10 +2,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Product {
-    asin: string;
-    product_title: string;
-    product_price: string;
-    product_photo: string;
+    id: string;
+    title: string;
+    price: string;
+    thumbnail: string;
 }
 
 interface ProductState {
