@@ -75,31 +75,21 @@ function App() {
           element={islogin ? <Navigate to="/" /> : <Login />}
         />
         <Route path='/register' element={<Register />} />
-        <Route
-          path="/brands/*"
-          element={
-            role === "Brand" ? (
-              <>
-                <Brands />
-              </>
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route
-          path="/admin/*"
-          element={
-            role === "Admin" ? (
-              <>
-                <Admin />
-              </>
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        
+        <Route path="/brands/*" element={role === "Brand" ? (
+          <>
+            <Brands />
+          </>
+        ) : (
+          <Navigate to="/" />
+        )} />
+        <Route path="/admin/*" element={role === "Admin" ? (
+          <>
+            <Admin />
+          </>
+        ) : (
+          <Navigate to="/" />
+        )} />
+
         <Route path='*' element={
           <>
             <Header />
