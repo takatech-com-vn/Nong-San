@@ -5,7 +5,7 @@ import { Express } from 'express';
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 import { User } from "../services/user";
-import { excuteQuery } from '../services/callbackToPromise';
+import { excuteQuery } from '../util/callbackToPromise';
 
 dotenvConfig();
 

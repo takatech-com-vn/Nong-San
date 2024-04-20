@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-const callbackToPromise_1 = require("../services/callbackToPromise");
+const callbackToPromise_1 = require("../util/callbackToPromise");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 class loginController {
@@ -103,6 +103,31 @@ class loginController {
             catch (error) {
                 console.log("Lỗi máy chủ");
                 return res.status(500).json({ message: 'Lỗi máy chủ' });
+            }
+        });
+    }
+    UserLogin(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const token = req.headers['x-access-token'];
+            // Giải mã JWT
+            const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET || 'your_default_secret');
+            console.log(decoded);
+            if (!token)
+                return res.status(401).json({ auth: false, message: 'No token provided.' });
+            try {
+                // Tìm người dùng dựa trên id từ JWT
+                const users = yield (0, callbackToPromise_1.excuteQuery)('SELECT * FROM users WHERE id = ?', [decoded.id]);
+                const user = users[0];
+                if (!user)
+                    return res.status(404).json("No user found.");
+                console.log(user); // Thêm dòng này
+                // Trả về thông tin người dùng
+                return res.status(200).json(user); // Thêm return vào đây
+            }
+            catch (error) {
+                console.log(error); // Thêm dòng này
+                console.log(error.response); // Thêm dòng này
+                return res.status(500).json("There was a problem with the server."); // Thêm return vào đây
             }
         });
     }

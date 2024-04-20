@@ -10,9 +10,28 @@ import Register from './pages/Register/Register'
 import { useNavigate, Navigate } from 'react-router-dom';
 import Brands from './Brands/Brands';
 import Admin from './Admin/Admin';
+import axios from 'axios';
 
 function App() {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    // console.log('token:' + token)
+    if (token) {
+      axios
+        .get(`${import.meta.env.VITE_APP_API_URL}/login/user`, {
+          headers: { 'x-access-token': token }
+        })
+        .then((res) => {
+          console.log(res.data);
+          dispatch(setUser(res.data));
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [dispatch]);
+
   const navigate = useNavigate();
   const islogin = localStorage.getItem('isLogin');
   const data: string | null = localStorage.getItem('data');
@@ -46,24 +65,24 @@ function App() {
   const expiryDate = new Date(expiryTime);
   console.log(expiryDate);
   useEffect(() => {
-    const checkExpiry = setInterval(() => {
-      const token = localStorage.getItem('token');
-      const expiryTime = Number(localStorage.getItem('expiryTime'));
+    // const checkExpiry = setInterval(() => {
+    //   const token = localStorage.getItem('token');
+    //   const expiryTime = Number(localStorage.getItem('expiryTime'));
 
-      if (token && new Date().getTime() > expiryTime) {
-        alert('Phiên làm việc của bạn đã hết hạn. Vui lòng đăng nhập lại.');
-        localStorage.removeItem("data");
-        localStorage.removeItem("expiryTime");
-        localStorage.removeItem("token");
-        localStorage.removeItem("isLogin");
-        dispatch(logout());
-        navigate('/login');
-        clearInterval(checkExpiry);
-      }
-    }, 1000);
+    //   if (token && new Date().getTime() > expiryTime) {
+    //     alert('Phiên làm việc của bạn đã hết hạn. Vui lòng đăng nhập lại.');
+    //     localStorage.removeItem("data");
+    //     localStorage.removeItem("expiryTime");
+    //     localStorage.removeItem("token");
+    //     localStorage.removeItem("isLogin");
+    //     dispatch(logout());
+    //     navigate('/login');
+    //     clearInterval(checkExpiry);
+    //   }
+    // }, 1000);
 
-    // Dọn dẹp khi unmount
-    return () => clearInterval(checkExpiry);
+    // // Dọn dẹp khi unmount
+    // return () => clearInterval(checkExpiry);
   }, [navigate]);
 
 

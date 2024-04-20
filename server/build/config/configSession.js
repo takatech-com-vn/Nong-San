@@ -17,7 +17,7 @@ const passport_1 = __importDefault(require("passport"));
 const dotenv_1 = require("dotenv");
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
-const callbackToPromise_1 = require("../services/callbackToPromise");
+const callbackToPromise_1 = require("../util/callbackToPromise");
 (0, dotenv_1.config)();
 const configSession = (app) => {
     const options = {
