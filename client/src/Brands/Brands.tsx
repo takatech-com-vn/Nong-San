@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MenuFoldOutlined, MenuUnfoldOutlined, } from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
 import { Link, Route, Routes } from 'react-router-dom';
@@ -7,19 +7,47 @@ import QuanLyHonHang from './Pages/Quanlydonhang/QuanLyHonHang';
 import Sanpham from './Pages/Quanlykhohang/Sanpham';
 import Themsanpham from './Pages/Quanlykhohang/Themsanpham';
 import Khohang from './Pages/Quanlykhohang/Khohang';
+import { useNavigate, } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import Loader from '../components/Loader/Loader';
+// import axios from 'axios';
+// import { setUser } from '../redux/useSlice';
 
 const { Header, Sider, Content } = Layout;
 
 const Brands: React.FC = () => {
+    //   const dispatch = useDispatch();
+
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(true);
+
+    const user = useSelector((state: RootState) => state.user.user);
+    console.log('brands', user)
+    useEffect(() => {
+        if (user) {
+            // Kiểm tra role của người dùng
+            if (user.role === 'Brand') {
+                setIsLoading(false);
+            } else {
+                // Nếu người dùng không phải là Brand, điều hướng về trang chính
+                navigate('/');
+            }
+        }
+    }, [user, navigate]);
+    
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
+    if (isLoading) {
+        return <div><Loader /></div>;
+    }
 
     return (
         <Layout>
-            <Sider trigger={null} collapsible collapsed={collapsed} style={{height: '100vh', position: 'fixed'}}
-             >
+            <Sider trigger={null} collapsible collapsed={collapsed} style={{ height: '100vh', position: 'fixed' }}
+            >
                 <div className="text-white w-auto h-10 flex items-center justify-center bg-slate-700
                 m-2 rounded" >
                     <span>  Brand Name</span>
@@ -40,9 +68,9 @@ const Brands: React.FC = () => {
                             label: 'Quản lí đơn hàng',
                             children: [
                                 {
-                                  key: "9",
-                                  icon: <FaListUl />,
-                                  label: <Link to="quanlydonhang">Danh sách đơn hàng</Link>,
+                                    key: "9",
+                                    icon: <FaListUl />,
+                                    label: <Link to="quanlydonhang">Danh sách đơn hàng</Link>,
                                 },
                             ],
                         },
@@ -52,9 +80,9 @@ const Brands: React.FC = () => {
                             label: 'Quản lý kho hàng',
                             children: [
                                 {
-                                  key: "10",
-                                  icon: <FaListUl />,
-                                  label: <Link to="sanpham">Sản phẩm</Link>,
+                                    key: "10",
+                                    icon: <FaListUl />,
+                                    label: <Link to="sanpham">Sản phẩm</Link>,
                                 },
 
                                 {
@@ -91,9 +119,9 @@ const Brands: React.FC = () => {
                             label: 'Báo cáo',
                             children: [
                                 {
-                                  key: "13",
-                                  icon: <FaListUl />,
-                                  label: <Link to="baocaodoanhthu">Doanh thu</Link>,
+                                    key: "13",
+                                    icon: <FaListUl />,
+                                    label: <Link to="baocaodoanhthu">Doanh thu</Link>,
                                 },
 
                                 {
@@ -138,7 +166,7 @@ const Brands: React.FC = () => {
                     ]}
                 />
             </Sider>
-            <Layout className={`${!collapsed ?'ml-[200px]':"ml-[80px]"}`}>
+            <Layout className={`${!collapsed ? 'ml-[200px]' : "ml-[80px]"}`}>
                 <Header style={{ padding: 0, background: colorBgContainer, }}>
                     <Button
                         type="text"
@@ -155,7 +183,7 @@ const Brands: React.FC = () => {
                     style={{
                         margin: '24px 16px',
                         padding: 24,
-                        
+
                         background: colorBgContainer,
                         borderRadius: borderRadiusLG,
                         overflow: 'initial'
@@ -165,7 +193,7 @@ const Brands: React.FC = () => {
                         <Route path="quanlydonhang" element={<QuanLyHonHang />} />
                         <Route path="sanpham" element={<Sanpham />} />
                         <Route path="themsanpham" element={<Themsanpham />} />
-                        <Route path="khohang" element ={<Khohang />} />
+                        <Route path="khohang" element={<Khohang />} />
                     </Routes>
                 </Content>
             </Layout>
