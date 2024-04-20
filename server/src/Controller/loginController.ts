@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import { excuteQuery } from "../services/callbackToPromise";
+import { excuteQuery } from "../util/callbackToPromise";
 import bcryptjs, { hashSync } from 'bcryptjs';
 import { User } from "../services/user";
 import jwt from 'jsonwebtoken';
+import { Session } from '../services/session';
 
 
 class loginController {
@@ -53,7 +54,7 @@ class loginController {
                 if (passwordIsValid) {
                     console.log("Người dùng đã đăng nhập thành công");
                     const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET || 'your_default_secret', {
-                        expiresIn: 60 // expires in 1 minutes
+                        expiresIn: 30 * 24 * 60 * 60 // expires in 1 month
                     });
 
                     console.log("token" + JSON.stringify(token));
@@ -101,6 +102,31 @@ class loginController {
         } catch (error) {
             console.log("Lỗi máy chủ")
             return res.status(500).json({ message: 'Lỗi máy chủ' });
+        }
+    }
+
+    async UserLogin(req: Request, res: Response) {
+        const token: any = req.headers['x-access-token'];
+
+        // Giải mã JWT
+        const decoded: any = jwt.verify(token, process.env.JWT_SECRET || 'your_default_secret');
+        console.log(decoded);
+
+        if (!token) return res.status(401).json({ auth: false, message: 'No token provided.' });
+
+        try {
+            // Tìm người dùng dựa trên id từ JWT
+            const users = await excuteQuery('SELECT * FROM users WHERE id = ?', [decoded.id]) as User[];
+            const user = users[0];
+            if (!user) return res.status(404).json("No user found.");
+
+            console.log(user); // Thêm dòng này
+            // Trả về thông tin người dùng
+            return res.status(200).json(user); // Thêm return vào đây
+        } catch (error: any) {
+            console.log(error); // Thêm dòng này
+            console.log(error.response); // Thêm dòng này
+            return res.status(500).json("There was a problem with the server."); // Thêm return vào đây
         }
     }
 

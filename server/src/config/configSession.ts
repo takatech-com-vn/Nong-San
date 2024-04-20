@@ -5,7 +5,7 @@ import { Express } from 'express';
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 import { User } from "../services/user";
-import { excuteQuery } from '../services/callbackToPromise';
+import { excuteQuery } from '../util/callbackToPromise';
 
 dotenvConfig();
 
@@ -18,7 +18,7 @@ export const configSession = (app: Express) => {
       database: process.env.DB_NAME,
       clearExpired: true,
       checkExpirationInterval: 60 * 1000, // Check every 1 minute
-      expiration: 60 * 1000, // expires in 1 minute
+      expiration: 30 * 24 * 60 * 60 * 1000, // expires in 1 month
     };
   
     const sessionStore = new MySQLStore(options);
@@ -30,7 +30,7 @@ export const configSession = (app: Express) => {
         saveUninitialized: false,
         store: sessionStore,
         proxy: true,
-        cookie: { maxAge: 60 * 1000 }, // expires in 1 minute
+        cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // expires in 1 month
       })
     );
 
