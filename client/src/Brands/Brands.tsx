@@ -46,13 +46,15 @@ const Brands: React.FC = () => {
 
     return (
         <Layout>
-            <Sider trigger={null} collapsible collapsed={collapsed} style={{ height: '100vh', position: 'fixed' }}
+            <Sider trigger={null} collapsible collapsed={collapsed} style={{ height: '100vh', position: 'fixed', }}
             >
                 <div className="text-white w-auto h-10 flex items-center justify-center bg-slate-700
                 m-2 rounded" >
                     <span>  Brand Name</span>
                 </div>
                 <Menu
+                style={{height: '100%', overflow: 'auto' }}
+                className='custom-scrollbar'
                     theme="dark"
                     mode="inline"
                     defaultSelectedKeys={['1']}

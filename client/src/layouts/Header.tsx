@@ -12,12 +12,10 @@ import { PiShoppingCartSimpleLight } from "react-icons/pi";
 import { IoIosLogOut } from "react-icons/io";
 
 import { logout } from "../redux/useSlice";
-
 const Header = () => {
   const dispatch = useDispatch();
-
   const user = useSelector((state: RootState) => state.user.user);
-  console.log('cc',user)
+  console.log('cc', user)
   const [isScrolled, setIsScrolled] = useState(false);
   const checkScroll = () => {
     if (window.pageYOffset > 1) {
@@ -48,7 +46,7 @@ const Header = () => {
     dispatch(logout());
   };
 
-  
+
 
   return (
     <header className=" h-auto bg-white md:px-5 w-full z-50 mb-3">
@@ -101,12 +99,12 @@ const Header = () => {
                     </div>
                   </Dropdown.Item>
                   {user.role === 'Customer' && (
-                  <Dropdown.Item href="#/action-3">
-                    <div className="flex items-center">
-                      <HiOutlineShoppingBag />
-                      <span>Trở thành người bán</span>
-                    </div>
-                  </Dropdown.Item>
+                    <Dropdown.Item href="#/action-3">
+                      <div className="flex items-center">
+                        <HiOutlineShoppingBag />
+                        <span>Trở thành người bán</span>
+                      </div>
+                    </Dropdown.Item>
                   )}
                   <Dropdown>
                     {user.role === 'Admin' && (
@@ -150,7 +148,7 @@ const Header = () => {
         className={` ${isScrolled ? "fixed top-[0] left-0 right-0 z-50" : ""} bg-white`}
       >
         <div className="wrapper">
-          <nav className="w-full h-[203.65px] bg-white">
+          <nav className="w-full h-[203.65px] bg-white mt-2">
             <div className="flex flex-row gap-[25px] border-b border-gray-300 py-[0px] md:py-[24px] justify-between md:justify-normal">
               <ColLeft></ColLeft>
               <span className=" hidden md:flex">
