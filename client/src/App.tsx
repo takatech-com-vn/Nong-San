@@ -13,6 +13,7 @@ import Admin from './Admin/Admin';
 import axios from 'axios';
 import { RootState } from './redux/store';
 import Loader from './components/Loader/Loader';
+import Footer from './layouts/Footer';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -104,6 +105,7 @@ function App() {
               <Route index element={<HomePage />} />
               <Route path='/san-pham' element={<ProductPage />} />
             </Routes>
+            <Footer/>
           </>
         } />
       </Routes>

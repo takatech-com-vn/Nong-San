@@ -29,6 +29,7 @@ body {
     -webkit-box-orient: vertical;
     /* Chiều hiển thị của box */
 }
+
 .form-control {
     display: block;
     width: 100%;
@@ -46,6 +47,7 @@ body {
     border-radius: var(--bs-border-radius);
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
+
 /* custom css */
 .li-navbar {
     @apply p-[10px] text-[16px] uppercase text-[#fff200] hover:bg-[#004d00] hover:border-b-2 border-white hover:text-white;
@@ -79,6 +81,7 @@ body {
 .slick-dots li {
     margin-right: 20px;
 }
+
 /* end custom slick-dots */
 
 
@@ -95,7 +98,7 @@ body {
     top: 40%;
     opacity: 1;
     transition: all 0.3s ease;
-    
+
 }
 
 .slick-prev {
@@ -120,6 +123,18 @@ body {
 
 /* end custom slick-prev slick-next */
 
+/* custom react slick */
+/* .news-slider .slick-slide:not(:last-child) {
+    margin-right: 5px;
+}
+
+.news-slider .slick-slide:not(:first-child) {
+    margin-left: 5px;
+} */
+
+/* end custom react slick */
+
+
 /* custom react-bootstrap */
 .offcanvas {
     position: fixed;
@@ -139,7 +154,7 @@ body {
 .accordion-button {
     position: relative;
     display: flex;
-    align-items: center ;
+    align-items: center;
     width: 100%;
     padding: 0.5rem;
     font-size: 1rem;
@@ -152,6 +167,7 @@ body {
     transition: var(--bs-accordion-transition);
     justify-content: center;
 }
+
 .accordion-button::after {
     flex-shrink: 0;
     width: var(--bs-accordion-btn-icon-width);
@@ -163,7 +179,44 @@ body {
     background-size: var(--bs-accordion-btn-icon-width);
     transition: var(--bs-accordion-btn-icon-transition);
 }
+
 /* end custom react-bootstrap */
 
+/* custom and dsn */
+:where(.css-dev-only-do-not-override-1qfezbu).ant-pagination .ant-pagination-item-active {
+    font-weight: 600;
+    background-color: #ffffff;
+    border-color: #1677ff;
+    border-radius: 9999px;
+}
 
+/* end custom ant dsn */
+
+.footer-item{
+    @apply text-[14px] py-[10px] text-gray-700
+}
+.Glassmorphism{
+    /* From https://css.glass */
+background: rgba(255, 255, 255, 0.16) !important;
+border-radius: 10px !important;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+backdrop-filter: blur(3.7px) !important;
+-webkit-backdrop-filter: blur(3.7px);
+border: 1px solid rgba(255, 255, 255, 0.7) !important;
+}
+/* thumb */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgb(74, 76, 74);
+    border-radius: 10px;
+    display: block;
+  }
+  /* Track */
+  .custom-scrollbar::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 10px;
+    display: block;
+  }
+   .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
 /* end custom css */
