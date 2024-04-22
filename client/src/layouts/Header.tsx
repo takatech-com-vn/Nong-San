@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import ColLeft from "./components/colLeft";
 import ColCenter from "./components/colCenter";
@@ -10,13 +10,14 @@ import { HiOutlineBellAlert, HiOutlineShoppingBag } from "react-icons/hi2";
 import { Dropdown } from 'react-bootstrap';
 import { PiShoppingCartSimpleLight } from "react-icons/pi";
 import { IoIosLogOut } from "react-icons/io";
-import { useDispatch } from 'react-redux';
+
 import { logout } from "../redux/useSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const userRole = useSelector((state: RootState) => state.user.role);
-  const login = useSelector((state: RootState) => state.user);
+
+  const user = useSelector((state: RootState) => state.user.user);
+  console.log('cc',user)
   const [isScrolled, setIsScrolled] = useState(false);
   const checkScroll = () => {
     if (window.pageYOffset > 1) {
@@ -77,13 +78,13 @@ const Header = () => {
           )}
         </div>
         <div className="flex flex-row gap-4 text-[14px]">
-          {login.auth ? (
+          {user?.username ? (
             <>
               <a href="" className="flex justify-center items-center"><HiOutlineBellAlert className="text-[20px] mr-1" />Thông báo</a>
               <a href="" className="flex justify-center items-center"> <CiCircleAlert className="text-[20px] mr-1" />Hỗ trợ</a>
               <Dropdown>
                 <Dropdown.Toggle as="a" className="flex justify-center items-center" id="dropdown-basic">
-                  <CiUser className="text-[20px] mr-1" />{login.username}
+                  <CiUser className="text-[20px] mr-1" />{user.username}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="w-[200px]">
@@ -99,7 +100,7 @@ const Header = () => {
                       <span>Đơn hàng của tôi</span>
                     </div>
                   </Dropdown.Item>
-                  {userRole === 'Customer' && (
+                  {user.role === 'Customer' && (
                   <Dropdown.Item href="#/action-3">
                     <div className="flex items-center">
                       <HiOutlineShoppingBag />
@@ -108,7 +109,7 @@ const Header = () => {
                   </Dropdown.Item>
                   )}
                   <Dropdown>
-                    {userRole === 'Admin' && (
+                    {user.role === 'Admin' && (
                       <Dropdown.Item href="/admin">
                         <div className="flex items-center">
                           <HiOutlineShoppingBag />
@@ -116,7 +117,7 @@ const Header = () => {
                         </div>
                       </Dropdown.Item>
                     )}
-                    {userRole === 'Brand' && (
+                    {user.role === 'Brand' && (
                       <Dropdown.Item href="/brands">
                         <div className="flex items-center">
                           <HiOutlineShoppingBag />

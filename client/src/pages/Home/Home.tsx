@@ -1,13 +1,39 @@
 import { useEffect, useState } from "react";
 // import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
+import { setProducts } from '../../redux/productSlice';
+import { RootState } from '../../redux/store';
 import Slider from "react-slick";
 import Card from "./Card";
 import { NextArrow, PrevArrow } from "../../components/slick/index";
 import Menu from "./Menu";
 import CardProduct from "./CardProduct";
+import { GoArrowRight } from "react-icons/go";
+import CardProduct2 from "./CardProduct2";
+
 
 const Home: React.FC = () => {
+
+const dispatch = useDispatch();
+const productsdata = useSelector((state: RootState) => state.product.products);
+console.log(productsdata)
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios({
+        method: 'GET',
+        url: 'https://dummyjson.com/products' 
+      });
+      dispatch(setProducts(response.data.products)); 
+      console.log(response.data.products); 
+    } catch (error) {
+      console.error('Lỗi khi lấy dữ liệu từ API:', error);
+    }
+  };
+
+  fetchData();
+}, [dispatch]);
 
   const [isScrolled, setIsScrolled] = useState(false);
   const checkScroll = () => {
@@ -182,6 +208,40 @@ const Home: React.FC = () => {
               ))}
             </Slider>
           </div>
+        </div>
+        {/* Nông sản mùa vụ giá tốt */}
+        <div className="mt-[40px]">
+          <div className="w-full h-[38px] bg-[#008000] rounded-t-[3px]  py-[10px] px-[15px]
+          flex flex-row justify-between items-center
+          text-[#fff200]">
+            <div className="font-bold text-[16px]">Nông sản mùa vụ giá tốt</div>
+            <div className="text-[14px]">Xem tất cả</div>
+          </div>
+
+          <div className="w-full h-auto p-[15px] ">
+            <Slider {...settingProduct}>
+              {products.map((product, index) => (
+                <CardProduct key={index} product={product} />
+              ))}
+            </Slider>
+          </div>
+        </div>
+
+        {/* Gợi ý hôm nay */}
+        <div className="mt-[40px]">
+          <div className="w-full h-[50px] bg-white rounded-t-[3px]  py-[10px]  
+          flex flex-row justify-start items-center
+          text-[#008000]">
+            <div className="font-bold text-[24px] mr-2">Gợi ý hôm nay </div>
+            <GoArrowRight className="text-[24px]" />
+          </div>
+          <div className="border-4 mb-[20px]"></div>
+          <div className="w-full  h-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            {productsdata.map((product ) => (
+              <CardProduct2 key={product.id} product={product} />
+            ))}
+          </div>
+
         </div>
       </div>
     </div>
