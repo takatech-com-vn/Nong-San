@@ -3,7 +3,7 @@ import { connection} from '../config/database/mySQL';
 
 class productController {
     
-    async getproduct(req: Request, res: Response) {
+    async createProduct(req: Request, res: Response) {
         const data = req.body;
         console.log("data: " + JSON.stringify(data));
     }

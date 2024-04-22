@@ -1,10 +1,8 @@
 import React from 'react'
 
-const Khohang = () => {
+function Khohang() {
   return (
-    <div>
-      <div>Khohang</div>
-    </div>
+    <div>Khohang</div>
   )
 }
 

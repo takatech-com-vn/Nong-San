@@ -1,10 +1,8 @@
 import React from 'react'
 
-const Sanpham = () => {
+function Sanpham() {
   return (
-    <div>
-      <div>Sanpham</div>
-    </div>
+    <div>Sanpham</div>
   )
 }
 
