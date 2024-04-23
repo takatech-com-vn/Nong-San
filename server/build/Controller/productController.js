@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 class productController {
-    getproduct(req, res) {
+    createProduct(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = req.body;
             console.log("data: " + JSON.stringify(data));

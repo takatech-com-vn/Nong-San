@@ -4,9 +4,16 @@ import { Button, Layout, Menu, theme } from 'antd';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { FaBalanceScale, FaChartLine, FaGift, FaListUl, FaStore, FaTachometerAlt, FaUserAlt, FaWarehouse } from 'react-icons/fa';
 import QuanLyHonHang from './Pages/QuanLyHonHang';
+import DanhSachChinhSach from './Pages/QuanLyChinhSach/DanhSachChinhSach';
+import ThemChinhSach from './Pages/QuanLyChinhSach/ThemChinhSach';
 import Loader from '../components/Loader/Loader';
 import { RootState } from '../redux/store';
 import { useSelector } from 'react-redux';
+import ThemSlidePC from './Pages/QuanLySlide/ThemSlidePC';
+import ThemSlideMobile from './Pages/QuanLySlide/ThemSlideMobile';
+import DanhSachSlide from './Pages/QuanLySlide/DanhSachSlide';
+import ThemTinTuc from './Pages/QuanLyTinTuc/ThemTinTuc';
+import DanhSachTinTuc from './Pages/QuanLyTinTuc/DanhSachTinTuc';
 
 const { Header, Sider, Content } = Layout;
 
@@ -71,20 +78,66 @@ const Admin: React.FC = () => {
                         {
                             key: '3',
                             icon: <FaWarehouse />,
-                            label: 'Quản lý kho hàng',
-                            onClick: () => setCurrentItem('Quản lý kho hàng')
+                            label: 'Quản lý slide',
+                            children: [
+                                {
+                                    key: "13",
+                                    icon: <FaListUl />,
+                                    label: <Link to="themslidepc">Thêm slide pc</Link>,
+                                    onClick: () => setCurrentItem('Thêm slide pc')
+                                },
+                                {
+                                    key: "14",
+                                    icon: <FaListUl />,
+                                    label: <Link to="themslidemobile">Thêm slide mobile</Link>,
+                                    onClick: () => setCurrentItem('Thêm slide mobile')
+                                },
+                                {
+                                    key: "15",
+                                    icon: <FaListUl />,
+                                    label: <Link to="danhsachslide">Danh sách slide</Link>,
+                                    onClick: () => setCurrentItem('Danh sách slide')
+                                },
+                            ],
                         },
                         {
                             key: '4',
                             icon: <FaUserAlt />,
-                            label: 'Quản lý khách hàng',
-                            onClick: () => setCurrentItem('Quản lý khách hàng')
+                            label: 'Quản lý tin tức',
+                            children: [
+                                {
+                                    key: "16",
+                                    icon: <FaListUl />,
+                                    label: <Link to="themtintuc">Thêm tin tức</Link>,
+                                    onClick: () => setCurrentItem('Thêm tin tức')
+                                },
+
+                                {
+                                    key: "17",
+                                    icon: <FaListUl />,
+                                    label: <Link to="danhsachtintuc">Danh sách tin tức</Link>,
+                                    onClick: () => setCurrentItem('Danh sách tin tức')
+                                },
+                            ],
                         },
                         {
                             key: '5',
                             icon: <FaGift />,
-                            label: 'Quản lý khuyến mãi',
-                            onClick: () => setCurrentItem('Quản lý khuyến mãi')
+                            label: 'Quản lý chính sách',
+                            children: [
+                                {
+                                    key: "11",
+                                    icon: <FaListUl />,
+                                    label: <Link to="themchinhsach">Thêm chính sách</Link>,
+                                    onClick: () => setCurrentItem('Thêm chính sách')
+                                },
+                                {
+                                    key: "12",
+                                    icon: <FaListUl />,
+                                    label: <Link to="danhsachchinhsach">Danh sách chính sách</Link>,
+                                    onClick: () => setCurrentItem('Danh sách chính sách')
+                                },
+                            ],
                         },
                         {
                             key: '6',
@@ -136,7 +189,17 @@ const Admin: React.FC = () => {
                     }}
                 >
                     <Routes>
+                        <Route path="themslidepc" element={<ThemSlidePC />} />
+                        <Route path="themslidemobile" element={<ThemSlideMobile />} />
+                        <Route path="danhsachslide" element={<DanhSachSlide />} />
+
+                        <Route path="themtintuc" element={<ThemTinTuc />} />
+                        <Route path="danhsachtintuc" element={<DanhSachTinTuc />} />
+
                         <Route path="quanlydonhang" element={<QuanLyHonHang />} />
+                        
+                        <Route path="themchinhsach" element={<ThemChinhSach />} />
+                        <Route path="danhsachchinhsach" element={<DanhSachChinhSach />} />
                     </Routes>
                 </Content>
             </Layout>
