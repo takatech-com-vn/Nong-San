@@ -99,7 +99,7 @@ const Header = () => {
                     </div>
                   </Dropdown.Item>
                   {user.role === 'Customer' && (
-                    <Dropdown.Item href="#/action-3">
+                    <Dropdown.Item href="/EStore-register">
                       <div className="flex items-center">
                         <HiOutlineShoppingBag />
                         <span>Trở thành người bán</span>

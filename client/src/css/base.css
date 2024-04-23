@@ -190,13 +190,40 @@ body {
     border-radius: 9999px;
 }
 
+/* Switch Step */
+:where(.css-dev-only-do-not-override-1qfezbu).ant-btn-primary {
+    color: #fff;
+    background: #008000 !important;
+    box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
+}
+:where(.css-dev-only-do-not-override-1qfezbu).ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+    color: #008000;
+    border-color: #008000;
+    background: #ffffff;
+}
+:where(.css-dev-only-do-not-override-1qfezbu).ant-btn-default:not(:disabled):not(.ant-btn-disabled){
+    margin-right: 10px;
+}
+:where(.css-dev-only-do-not-override-1qfezbu).ant-steps .ant-steps-item-process .ant-steps-item-icon {
+    background-color: #128d12;
+    border-color: #008000;
+}
+:where(.css-dev-only-do-not-override-1qfezbu).ant-steps .ant-steps-item-finish .ant-steps-item-icon {
+    background-color: #e6ffee;
+    border-color: #e6f4ff;
+}
+:where(.css-dev-only-do-not-override-1qfezbu).ant-steps .ant-steps-item-finish .ant-steps-item-icon >.ant-steps-icon {
+    color: #008000;
+}
+:where(.css-dev-only-do-not-override-1qfezbu).ant-steps .ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title::after {
+    background-color: #008000;
+}
 /* end custom ant dsn */
 
 .footer-item{
     @apply text-[14px] py-[10px] text-gray-700
 }
 .Glassmorphism{
-    /* From https://css.glass */
 background: rgba(255, 255, 255, 0.16) !important;
 border-radius: 10px !important;
 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;

@@ -14,6 +14,7 @@ import axios from 'axios';
 import { RootState } from './redux/store';
 import Loader from './components/Loader/Loader';
 import Footer from './layouts/Footer';
+import EStoreRegister from './pages/EStoreRegister/EStoreRegister';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -104,6 +105,7 @@ function App() {
             <Routes>
               <Route index element={<HomePage />} />
               <Route path='/san-pham' element={<ProductPage />} />
+              <Route path='/EStore-register' element={<EStoreRegister />} />
             </Routes>
             <Footer/>
           </>
