@@ -1,7 +1,7 @@
-import exptess from 'express';
+import express from 'express';
 import loginController from '../Controller/loginController';
 
-const router = exptess.Router();
+const router = express.Router();
 
 router.post('/register', loginController.Register);
 router.post('/listlogin', loginController.ListLogin);

@@ -5,5 +5,5 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 const express_1 = __importDefault(require("express"));
 const productController_1 = __importDefault(require("../Controller/productController"));
 const router = express_1.default.Router();
-router.post('/getproduct', productController_1.default.getproduct);
+router.post('/createproduct', productController_1.default.createProduct);
 module.exports = router;

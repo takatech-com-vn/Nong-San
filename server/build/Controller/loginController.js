@@ -54,13 +54,13 @@ class loginController {
                     const user = users[0];
                     //Kiểm tra mật khẩu
                     const passwordIsValid = bcryptjs_1.default.compareSync(password, user.password);
-                    console.log(password);
+                    // console.log(password)
                     if (passwordIsValid) {
-                        console.log("Người dùng đã đăng nhập thành công");
+                        // console.log("Người dùng đã đăng nhập thành công");
                         const token = jsonwebtoken_1.default.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET || 'your_default_secret', {
                             expiresIn: 30 * 24 * 60 * 60 // expires in 1 month
                         });
-                        console.log("token" + JSON.stringify(token));
+                        // console.log("token" + JSON.stringify(token));
                         // Calculate the expiry time
                         const expiryTime = new Date().getTime() + 300 * 1000;
                         //Kiểm tra người dùng đã đăng nhập hay chưa
@@ -91,17 +91,17 @@ class loginController {
                         }
                     }
                     if (!passwordIsValid) {
-                        console.log("Mật khẩu không chính xác");
+                        // console.log("Mật khẩu không chính xác")
                         return res.status(401).json({ message: 'Mật khẩu không chính xác' });
                     }
                 }
                 else {
-                    console.log("Người dùng không tồn tại");
+                    // console.log("Người dùng không tồn tại")
                     return res.status(404).json({ message: 'Người dùng không tồn tại' });
                 }
             }
             catch (error) {
-                console.log("Lỗi máy chủ");
+                // console.log("Lỗi máy chủ")
                 return res.status(500).json({ message: 'Lỗi máy chủ' });
             }
         });
@@ -111,7 +111,7 @@ class loginController {
             const token = req.headers['x-access-token'];
             // Giải mã JWT
             const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET || 'your_default_secret');
-            console.log(decoded);
+            // console.log(decoded);
             if (!token)
                 return res.status(401).json({ auth: false, message: 'No token provided.' });
             try {
@@ -120,14 +120,14 @@ class loginController {
                 const user = users[0];
                 if (!user)
                     return res.status(404).json("No user found.");
-                console.log(user); // Thêm dòng này
+                // console.log(user);
                 // Trả về thông tin người dùng
-                return res.status(200).json(user); // Thêm return vào đây
+                return res.status(200).json(user);
             }
             catch (error) {
                 console.log(error); // Thêm dòng này
                 console.log(error.response); // Thêm dòng này
-                return res.status(500).json("There was a problem with the server."); // Thêm return vào đây
+                return res.status(500).json("There was a problem with the server.");
             }
         });
     }

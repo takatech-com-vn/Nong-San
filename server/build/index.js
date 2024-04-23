@@ -14,7 +14,11 @@ const port = 3000;
 (0, mySQL_1.connectToDatabase)();
 (0, dotenv_1.config)();
 (0, configSession_1.configSession)(app);
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: "http://localhost:5173",
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+}));
 app.use(express_1.default.json({ limit: "50mb" }));
 app.use(express_1.default.urlencoded({ limit: "50mb", extended: true }));
 route(app);
