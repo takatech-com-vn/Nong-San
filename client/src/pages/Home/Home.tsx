@@ -22,6 +22,7 @@ const Home: React.FC = () => {
   console.log(productsdata)
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
+  //data product
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -38,6 +39,21 @@ const Home: React.FC = () => {
 
     fetchData();
   }, [dispatch]);
+
+  //data banner
+  const [dataBanners, setDataBanners] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/slide/getlistslidepc');
+        setDataBanners(response.data.banner_pcs);
+        console.log(response.data.banner_pcs);
+      } catch (error) {
+        console.error('Lỗi data slide', error)
+      }
+    };
+    fetchData();
+  }, []);
 
   const [isScrolled, setIsScrolled] = useState(false);
   const checkScroll = () => {
@@ -145,18 +161,18 @@ const Home: React.FC = () => {
     ],
   };
 
-  const data = [
-    {
-      imageUrl:
-        "https://chonongsandaklak.vn/upload/2006294/20231017/banner1_new-1920x769_1_45209.png",
-      buttonText: "Hội chợ trực tuyến",
-    },
-    {
-      imageUrl:
-        "https://chonongsandaklak.vn/upload/2006294/20231116/370296858_6392210657551570_989834110336836902_n_8b8b5.png",
-      buttonText: "Hội chợ trực tuyến",
-    },
-  ];
+  // const data = [
+  //   {
+  //     imageUrl:
+  //       "https://chonongsandaklak.vn/upload/2006294/20231017/banner1_new-1920x769_1_45209.png",
+  //     buttonText: "Hội chợ trực tuyến",
+  //   },
+  //   {
+  //     imageUrl:
+  //       "https://chonongsandaklak.vn/upload/2006294/20231116/370296858_6392210657551570_989834110336836902_n_8b8b5.png",
+  //     buttonText: "Hội chợ trực tuyến",
+  //   },
+  // ];
 
   const products = [
     {
@@ -292,12 +308,11 @@ const Home: React.FC = () => {
         </div>
         <div className="max-h-[380px] items-center  justify-between">
           <Slider {...settings}>
-            {data.map((item, index) => (
+            {dataBanners.map((banner, id) => (
               <Card
-                key={index}
-                imageUrl={item.imageUrl}
-                buttonText={item.buttonText}
-              ></Card>
+                key={id}
+                banner={banner}
+              />
             ))}
           </Slider>
         </div>
@@ -399,20 +414,20 @@ const Home: React.FC = () => {
 
         {/* video */}
         <div className="w-full flex justify-center items-center">
-           <div className="flex justify-center items-center bg-black w-[900px] h-[526px] rounded-lg overflow-hidden shadow-lg">
-           <iframe
-            className="rounded-md"
-            width="860"
-            height="500"
-            src="https://www.youtube.com/embed/uELju5DBhB0"
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
+          <div className="flex justify-center items-center bg-black w-[900px] h-[526px] rounded-lg overflow-hidden shadow-lg">
+            <iframe
+              className="rounded-md"
+              width="860"
+              height="500"
+              src="https://www.youtube.com/embed/uELju5DBhB0"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
         </div>
-        </div>
-       
+
       </div>
     </div>
   );
