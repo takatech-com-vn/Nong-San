@@ -7,7 +7,7 @@ import path from 'path';
 // Cấu hình multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'src/public/images/bannerpc');
+        cb(null, 'public/images/bannerpc');
     },
     filename: function (req, file, cb) {
         const filename = Date.now() + path.extname(file.originalname);
@@ -22,7 +22,7 @@ const upload = multer({ storage: storage });
 // Cấu hình multer
 const storageMobile = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'src/public/images/bannermobile');
+        cb(null, 'public/images/bannermobile');
     },
     filename: function (req, file, cb) {
         const filename = Date.now() + path.extname(file.originalname);
