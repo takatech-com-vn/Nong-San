@@ -26,7 +26,7 @@ const Register: React.FC = () => {
     const [isError, setIsError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [position] = useState<ToastPosition>('top-end');
-    const [showPassword, setShowPassword] = useState(false); // Add this line
+    const [showPassword, setShowPassword] = useState(false);
 
     const validateForm = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

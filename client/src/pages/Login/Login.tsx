@@ -7,17 +7,30 @@ import logo from "../../../src/assets/images/logo.png";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import Accordion from 'react-bootstrap/Accordion';
 import { useNavigate } from 'react-router-dom';
-
+import { BiSolidHide, BiSolidShow } from "react-icons/bi";
+import { notification } from 'antd';
+import { MdCheckCircleOutline } from "react-icons/md";
+import { IoWarningOutline } from "react-icons/io5";
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const [showPassword, setShowPassword] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleSubmit = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
-
+        if (!username || !password) {
+            console.log('Vui lòng nhập tên người dùng và mật khẩu');
+            const errorMessage = 'Vui lòng nhập tên người dùng và mật khẩu'
+            notification.open({
+                message: 'Lỗi Đăng Nhập',
+                description: errorMessage,
+                icon: <IoWarningOutline style={{ color: '#ff4d4f' }} />,
+                duration: 3,
+            });
+            return;
+        }
         axios
             .post(`${import.meta.env.VITE_APP_API_URL}/login/listlogin`, {
                 username,
@@ -29,14 +42,29 @@ const Login = () => {
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('expiryTime', res.data.expiryTime);
                 dispatch(setUser(res.data));
-                console.log('login',res.data)
+                console.log('login', res.data)
                 navigate('/');
+                notification.open({
+                    message: 'Đăng Nhập Thành Công',
+                    description: 'Bạn đã đăng nhập thành công!',
+                    icon: <MdCheckCircleOutline style={{ color: '#52c41a' }} />,
+                    duration: 3,
+                });
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                const errorMessage = error.response.data.message;
+                console.log(errorMessage);
+                notification.open({
+                    message: 'Lỗi Đăng Nhập',
+                    description: errorMessage,
+                    icon: <IoWarningOutline style={{ color: '#ff4d4f' }} />,
+                    duration: 3,
+                });
+            });
     };
 
     // const token = localStorage.getItem('token');
-   
+
     return (
         <div>
             <div className=" bg-bg-login bg-cover min-h-screen flex justify-center items-center relative">
@@ -66,14 +94,23 @@ const Login = () => {
                                     <label className="block text-sm font-medium text-gray-700" htmlFor="password">
                                         Mật khẩu
                                     </label>
-                                    <input
-                                        className="mt-1 p-2 w-full bg-white border border-gray-600 rounded-md text-gray-700"
-                                        name="password"
-                                        id="password"
-                                        type="password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                    />
+                                    <div className="relative mt-1 ">
+                                        <input
+                                            className={`p-2 w-full bg-white text-gray-700 border border-gray-600 rounded-md `}
+                                            name="password"
+                                            id="password"
+                                            type={showPassword ? "text" : "password"}
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                        />
+                                        <i
+                                            className={`absolute inset-y-3 right-3 cursor-pointer text-[20px] text-gray-500 hover:text-gray-400 ${showPassword ? 'text-gray-400' : ''
+                                                }`}
+                                            onClick={() => setShowPassword(!showPassword)}
+                                        >
+                                            {showPassword ? <BiSolidShow /> : <BiSolidHide />}
+                                        </i>
+                                    </div>
                                 </div>
 
 

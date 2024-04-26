@@ -1,66 +1,16 @@
-import React, {  useState } from 'react';
 
 const Content4 = () => {
-    const [username, setUsername] = useState('');
-    const [namebrand, setNamebrand] = useState('');
-    const [phone, setPhone] = useState('');
-    const [email, setEmail] = useState('');
-    
+
     return (
         <div className='h-auto flex flex-col mt-[40px]'>
-            <span className='text-[20px] text-black font-medium mb-4'>Thông tin chung</span>
-            <div className='grid grid-cols-1 sm:grid-cols-2 5 gap-4'>
+            <span className='text-[20px] text-black font-medium mb-4'>Yêu cầu bạn phải đáp ứng</span>
+            <div className='grid grid-cols-1 '>
                 <div>
-                    <div className="mb-1">
-                        <label className="block text-sm font-medium text-gray-700 " htmlFor="username">
-                            Tên gian hàng <span className='text-red-600'>*</span>
-                        </label>
-                        <input
-                            className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 ' : 'border-gray-600 border'}`}
-                            type="text"
-                            value={namebrand}
-                            onChange={(e) => setNamebrand(e.target.value)}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <div className="mb-1">
-                        <label className="block text-sm font-medium text-gray-700" htmlFor="username">
-                            Họ tên chủ gian hàng <span className='text-red-600'>*</span>
-                        </label>
-                        <input
-                            className={`mt-1 p-2 w-full bg-white  rounded-md text-white ' : 'border-gray-600 border'}`}
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <div className="mb-1">
-                        <label className="block text-sm font-medium text-gray-700" htmlFor="username">
-                            Điện thoại <span className='text-red-600'>*</span>
-                        </label>
-                        <input
-                            className={`mt-1 p-2 w-full bg-white  rounded-md text-white ' : 'border-gray-600 border'}`}
-                            type="text"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <div className="mb-1">
-                        <label className="block text-sm font-medium text-gray-700" htmlFor="username">
-                            Email <span className='text-red-600'>*</span>
-                        </label>
-                        <input
-                            className={`mt-1 p-2 w-full bg-white  rounded-md text-white ' : 'border-gray-600 border'}`}
-                            type="text"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </div>
+                    <p>Chúng tôi mong muốn phát triển với Thị trường đa kênh và chọn lọc,
+                        đó là lý do tại sao chúng tôi yêu cầu các đối tác kinh doanh tuân thủ các tiêu chí về hình thức và chất lượng,
+                        nhằm mang đến cho họ trải nghiệm tốt nhất.. Vì lý do này, bước đầu tiên, điều quan trọng là bạn phải giúp chúng tôi
+                        bằng cách xác nhận xem bạn có đáp ứng các yêu cầu hoạt động sau không:
+                    </p>
                 </div>
             </div>
         </div>
