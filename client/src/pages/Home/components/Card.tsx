@@ -1,10 +1,6 @@
 import { MdNavigateNext } from "react-icons/md";
+import { Banner } from "../../../services/Banner";
 
-type Banner = {
-  key: number;
-  name_bannerpc: string;
-  path: string;
-};
 type CardBannerProps = {
   banner: Banner;
 };
@@ -16,7 +12,7 @@ const Card: React.FC<CardBannerProps> = ({ banner }) => {
         <div className="relative">
           <img
             className="w-full object-fill h-[200px] md:h-[380px]"
-            src={`${import.meta.env.VITE_APP_API_URL}/${banner?.path}`}
+            src={banner?.path}
             alt="Background"
           />
 

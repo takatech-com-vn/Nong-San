@@ -7,12 +7,12 @@ class newController {
 
     async CreateNew (req: Request, res: Response) {
         const data = req.body;
-        console.log('data: ' + JSON.stringify(data))
+        // console.log('data: ' + JSON.stringify(data))
         const file = req.file;
-        console.log('file: ' + JSON.stringify(file));
+        // console.log('file: ' + JSON.stringify(file));
     
         if (file && data.name && data.shortDescription && data.content) {
-            const imagePath = path.join('src/image/newimages', file.filename);
+            const imagePath = '/images/' + req.body.path;
     
             const query = 'INSERT INTO news (name_new, path, short_description, content, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())';
     

@@ -29,7 +29,7 @@ const Login = () => {
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('expiryTime', res.data.expiryTime);
                 dispatch(setUser(res.data));
-                console.log('login',res.data)
+                // console.log('login',res.data)
                 navigate('/');
             })
             .catch((error) => console.log(error));

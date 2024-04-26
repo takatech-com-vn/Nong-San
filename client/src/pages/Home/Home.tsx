@@ -13,13 +13,14 @@ import { GoArrowRight } from "react-icons/go";
 import CardProduct2 from "./components/CardProduct2";
 import CardBrand from "./components/CardBrand";
 import CardNews from "./components/CardNews";
+import { Banner } from "../../services/Banner";
 
 
 const Home: React.FC = () => {
 
   const dispatch = useDispatch();
   const productsdata = useSelector((state: RootState) => state.product.products);
-  console.log(productsdata)
+  // console.log(productsdata)
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
   //data product
@@ -31,7 +32,7 @@ const Home: React.FC = () => {
           url: 'https://dummyjson.com/products'
         });
         dispatch(setProducts(response.data.products));
-        console.log(response.data.products);
+        // console.log(response.data.products);
       } catch (error) {
         console.error('Lỗi khi lấy dữ liệu từ API:', error);
       }
@@ -45,9 +46,14 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/slide/getlistslidepc');
-        setDataBanners(response.data.banner_pcs);
-        console.log(response.data.banner_pcs);
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/slide/getlistslidepc`);
+        const banners = response.data.banner_pcs.map((banner: Banner) => ({
+          ...banner,
+          // Đảm bảo rằng chỉ có một /images trong đường dẫn
+          path: `${import.meta.env.VITE_APP_API_URL}${banner.path}`
+      }));
+        setDataBanners(banners);
+        console.log("banners: " + JSON.stringify(banners));
       } catch (error) {
         console.error('Lỗi data slide', error)
       }

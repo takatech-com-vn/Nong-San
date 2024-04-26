@@ -9,19 +9,26 @@ const path_1 = __importDefault(require("path"));
 // Cấu hình multer
 const storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'src/image/bannerpc');
+        cb(null, 'src/public/images/bannerpc');
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + path_1.default.extname(file.originalname)); // Thêm timestamp vào tên file để tránh trùng lặp
+        const filename = Date.now() + path_1.default.extname(file.originalname);
+        // Lưu đường dẫn tương đối vào cơ sở dữ liệu
+        req.body.path = `bannerpc/${filename}`;
+        cb(null, filename);
     }
 });
 const upload = (0, multer_1.default)({ storage: storage });
+// Cấu hình multer
 const storageMobile = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'src/image/bannermobile');
+        cb(null, 'src/public/images/bannermobile');
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + path_1.default.extname(file.originalname)); // Thêm timestamp vào tên file để tránh trùng lặp
+        const filename = Date.now() + path_1.default.extname(file.originalname);
+        // Lưu đường dẫn tương đối vào cơ sở dữ liệu
+        req.body.path = `bannermobile/${filename}`;
+        cb(null, filename);
     }
 });
 const uploadMobile = (0, multer_1.default)({ storage: storageMobile });

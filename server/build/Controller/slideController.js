@@ -8,18 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 const callbackToPromise_1 = require("../util/callbackToPromise");
-const path_1 = __importDefault(require("path"));
 class slideController {
+    // constructor() {
+    //     checkPermissions(); // Gọi hàm checkPermissions khi khởi tạo lớp
+    // }
     CreateSlide(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = req.body;
             const file = req.file; // Truy cập file từ req.file
             if (file) {
-                const imagePath = path_1.default.join('src/image/bannerpc', file.filename);
+                // Tạo đường dẫn hình ảnh từ req.body.path
+                const imagePath = '/images/' + req.body.path;
                 const query = 'INSERT INTO banner_pcs (name_bannerpc, path) VALUES (?, ?)';
                 const params = [data.name, imagePath];
                 (0, callbackToPromise_1.excuteQuery)(query, params)
@@ -40,9 +40,10 @@ class slideController {
     CreateSlideMobile(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = req.body;
-            const file = req.file;
+            const file = req.file; // Truy cập file từ req.file
             if (file) {
-                const imagePath = path_1.default.join('src/image/bannermobile', file.filename);
+                // Tạo đường dẫn hình ảnh từ req.body.path
+                const imagePath = '/images/' + req.body.path;
                 const query = 'INSERT INTO banner_mobiles (name_mobilepc, path) VALUES (?, ?)';
                 const params = [data.name, imagePath];
                 (0, callbackToPromise_1.excuteQuery)(query, params)

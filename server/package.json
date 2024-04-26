@@ -4,11 +4,14 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "build": " rimraf build && npx tsc",
-    "prestart": "npm run build",
-    "start": "nodemon build/index.js",
-    "preserve": "npm run build",
-    "serve": "concurrently \"npx tsc -w\" \"nodemon build/index.js\"",
+    "build": "rimraf build && npx tsc",
+    "copy-images": "cpx \"src/public/images/**/*\" build/public/images",
+    "watch-ts": "npx tsc -w",
+    "watch-images": "nodemon -e jpg,png,gif -x \"npm run copy-images\"",
+    "prestart": "npm run build && npm run copy-images",
+    "start": "concurrently \"npm:watch-ts\" \"npm:watch-images\" \"nodemon build/index.js\"",
+    "preserve": "npm run build && npm run copy-images",
+    "serve": "concurrently \"npm:watch-ts\" \"npm:watch-images\" \"nodemon build/index.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -44,6 +47,7 @@
     "@types/passport": "^1.0.16",
     "@types/passport-jwt": "^4.0.1",
     "concurrently": "^8.2.2",
+    "cpx": "^1.5.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.4"
   }
