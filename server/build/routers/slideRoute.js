@@ -9,7 +9,7 @@ const path_1 = __importDefault(require("path"));
 // Cấu hình multer
 const storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'src/public/images/bannerpc');
+        cb(null, 'public/images/bannerpc');
     },
     filename: function (req, file, cb) {
         const filename = Date.now() + path_1.default.extname(file.originalname);
@@ -22,7 +22,7 @@ const upload = (0, multer_1.default)({ storage: storage });
 // Cấu hình multer
 const storageMobile = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'src/public/images/bannermobile');
+        cb(null, 'public/images/bannermobile');
     },
     filename: function (req, file, cb) {
         const filename = Date.now() + path_1.default.extname(file.originalname);

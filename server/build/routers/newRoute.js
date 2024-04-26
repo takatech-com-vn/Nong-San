@@ -9,7 +9,7 @@ const path_1 = __importDefault(require("path"));
 // Cấu hình multer
 const storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'src/public/images/new');
+        cb(null, 'public/images/new');
     },
     filename: function (req, file, cb) {
         const filename = Date.now() + path_1.default.extname(file.originalname);
