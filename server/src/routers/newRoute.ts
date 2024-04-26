@@ -6,7 +6,7 @@ import path from 'path';
 // Cấu hình multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'src/public/images/new');
+        cb(null, 'public/images/new');
     },
     filename: function (req, file, cb) {
         const filename = Date.now() + path.extname(file.originalname);
