@@ -9,10 +9,13 @@ const path_1 = __importDefault(require("path"));
 // Cấu hình multer
 const storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'src/image/newimages');
+        cb(null, 'src/public/images/new');
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + path_1.default.extname(file.originalname)); // Thêm timestamp vào tên file để tránh trùng lặp
+        const filename = Date.now() + path_1.default.extname(file.originalname);
+        // Lưu đường dẫn tương đối vào cơ sở dữ liệu
+        req.body.path = `new/${filename}`;
+        cb(null, filename);
     }
 });
 const upload = (0, multer_1.default)({ storage: storage });

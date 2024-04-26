@@ -8,20 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 const callbackToPromise_1 = require("../util/callbackToPromise");
-const path_1 = __importDefault(require("path"));
 class newController {
     CreateNew(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = req.body;
-            console.log('data: ' + JSON.stringify(data));
+            // console.log('data: ' + JSON.stringify(data))
             const file = req.file;
-            console.log('file: ' + JSON.stringify(file));
+            // console.log('file: ' + JSON.stringify(file));
             if (file && data.name && data.shortDescription && data.content) {
-                const imagePath = path_1.default.join('src/image/newimages', file.filename);
+                const imagePath = '/images/' + req.body.path;
                 const query = 'INSERT INTO news (name_new, path, short_description, content, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())';
                 const params = [data.name, imagePath, data.shortDescription, data.content];
                 (0, callbackToPromise_1.excuteQuery)(query, params)

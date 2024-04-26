@@ -3,4 +3,5 @@
 
 /server/node_modules
 /server/.env
-/server/src/image
+/server/src/public/images
+/server/build/public/images
