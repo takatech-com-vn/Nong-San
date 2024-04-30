@@ -1,37 +1,30 @@
-import React, { useEffect, useState, useRef } from 'react';
+// Content.tsx
+import React, { useEffect, useState } from 'react';
 
-const Content1: React.FC = () => {
+const Content1 = () => {
     const [username, setUsername] = useState('');
     const [namebrand, setNamebrand] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
 
-    const isMounted = useRef(false);
-
-    // Load data from sessionStorage when the component mounts
     useEffect(() => {
-        isMounted.current = true;
-        const storedData = sessionStorage.getItem('formData');
-        if (storedData) {
-            const formData = JSON.parse(storedData);
-            console.log(formData)
-            if (isMounted.current) {
-                setUsername(formData.username);
-                setNamebrand(formData.namebrand);
-                setPhone(formData.phone);
-                setEmail(formData.email);
-            }
-        }
-        return () => {
-            isMounted.current = false;
-        }
+        const storedUsername = sessionStorage.getItem('username');
+        const storedNamebrand = sessionStorage.getItem('namebrand');
+        const storedPhone = sessionStorage.getItem('phone');
+        const storedEmail = sessionStorage.getItem('email');
+        if (storedUsername) setUsername(storedUsername);
+        if (storedNamebrand) setNamebrand(storedNamebrand);
+        if (storedPhone) setPhone(storedPhone);
+        if (storedEmail) setEmail(storedEmail);
     }, []);
 
-    // Save data to sessionStorage whenever any input changes
     useEffect(() => {
-        const formData = { username, namebrand, phone, email };
-        sessionStorage.setItem('formData', JSON.stringify(formData));
+        sessionStorage.setItem('username', username);
+        sessionStorage.setItem('namebrand', namebrand);
+        sessionStorage.setItem('phone', phone);
+        sessionStorage.setItem('email', email);
     }, [username, namebrand, phone, email]);
+
 
     return (
         <div className='h-auto flex flex-col mt-[40px]'>

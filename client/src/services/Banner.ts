@@ -3,3 +3,4 @@ export interface Banner {
     name_bannerpc: string;
     path: string;
   }
+  
