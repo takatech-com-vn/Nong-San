@@ -18,10 +18,6 @@ configSession(app);
 // Cấu hình máy chủ để phục vụ tệp tĩnh
 app.use('/images', express.static(path.join(process.cwd(), 'public/images')));
 
-console.log("dirname: " + process.cwd());
-
-
-
 // // Cấu hình máy chủ để phục vụ tệp tĩnh
 // const directoryPath = path.join(__dirname, 'src/public/images');
 

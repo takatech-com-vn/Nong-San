@@ -7,4 +7,5 @@ const policyController_1 = __importDefault(require("../Controller/policyControll
 const route = express_1.default.Router();
 route.post('/create', policyController_1.default.CreatePolicy);
 route.get('/listpolicy', policyController_1.default.ListPolicy);
+route.delete('/deletepolicy/:id', policyController_1.default.DeletePolicy);
 module.exports = route;

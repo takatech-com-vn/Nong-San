@@ -17,7 +17,6 @@ const port = 3000;
 (0, configSession_1.configSession)(app);
 // Cấu hình máy chủ để phục vụ tệp tĩnh
 app.use('/images', express_1.default.static(path.join(process.cwd(), 'public/images')));
-console.log("dirname: " + process.cwd());
 // // Cấu hình máy chủ để phục vụ tệp tĩnh
 // const directoryPath = path.join(__dirname, 'src/public/images');
 // // Kiểm tra xem thư mục đã tồn tại hay chưa
