@@ -3,9 +3,8 @@ import { excuteQuery } from "../util/callbackToPromise";
 import { error } from "console";
 
 class policyController {
-    async CreatePolicy (req: Request, res: Response) {
+    CreatePolicy (req: Request, res: Response) {
         const data = req.body;
-        console.log('policy: ' + JSON.stringify(data))
 
         const query = 'INSERT INTO policis (name, content) VALUES (?, ?)';
         const params = [data.name, data.content];
@@ -20,7 +19,7 @@ class policyController {
             })
     }
 
-    async ListPolicy (req: Request, res: Response) {
+    ListPolicy (req: Request, res: Response) {
         const query = 'Select * from policis';
 
         excuteQuery(query, [])
@@ -29,6 +28,20 @@ class policyController {
             })
             .catch(error => {
                 res.status(500).json({ success: false, message: "Lấy dữ liệu chính sách thất bại"});
+            })
+    }
+
+    DeletePolicy (req: Request, res: Response) {
+        const id = req.params.id;
+
+        const query = 'Delete from policis where id = ?'
+
+        excuteQuery(query, [id])
+            .then(() => {
+                res.json({ success: true });
+            })
+            .catch(error => {
+                res.status(500).json({ success: false });
             })
     }
 }

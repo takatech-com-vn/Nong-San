@@ -37,4 +37,6 @@ router.post('/createslide', upload.single('image'), slideController_1.default.Cr
 router.post('/createslidemobile', uploadMobile.single('image'), slideController_1.default.CreateSlideMobile);
 router.get('/getlistslidepc', slideController_1.default.ListSlidePC);
 router.get('/getlistslidemobile', slideController_1.default.ListSlideMobile);
+router.delete('/deletebannerPC/:id', slideController_1.default.DeletebannerPC);
+router.delete('/deletebannermobile/:id', slideController_1.default.Deletebannermobile);
 module.exports = router;

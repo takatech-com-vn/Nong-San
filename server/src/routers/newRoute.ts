@@ -22,5 +22,6 @@ const router = express.Router();
 
 router.post('/createnew', upload.single('image'), newController.CreateNew);
 router.get('/getnew', newController.ListNew);
+router.delete('/deletenew/:id', newController.DeleteNew);
 
 export = router

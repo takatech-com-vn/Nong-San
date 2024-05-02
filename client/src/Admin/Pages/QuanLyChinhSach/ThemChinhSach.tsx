@@ -3,6 +3,7 @@ import {
     Button,
     Form,
     Input,
+    message
   } from "antd";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -20,10 +21,10 @@ function ThemChinhSach() {
 
         axios.post(`${import.meta.env.VITE_APP_API_URL}/policy/create`, policyData)
         .then(reponse => {
-            console.log(reponse)
+            message.success("Thêm chính sách thành công", reponse.data.success);
         })
-        .catch(error => {
-            console.log(error)
+        .catch(() => {
+            message.error("Thêm chính sách thất bại");
         })
     }
 

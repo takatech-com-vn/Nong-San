@@ -3,7 +3,8 @@ import {
     Button,
     Form,
     Input,
-    Upload
+    Upload,
+    message
   } from "antd";
 import axios from 'axios';
 
@@ -29,10 +30,10 @@ function ThemTinTuc() {
     
             axios.post(`${import.meta.env.VITE_APP_API_URL}/new/createnew`, formData)
                 .then(response => {
-                    console.log(response)
+                    message.success("Thêm tin tức thành công", response.data.success);
                 })
-                .catch(error => {
-                    console.log(error)
+                .catch(() => {
+                    message.error("Thêm tin tức thất bại");
                 })
         } else {
             console.log('Vui lòng chọn một file');
