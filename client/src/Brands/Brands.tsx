@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { MenuFoldOutlined, MenuUnfoldOutlined, } from '@ant-design/icons';
-import { Button, Layout, Menu, theme } from 'antd';
+import { Affix, Button, Layout, Menu, theme } from 'antd';
 import { Link, Route, Routes } from 'react-router-dom';
 import { FaBalanceScale, FaChartLine, FaGift, FaListUl, FaStore, FaTachometerAlt, FaUserAlt, FaWarehouse } from 'react-icons/fa';
 import QuanLyHonHang from './Pages/Quanlydonhang/QuanLyHonHang';
 import Sanpham from './Pages/Quanlykhohang/Sanpham';
-import Themsanpham from './Pages/Quanlykhohang/Themsanpham';
 import Khohang from './Pages/Quanlykhohang/Khohang';
 import { useNavigate, } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import Loader from '../components/Loader/Loader';
+import AddProduct from './Pages/Quanlykhohang/AddProduct';
 // import axios from 'axios';
 // import { setUser } from '../redux/useSlice';
 
@@ -18,7 +18,8 @@ const { Header, Sider, Content } = Layout;
 
 const Brands: React.FC = () => {
     //   const dispatch = useDispatch();
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [top, setTop] = React.useState<number>(0);
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
 
@@ -35,7 +36,7 @@ const Brands: React.FC = () => {
             }
         }
     }, [user, navigate]);
-    
+
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer, borderRadiusLG },
@@ -53,8 +54,8 @@ const Brands: React.FC = () => {
                     <span>  Brand Name</span>
                 </div>
                 <Menu
-                style={{height: '100%', overflow: 'auto' }}
-                className='custom-scrollbar'
+                    style={{ height: '100%', overflow: 'auto' }}
+                    className='custom-scrollbar'
                     theme="dark"
                     mode="inline"
                     defaultSelectedKeys={['1']}
@@ -169,23 +170,25 @@ const Brands: React.FC = () => {
                 />
             </Sider>
             <Layout className={`${!collapsed ? 'ml-[200px]' : "ml-[80px]"}`}>
-                <Header style={{ padding: 0, background: colorBgContainer, }}>
-                    <Button
-                        type="text"
-                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                        onClick={() => setCollapsed(!collapsed)}
-                        style={{
-                            fontSize: '16px',
-                            width: 64,
-                            height: 64,
-                        }}
-                    />
-                </Header>
+                <Affix offsetTop={top}>
+                    <Header style={{ padding: 0, background: colorBgContainer, }}>
+                        <Button
+                            type="text"
+                            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                            onClick={() => setCollapsed(!collapsed)}
+                            style={{
+                                fontSize: '16px',
+                                width: 64,
+                                height: 40,
+                            }}
+                        />
+                    </Header>
+                </Affix>
+
                 <Content
                     style={{
-                        margin: '24px 16px',
-                        padding: 24,
-
+                        // margin: '24px 16px',
+                        // padding: 24,
                         background: colorBgContainer,
                         borderRadius: borderRadiusLG,
                         overflow: 'initial'
@@ -194,7 +197,7 @@ const Brands: React.FC = () => {
                     <Routes>
                         <Route path="quanlydonhang" element={<QuanLyHonHang />} />
                         <Route path="sanpham" element={<Sanpham />} />
-                        <Route path="themsanpham" element={<Themsanpham />} />
+                        <Route path="themsanpham" element={<AddProduct />} />
                         <Route path="khohang" element={<Khohang />} />
                     </Routes>
                 </Content>

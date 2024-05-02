@@ -1,3 +1,4 @@
+// EStoreRegister.tsx
 import React, { useEffect, useState } from 'react';
 import { Button, message, Steps, theme } from 'antd';
 import Content1 from './Contents/Content1';
@@ -13,17 +14,14 @@ const steps = [
     {
         title: 'Thông tin đơn vị',
         content: <Content2 />,
-
     },
     {
         title: 'Địa điểm kho hàng',
         content: <Content3 />,
-
     },
     {
         title: 'Xác nhận',
         content: <Content4 />,
-
     },
 ];
 
@@ -43,21 +41,13 @@ const EStoreRegister: React.FC = () => {
 
     const contentStyle: React.CSSProperties = {
         lineHeight: 'auto',
-        // textAlign: 'center',
         color: token.colorTextTertiary,
-        // backgroundColor: token.colorFillAlter,
-        // borderRadius: token.borderRadiusLG,
-        // border: `1px dashed ${token.colorBorder}`,
         marginTop: 16,
     };
 
     const [isScrolled, setIsScrolled] = useState(false);
     const checkScroll = () => {
-        if (window.pageYOffset > 1) {
-            setIsScrolled(true);
-        } else {
-            setIsScrolled(false);
-        }
+        setIsScrolled(window.pageYOffset > 1);
     };
     useEffect(() => {
         window.addEventListener("scroll", checkScroll);
@@ -65,6 +55,7 @@ const EStoreRegister: React.FC = () => {
             window.removeEventListener("scroll", checkScroll);
         };
     }, []);
+
     return (
         <div className={`wrapper h-auto bg-[#fafafb] rounded-[20px] p-[16px] mt-[20px] ${isScrolled ? "pt-[280px] md:pt-[260px]" : "pt-3 md:pt-0"}`}>
             <div className='h-auto mt-[20px] leading-[20px] text-[14px]'>
@@ -86,7 +77,6 @@ const EStoreRegister: React.FC = () => {
                             nộp
                         </Button>
                     )}
-
                 </div>
             </div>
         </div>

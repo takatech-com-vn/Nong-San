@@ -218,6 +218,19 @@ body {
 :where(.css-dev-only-do-not-override-1qfezbu).ant-steps .ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title::after {
     background-color: #008000;
 }
+:where(.css-dev-only-do-not-override-1qfezbu).ant-anchor-wrapper:not(.ant-anchor-wrapper-horizontal) .ant-anchor .ant-anchor-ink {
+    position: absolute;
+    inset-inline-start: 0;
+    display: none;
+    transform: translateY(-50%);
+    transition: top 0.3s ease-in-out;
+    width: 2px;
+    background-color: #008000;
+}
+:where(.css-dev-only-do-not-override-1qfezbu).ant-anchor-wrapper .ant-anchor .ant-anchor-link-active>.ant-anchor-link-title {
+    color: #008000;
+    font-weight: bold;
+}
 /* end custom ant dsn */
 
 .footer-item{
