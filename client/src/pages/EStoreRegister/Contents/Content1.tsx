@@ -49,61 +49,61 @@ const Content1 = () => {
                 <div>
                     <div className="mb-1">
                         <label className="block text-sm font-medium text-gray-700 " htmlFor="tenGianHang">
-                            Tên gian hàng <span className='text-red-600'>*</span>
+                            Tên gian hàng <span className='text-red-400'>*</span>
                         </label>
                         <input
-                            className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 ${error.tenGianHang ? 'border-red-600 border-[1px]' : 'border-gray-600 border-[1px]'}`}
+                            className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 ${error.tenGianHang ? 'border-red-400 border-[1px]' : 'border-gray-400 border-[1px]'}`}
                             type="text"
                             id="tenGianHang"
                             value={tenGianHang}
                             onChange={(e) => setTenGianHang(e.target.value)}
                         />
-                        {error.tenGianHang && <div className="text-red-600">{error.tenGianHang}</div>}
+                        {error.tenGianHang && <div className="text-red-400">{error.tenGianHang}</div>}
                     </div>
                 </div>
                 <div>
                     <div className="mb-1">
                         <label className="block text-sm font-medium text-gray-700" htmlFor="tenChuGianHang">
-                            Họ tên chủ gian hàng <span className='text-red-600'>*</span>
+                            Họ tên chủ gian hàng <span className='text-red-400'>*</span>
                         </label>
                         <input
-                            className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 ${error.tenChuGianHang ? 'border-red-600 border-[1px]' : 'border-gray-600 border-[1px]'}`}
+                            className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 ${error.tenChuGianHang ? 'border-red-400 border-[1px]' : 'border-gray-400 border-[1px]'}`}
                             type="text"
                             id="tenChuGianHang"
                             value={tenChuGianHang}
                             onChange={(e) => setTenChuGianHang(e.target.value)}
                         />
-                        {error.tenChuGianHang && <div className="text-red-600">{error.tenChuGianHang}</div>}
+                        {error.tenChuGianHang && <div className="text-red-400">{error.tenChuGianHang}</div>}
                     </div>
                 </div>
                 <div>
                     <div className="mb-1">
                         <label className="block text-sm font-medium text-gray-700" htmlFor="phoneCaNhan">
-                            Điện thoại <span className='text-red-600'>*</span>
+                            Điện thoại <span className='text-red-400'>*</span>
                         </label>
                         <input
-                            className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 ${error.phoneCaNhan ? 'border-red-600 border-[1px]' : 'border-gray-600 border-[1px]'}`}
+                            className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 ${error.phoneCaNhan ? 'border-red-400 border-[1px]' : 'border-gray-400 border-[1px]'}`}
                             type="text"
                             id="phoneCaNhan"
                             value={phoneCaNhan}
                             onChange={(e) => setPhoneCaNhan(e.target.value)}
                         />
-                        {error.phoneCaNhan && <div className="text-red-600">{error.phoneCaNhan}</div>}
+                        {error.phoneCaNhan && <div className="text-red-400">{error.phoneCaNhan}</div>}
                     </div>
                 </div>
                 <div>
                     <div className="mb-1">
                         <label className="block text-sm font-medium text-gray-700" htmlFor="emailCaNhan">
-                            Email <span className='text-red-600'>*</span>
+                            Email <span className='text-red-400'>*</span>
                         </label>
                         <input
-                            className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 ${error.emailCaNhan ? 'border-red-600 border-[1px]' : 'border-gray-600 border-[1px]'}`}
+                            className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 ${error.emailCaNhan ? 'border-red-400 border-[1px]' : 'border-gray-400 border-[1px]'}`}
                             type="text"
                             id="emailCaNhan"
                             value={emailCaNhan}
                             onChange={(e) => setEmailCaNhan(e.target.value)}
                         />
-                        {error.emailCaNhan && <div className="text-red-600">{error.emailCaNhan}</div>}
+                        {error.emailCaNhan && <div className="text-red-400">{error.emailCaNhan}</div>}
                     </div>
                 </div>
             </div>

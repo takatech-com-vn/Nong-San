@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Table, message } from 'antd';
+import { Modal, Table, message } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
 import { New } from '../../../services/New';
 import '../Admin.css';
+import EditNew from './Modal/EditNew';
 
 const DanhSachTinTuc: React.FC = () => {
   const [data, setData] = useState<New[]>([]);
-
+  const [open, setOpen] = useState(false);
+  const [editingNews, setEditingNews] = useState<New | null>(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -21,11 +23,13 @@ const DanhSachTinTuc: React.FC = () => {
         message.error("Lỗi lấy dữ liệu tin tức");
       }
     }
-    
+
     fetchData();
   }, []);
 
   const handleEdit = (news: New) => {
+    setOpen(true);
+    setEditingNews(news); 
     console.log('Chỉnh sửa tin tức: ', news);
   }
 
@@ -82,13 +86,23 @@ const DanhSachTinTuc: React.FC = () => {
       width: '20%',
       render: (_, news) => (
         <div>
-          <button 
+          <button
             className="button-edit"
             onClick={() => handleEdit(news)}
           >
             Sửa
           </button>
-          <button 
+          <Modal
+            title="EditNew"
+            centered
+            open={open}
+            onOk={() => setOpen(false)}
+            onCancel={() => setOpen(false)}
+            width={1000}
+          >
+            <EditNew news={editingNews}/> 
+          </Modal>
+          <button
             className="button-delete"
             onClick={() => handleDelete(news)}
           >
