@@ -43,17 +43,17 @@ const options: Option[] = [
         label: 'Sản phẩm',
         value: 'Sản phẩm',
         children: [
-            { value: 'sau_rieng', label: 'Sầu riêng' },
-            { value: 'bo', label: 'Bơ' },
-            { value: 'tieu', label: 'Tiêu' },
-            { value: 'rau_cu', label: 'Rau củ' },
-            { value: 'cacao', label: 'Cacao' },
-            { value: 'hat_ngu_coc', label: 'Hạt ngũ cốc' },
-            { value: 'phan_huu_co', label: 'Phân hữu cơ' },
-            { value: 'phan_bon', label: 'Phân bón' },
-            { value: 'khac', label: 'Khác' },
-            { value: 'macca', label: 'Macca' },
-            { value: 'mit_thai', label: 'Mít thái' },
+            { value: 'Sầu riêng', label: 'Sầu riêng' },
+            { value: 'Bơ', label: 'Bơ' },
+            { value: 'Tiêu', label: 'Tiêu' },
+            { value: 'Rau củ', label: 'Rau củ' },
+            { value: 'Cacao', label: 'Cacao' },
+            { value: 'Hạt ngũ cốc', label: 'Hạt ngũ cốc' },
+            { value: 'Phân hữu cơ', label: 'Phân hữu cơ' },
+            { value: 'Phân bón', label: 'Phân bón' },
+            { value: 'Khác', label: 'Khác' },
+            { value: 'Macca', label: 'Macca' },
+            { value: 'Mít thái', label: 'Mít thái' },
         ],
     },
 ];
@@ -96,9 +96,9 @@ const Content2: React.FC = () => {
     const [soGiayChungNhanDKKD, setSoGiayChungNhanDKKD] = useState('');
     const [ngayCapGiayChungNhanDKKD, setNgayCapGiayChungNhanDKKD] = useState('');
     const [noiCapGiayChungNhanDKKD, setNoiCapGiayChungNhanDKKD] = useState('');
-    const [soDienThoai, setSoDienThoai] = useState('');
+    const [phoneCongTy, setPhoneCongTy] = useState('');
     const [maBuuDien, setMaBuuDien] = useState('');
-    const [diaChi, setDiaChi] = useState('');
+    const [diaChiCongTy, setDiaChiCongTy] = useState('');
     const [fileChupBanDangKyDoanhNghiep, setFileChupBanDangKyDoanhNghiep] = useState<string | null>(null);
     const [cities, setCities] = useState<City[]>([]);
     const [selectedCity, setSelectedCity] = useState<string>("");
@@ -120,18 +120,21 @@ const Content2: React.FC = () => {
     };
     const handleCityChange = (value: string) => {
         setSelectedCity(value);
+        sessionStorage.setItem('selectedCity', JSON.stringify(value));
         setSelectedDistrict(""); // Đặt lại quận/huyện khi chọn tỉnh/thành phố mới
         setSelectedWard(""); // Đặt lại phường/xã khi chọn tỉnh/thành phố mới
     };
 
     const handleDistrictChange = (value: string) => {
         setSelectedDistrict(value);
+        sessionStorage.setItem('selectedDistrict', JSON.stringify(value));
         setSelectedWard(""); // Đặt lại phường/xã khi chọn quận/huyện mới
     };
 
 
     const handleWardChange = (value: string) => {
         setSelectedWard(value);
+        sessionStorage.setItem('selectedWard', JSON.stringify(value));
     };
 
     // const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -170,12 +173,12 @@ const Content2: React.FC = () => {
         const storedSoGiayChungNhanDKKD = sessionStorage.getItem('soGiayChungNhanDKKD');
         const storedNgayCapGiayChungNhanDKKD = sessionStorage.getItem('ngayCapGiayChungNhanDKKD');
         const storedNoiCapGiayChungNhanDKKD = sessionStorage.getItem('noiCapGiayChungNhanDKKD');
-        const storedSoDienThoai = sessionStorage.getItem('soDienThoai');
+        const storedphoneCongTy = sessionStorage.getItem('phoneCongTy');
         const storedMaBuuDien = sessionStorage.getItem('maBuuDien');
-        // const storedTinhThanh = sessionStorage.getItem('tinhThanh');
-        // const storedQuanHuyen = sessionStorage.getItem('quanHuyen');
-        // const storedPhuongXa = sessionStorage.getItem('phuongXa');
-        const storedDiaChi = sessionStorage.getItem('diaChi');
+        const storedTinhThanh = sessionStorage.getItem('selectedCity');
+        const storedQuanHuyen = sessionStorage.getItem('selectedDistrict');
+        const storedPhuongXa = sessionStorage.getItem('selectedWard');
+        const storedDiaChiCongTy = sessionStorage.getItem('diaChiCongTy');
         const storedFileChupBanDangKyDoanhNghiep = sessionStorage.getItem('fileChupBanDangKyDoanhNghiep');
 
         if (storedDanhMucSanPham) { setDanhMucSanPham(JSON.parse(storedDanhMucSanPham)); }
@@ -188,12 +191,12 @@ const Content2: React.FC = () => {
         if (storedSoGiayChungNhanDKKD) { setSoGiayChungNhanDKKD(storedSoGiayChungNhanDKKD); }
         if (storedNgayCapGiayChungNhanDKKD) { setNgayCapGiayChungNhanDKKD(storedNgayCapGiayChungNhanDKKD); }
         if (storedNoiCapGiayChungNhanDKKD) { setNoiCapGiayChungNhanDKKD(storedNoiCapGiayChungNhanDKKD); }
-        if (storedSoDienThoai) { setSoDienThoai(storedSoDienThoai); }
+        if (storedphoneCongTy) { setPhoneCongTy(storedphoneCongTy); }
         if (storedMaBuuDien) { setMaBuuDien(storedMaBuuDien); }
-        // if (storedTinhThanh) { setTinhThanh(storedTinhThanh); }
-        // if (storedQuanHuyen) { setQuanHuyen(storedQuanHuyen); }
-        // if (storedPhuongXa) { setPhuongXa(storedPhuongXa); }
-        if (storedDiaChi) { setDiaChi(storedDiaChi); }
+        if (storedTinhThanh) { setSelectedCity(storedTinhThanh); }
+        if (storedQuanHuyen) { setSelectedDistrict(storedQuanHuyen); }
+        if (storedPhuongXa) { setSelectedWard(storedPhuongXa); }
+        if (storedDiaChiCongTy) { setDiaChiCongTy(storedDiaChiCongTy); }
         if (storedFileChupBanDangKyDoanhNghiep) { setFileChupBanDangKyDoanhNghiep(storedFileChupBanDangKyDoanhNghiep); }
     }, []);
 
@@ -205,12 +208,12 @@ const Content2: React.FC = () => {
         sessionStorage.setItem('soGiayChungNhanDKKD', soGiayChungNhanDKKD);
         sessionStorage.setItem('ngayCapGiayChungNhanDKKD', ngayCapGiayChungNhanDKKD);
         sessionStorage.setItem('noiCapGiayChungNhanDKKD', noiCapGiayChungNhanDKKD);
-        sessionStorage.setItem('soDienThoai', soDienThoai);
+        sessionStorage.setItem('phoneCongTy', phoneCongTy);
         sessionStorage.setItem('maBuuDien', maBuuDien);
-        sessionStorage.setItem('diaChi', diaChi);
+        sessionStorage.setItem('diaChiCongTy', diaChiCongTy);
 
 
-    }, [nguoiDaiDien, tenCongTy, maSoDoanhNghiep, diaChiThuongTru, soGiayChungNhanDKKD, ngayCapGiayChungNhanDKKD, noiCapGiayChungNhanDKKD, soDienThoai, maBuuDien, diaChi]);
+    }, [nguoiDaiDien, tenCongTy, maSoDoanhNghiep, diaChiThuongTru, soGiayChungNhanDKKD, ngayCapGiayChungNhanDKKD, noiCapGiayChungNhanDKKD, phoneCongTy, maBuuDien, diaChiCongTy]);
 
     // Hàm xử lý sự kiện khi có sự thay đổi trong Cascader
     const onChangeDanhMuc: MultipleCascaderProps<Option>['onChange'] = (value) => {
@@ -239,7 +242,7 @@ const Content2: React.FC = () => {
             <div className='grid grid-cols-1 sm:grid-cols-2 5 gap-4'>
                 <div>
                     <div className="mb-1">
-                        <label className="block text-sm font-medium text-gray-700 " htmlFor="username2">
+                        <label className="block text-sm font-medium text-gray-700 " htmlFor="danhMucSanPham">
                             Hãy cho chúng tôi biết phần lớn sản phẩm của bạn thuộc các danh mục nào <span className='text-red-600'>*</span>
                         </label>
 
@@ -257,7 +260,7 @@ const Content2: React.FC = () => {
                 </div>
                 <div>
                     <div className="mb-1">
-                        <label className="block text-sm font-medium text-gray-700" htmlFor="namebrand2">
+                        <label className="block text-sm font-medium text-gray-700" htmlFor="loaiGianHang">
                             Loại gian hàng
                         </label>
                         <Cascader
@@ -278,7 +281,7 @@ const Content2: React.FC = () => {
             <div className='grid grid-cols-1 sm:grid-cols-2 5 gap-4'>
 
                 <div className="mb-1">
-                    <label className="block text-sm font-medium text-gray-700 " htmlFor="username2">
+                    <label className="block text-sm font-medium text-gray-700 " htmlFor="loaiDonVi">
                         Loại đơn vị
                     </label>
 
@@ -333,109 +336,109 @@ const Content2: React.FC = () => {
                     />
                 </div>
                 <div className="mb-1">
-                    <label className="block text-sm font-medium text-gray-700 " htmlFor="namebrand">
+                    <label className="block text-sm font-medium text-gray-700 " htmlFor="nguoiDaiDien">
                         Người đại diện theo pháp luật
                     </label>
                     <input
                         className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 border `}
                         type="text"
-                        id="namebrand"
+                        id="nguoiDaiDien"
                         value={nguoiDaiDien}
                         onChange={(e) => setNguoiDaiDien(e.target.value)}
                     />
                 </div>
                 <div className="mb-1">
-                    <label className="block text-sm font-medium text-gray-700 " htmlFor="namebrand">
+                    <label className="block text-sm font-medium text-gray-700 " htmlFor="tenCongTy">
                         Tên công ty
                     </label>
                     <input
                         className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 border `}
                         type="text"
-                        id="namebrand"
+                        id="tenCongTy"
                         value={tenCongTy}
                         onChange={(e) => setTenCongTy(e.target.value)}
                     />
                 </div>
                 <div className="mb-1">
-                    <label className="block text-sm font-medium text-gray-700 " htmlFor="namebrand">
+                    <label className="block text-sm font-medium text-gray-700 " htmlFor="maSoDoanhNghiep">
                         Mã số doanh nghiệp
                     </label>
                     <input
                         className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 border `}
                         type="text"
-                        id="namebrand"
+                        id="maSoDoanhNghiep"
                         value={maSoDoanhNghiep}
                         onChange={(e) => setMaSoDoanhNghiep(e.target.value)}
                     />
                 </div>
                 <div className="mb-1">
-                    <label className="block text-sm font-medium text-gray-700 " htmlFor="namebrand">
+                    <label className="block text-sm font-medium text-gray-700 " htmlFor="diaChiThuongTru">
                         Địa chỉ thường trú của chủ doanh nghiệp
                     </label>
                     <input
                         className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 border `}
                         type="text"
-                        id="namebrand"
+                        id="diaChiThuongTru"
                         value={diaChiThuongTru}
                         onChange={(e) => setDiaChiThuongTru(e.target.value)}
                     />
                 </div>
                 <div className="mb-1">
-                    <label className="block text-sm font-medium text-gray-700 " htmlFor="namebrand">
+                    <label className="block text-sm font-medium text-gray-700 " htmlFor="soGiayChungNhanDKKD">
                         Số giấy chứng nhận đăng ký kinh doanh
                     </label>
                     <input
                         className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 border `}
                         type="text"
-                        id="namebrand"
+                        id="soGiayChungNhanDKKD"
                         value={soGiayChungNhanDKKD}
                         onChange={(e) => setSoGiayChungNhanDKKD(e.target.value)}
                     />
                 </div>
                 <div className="mb-1">
-                    <label className="block text-sm font-medium text-gray-700 " htmlFor="namebrand">
+                    <label className="block text-sm font-medium text-gray-700 " htmlFor="ngayCapGiayChungNhanDKKD">
                         Ngày cấp giấy chứng nhận đăng ký kinh doanh
                     </label>
                     <input
                         className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 border `}
                         type="text"
-                        id="namebrand"
+                        id="ngayCapGiayChungNhanDKKD"
                         value={ngayCapGiayChungNhanDKKD}
                         onChange={(e) => setNgayCapGiayChungNhanDKKD(e.target.value)}
                     />
                 </div>
                 <div className="mb-1">
-                    <label className="block text-sm font-medium text-gray-700 " htmlFor="namebrand">
+                    <label className="block text-sm font-medium text-gray-700 " htmlFor="noiCapGiayChungNhanDKKD">
                         Nơi cấp giấy chứng nhận đăng ký kinh doanh
                     </label>
                     <input
                         className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 border `}
                         type="text"
-                        id="namebrand"
+                        id="noiCapGiayChungNhanDKKD"
                         value={noiCapGiayChungNhanDKKD}
                         onChange={(e) => setNoiCapGiayChungNhanDKKD(e.target.value)}
                     />
                 </div>
                 <div className="mb-1">
-                    <label className="block text-sm font-medium text-gray-700 " htmlFor="namebrand">
+                    <label className="block text-sm font-medium text-gray-700 " htmlFor="phoneCongTy">
                         Số điện thoại
                     </label>
                     <input
                         className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 border `}
                         type="text"
-                        id="namebrand"
-                        value={soDienThoai}
-                        onChange={(e) => setSoDienThoai(e.target.value)}
+                        id="phoneCongTy"
+                        value={phoneCongTy}
+                        onChange={(e) => setPhoneCongTy(e.target.value)}
                     />
                 </div>
                 <div className="mb-1">
-                    <label className="block text-sm font-medium text-gray-700 " htmlFor="namebrand">
+                    <label className="block text-sm font-medium text-gray-700 " htmlFor="maBuuDien">
                         Mã bưu điện
                     </label>
                     <input
                         className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 border `}
                         type="text"
-                        id="namebrand"
+                        id="maBuuDien"
                         value={maBuuDien}
                         onChange={(e) => setMaBuuDien(e.target.value)}
                     />
@@ -443,7 +446,7 @@ const Content2: React.FC = () => {
             </div>
             <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4'>
                 <div className="mb-1">
-                    <label className="block text-sm font-medium text-gray-700 " htmlFor="namebrand">
+                    <label className="block text-sm font-medium text-gray-700 " htmlFor="selectedCity">
                         Tỉnh thành
                     </label>
                     <Form.Item label="Tỉnh/Thành phố">
@@ -457,7 +460,7 @@ const Content2: React.FC = () => {
                     </Form.Item>
                 </div>
                 <div className="mb-1">
-                    <label className="block text-sm font-medium text-gray-700 " htmlFor="namebrand">
+                    <label className="block text-sm font-medium text-gray-700 " htmlFor="selectedDistrict">
                         Quận huyện
                     </label>
                     <Form.Item label="Quận/Huyện">
@@ -473,7 +476,7 @@ const Content2: React.FC = () => {
                     </Form.Item>
                 </div>
                 <div className="mb-1">
-                    <label className="block text-sm font-medium text-gray-700 " htmlFor="namebrand">
+                    <label className="block text-sm font-medium text-gray-700 " htmlFor="selectedWard">
                         Phường xã
                     </label>
                     <Form.Item label="Phường/Xã">
@@ -493,25 +496,25 @@ const Content2: React.FC = () => {
 
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4'>
                 <div className="mb-1">
-                    <label className="block text-sm font-medium text-gray-700 " htmlFor="namebrand">
+                    <label className="block text-sm font-medium text-gray-700 " htmlFor="diaChiCongTy">
                         Địa chỉ
                     </label>
                     <input
                         className={`mt-1 p-2 w-full bg-white rounded-md text-gray-700 border `}
                         type="text"
-                        id="namebrand"
-                        value={diaChi}
-                        onChange={(e) => setDiaChi(e.target.value)}
+                        id="diaChiCongTy"
+                        value={diaChiCongTy}
+                        onChange={(e) => setDiaChiCongTy(e.target.value)}
                     />
                 </div>
                 <div className="mb-1">
-                    <label className="block text-sm font-medium text-gray-700 " htmlFor="namebrand">
+                    <label className="block text-sm font-medium text-gray-700 " htmlFor="fileChupBanDangKyDoanhNghiep">
                         File chụp bản đăng ký doanh nghiệp
                     </label>
                     <Dragger
                         accept=".png,.jpg,.jpeg"
                         beforeUpload={handleBeforeUpload}
-                        fileList={[]} // Bạn cần truyền vào một fileList rỗng để tránh lỗi
+                        fileList={[]}
                         onRemove={handleRemove}
                         showUploadList={{
                             showRemoveIcon: true,

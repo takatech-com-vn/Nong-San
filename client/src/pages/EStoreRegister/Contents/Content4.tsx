@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Checkbox } from 'antd';
 import type { GetProp } from 'antd';
+import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
+import { TfiReload } from 'react-icons/tfi';
+
 const onChange: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues) => {
     console.log('checked = ', checkedValues);
 };
@@ -12,8 +15,31 @@ const options = [
     { label: 'Chấp nhận các điều khoản sử dụng của sàn', value: 'Chấp nhận các điều khoản sử dụng của sàn' },
 ];
 
+const Content4: React.FC = () => {
+    const captchaInputRef = useRef<HTMLInputElement>(null);
+    const [captchaValid, setCaptchaValid] = useState<boolean>(false);
 
-const Content4 = () => {
+    useEffect(() => {
+        loadCaptchaEnginge(6);
+        sessionStorage.setItem('captchaValid', 'false');
+    }, []);
+    const reloadCaptcha = () => {
+        loadCaptchaEnginge(6);
+        setCaptchaValid(false);
+        sessionStorage.setItem('captchaValid', 'false');
+    };
+    
+    const doSubmit = () => {
+        const userCaptchaValue = captchaInputRef.current?.value;
+        if (userCaptchaValue && validateCaptcha(userCaptchaValue) === true) {
+            setCaptchaValid(true);
+            sessionStorage.setItem('captchaValid', 'true');
+        } else if (!captchaValid) { // chỉ đặt lại captchaValid nếu nó chưa đúng
+            setCaptchaValid(false);
+            sessionStorage.setItem('captchaValid', 'false');
+        }
+    };
+    
 
     return (
         <div className='h-auto flex flex-col mt-[40px] text-black'>
@@ -27,10 +53,14 @@ const Content4 = () => {
                     </p>
                 </div>
                 <div className='w-'>
-                    <Checkbox.Group options={options} defaultValue={['Pear']} onChange={onChange} className='flex flex-col gap-2'/>
+                    <Checkbox.Group options={options} defaultValue={['Pear']} onChange={onChange} className='flex flex-col gap-2' />
                 </div>
-                <div>
+                <div className='flex flex-row gap-2'>
                     <span>Mã bảo mật</span>
+                    <LoadCanvasTemplate /><button className='text-red-600 text-xl active:animate-spin' onClick={reloadCaptcha}><TfiReload /></button>
+                    <input ref={captchaInputRef} type="text" placeholder="Nhập mã bảo mật" />
+                    <button onClick={doSubmit} className={`${captchaValid ? 'bg-green-400' : 'bg-red-400'} p-1 rounded-lg text-white`}>Xác nhận</button>
+                    
                 </div>
             </div>
         </div>
