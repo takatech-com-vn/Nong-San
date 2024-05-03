@@ -1,6 +1,6 @@
 export interface Banner {
     id: number;
-    name_bannerpc: string;
+    name: string;
     path: string;
+    type: string;
   }
-  

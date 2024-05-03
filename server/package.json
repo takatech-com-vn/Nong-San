@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "build": "rimraf build && npx tsc && cpx \"src/public/images/**/*\" build/public/images",
+    "build": " rimraf build && npx tsc",
     "prestart": "npm run build",
     "start": "nodemon build/index.js",
     "preserve": "npm run build",

@@ -3,7 +3,8 @@ import {
     Button,
     Form,
     Input,
-    Upload
+    Upload,
+    message
   } from "antd";
 import axios from 'axios';
 import { UploadFile } from 'antd/lib/upload/interface';
@@ -19,11 +20,11 @@ function ThemSlideMobile() {
             formData.append('image', fileList[0].originFileObj);
     
             axios.post(`${import.meta.env.VITE_APP_API_URL}/slide/createslidemobile`, formData)
-                .then(response => {
-                    console.log(response)
+                .then(() => {
+                    message.success('Thêm slide mobile thành công')
                 })
-                .catch(error => {
-                    console.log(error)
+                .catch(() => {
+                    message.error('Thêm slide mobile thất bại')
                 })
         } else {
             console.log('Vui lòng chọn một file');

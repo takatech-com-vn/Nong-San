@@ -22,4 +22,5 @@ const upload = (0, multer_1.default)({ storage: storage });
 const router = express_1.default.Router();
 router.post('/createnew', upload.single('image'), newController_1.default.CreateNew);
 router.get('/getnew', newController_1.default.ListNew);
+router.delete('/deletenew/:id', newController_1.default.DeleteNew);
 module.exports = router;

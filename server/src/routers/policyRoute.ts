@@ -5,5 +5,6 @@ const route = express.Router();
 
 route.post('/create', policyController.CreatePolicy);
 route.get('/listpolicy', policyController.ListPolicy);
+route.delete('/deletepolicy/:id', policyController.DeletePolicy);
 
 export = route;

@@ -41,4 +41,7 @@ router.post('/createslidemobile', uploadMobile.single('image'), slideController.
 router.get('/getlistslidepc', slideController.ListSlidePC);
 router.get('/getlistslidemobile', slideController.ListSlideMobile);
 
+router.delete('/deletebannerPC/:id', slideController.DeletebannerPC);
+router.delete('/deletebannermobile/:id', slideController.Deletebannermobile)
+
 export = router;
