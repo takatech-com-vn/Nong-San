@@ -8,7 +8,7 @@ import EditNew from './Modal/EditNew';
 
 const DanhSachTinTuc: React.FC = () => {
   const [data, setData] = useState<New[]>([]);
-  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [editingNews, setEditingNews] = useState<New | null>(null);
   useEffect(() => {
     const fetchData = async () => {
@@ -28,8 +28,8 @@ const DanhSachTinTuc: React.FC = () => {
   }, []);
 
   const handleEdit = (news: New) => {
-    setOpen(true);
-    setEditingNews(news); 
+    setOpenModal(true);
+    setEditingNews(news);
     console.log('Chỉnh sửa tin tức: ', news);
   }
 
@@ -95,12 +95,13 @@ const DanhSachTinTuc: React.FC = () => {
           <Modal
             title="EditNew"
             centered
-            open={open}
-            onOk={() => setOpen(false)}
-            onCancel={() => setOpen(false)}
+            open={openModal}
+            onOk={() => setOpenModal(false)}
+            onCancel={() => setOpenModal(false)}
             width={1000}
+            footer={false}
           >
-            <EditNew news={editingNews}/> 
+            <EditNew news={editingNews} setModal={setOpenModal} />
           </Modal>
           <button
             className="button-delete"

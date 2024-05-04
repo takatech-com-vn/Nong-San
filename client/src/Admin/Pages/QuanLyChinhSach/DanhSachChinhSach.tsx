@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Table, message } from 'antd';
+import { Modal, Table, message } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
 import { Policy } from '../../../services/Policy';
 import '../Admin.css';
+import EditChinhSach from './Modal/EditChinhSach';
 
 const DanhSachChinhSach: React.FC = () => {
 
   const [data, setData] = useState<Policy[]>([]);
-
+  const [openModal, setOpenModal] = useState(false);
+  const [editChinhSach, setEditChinhSach] = useState<Policy | null>(null);
   useEffect(() => {
     const fetch = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/policy/listpolicy`)
 
-        if(response.data.success) {
+        if (response.data.success) {
           setData(response.data.policis)
         } else {
           message.error(response.data.message)
@@ -28,6 +30,8 @@ const DanhSachChinhSach: React.FC = () => {
   }, []);
 
   const handleEdit = (policy: Policy) => {
+    setOpenModal(true);
+    setEditChinhSach(policy);
     console.log("Chỉnh sửa chính sách: ", policy)
   }
 
@@ -69,13 +73,25 @@ const DanhSachChinhSach: React.FC = () => {
       width: '30%',
       render: (_, policy) => (
         <div>
-          <button 
+          <button
             className="button-edit"
             onClick={() => handleEdit(policy)}
           >
             Sửa
           </button>
-          <button 
+          <Modal
+            title="EditChinhSach"
+            centered
+            open={openModal}
+            onOk={() => setOpenModal(false)}
+            onCancel={() => setOpenModal(false)}
+            width={1000}
+            footer={false}
+
+          >
+            <EditChinhSach policy={editChinhSach} setModal={setOpenModal} />
+          </Modal>
+          <button
             className="button-delete"
             onClick={() => handleDelete(policy)}
           >
