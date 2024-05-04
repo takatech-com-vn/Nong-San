@@ -79,18 +79,7 @@ const DanhSachChinhSach: React.FC = () => {
           >
             Sửa
           </button>
-          <Modal
-            title="EditChinhSach"
-            centered
-            open={openModal}
-            onOk={() => setOpenModal(false)}
-            onCancel={() => setOpenModal(false)}
-            width={1000}
-            footer={false}
 
-          >
-            <EditChinhSach policy={editChinhSach} setModal={setOpenModal} />
-          </Modal>
           <button
             className="button-delete"
             onClick={() => handleDelete(policy)}
@@ -103,7 +92,23 @@ const DanhSachChinhSach: React.FC = () => {
   ];
 
 
-  return <Table columns={columns} dataSource={data} />
+  return (
+    <>
+    <Table columns={columns} dataSource={data} />
+    <Modal
+            title="EditChinhSach"
+            centered
+            open={openModal}
+            onOk={() => setOpenModal(false)}
+            onCancel={() => setOpenModal(false)}
+            width={1000}
+            footer={false}
+
+          >
+            <EditChinhSach policy={editChinhSach} setModal={setOpenModal} />
+          </Modal>
+    </>
+  )
 }
 
 export default DanhSachChinhSach

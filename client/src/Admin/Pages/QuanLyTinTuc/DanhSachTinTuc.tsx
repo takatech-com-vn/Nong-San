@@ -92,17 +92,7 @@ const DanhSachTinTuc: React.FC = () => {
           >
             Sửa
           </button>
-          <Modal
-            title="EditNew"
-            centered
-            open={openModal}
-            onOk={() => setOpenModal(false)}
-            onCancel={() => setOpenModal(false)}
-            width={1000}
-            footer={false}
-          >
-            <EditNew news={editingNews} setModal={setOpenModal} />
-          </Modal>
+
           <button
             className="button-delete"
             onClick={() => handleDelete(news)}
@@ -115,7 +105,22 @@ const DanhSachTinTuc: React.FC = () => {
   ];
 
 
-  return <Table columns={columns} dataSource={data} />
+  return (
+    <>
+      <Table columns={columns} dataSource={data} />
+      <Modal
+        title="EditNew"
+        centered
+        open={openModal}
+        onOk={() => setOpenModal(false)}
+        onCancel={() => setOpenModal(false)}
+        width={1000}
+        footer={false}
+      >
+        <EditNew news={editingNews} setModal={setOpenModal} />
+      </Modal>
+    </>
+  )
 }
 
 export default DanhSachTinTuc
