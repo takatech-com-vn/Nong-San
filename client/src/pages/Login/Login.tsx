@@ -35,6 +35,8 @@ const Login = () => {
             .post(`${import.meta.env.VITE_APP_API_URL}/login/listlogin`, {
                 username,
                 password,
+            }, {
+                withCredentials: true // Thêm dòng này
             })
             .then((res) => {
                 // console.log(res.data);
@@ -42,8 +44,8 @@ const Login = () => {
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('expiryTime', res.data.expiryTime);
                 dispatch(setUser(res.data));
-                // console.log('login',res.data)
-
+                console.log('login',JSON.stringify(res.data))
+    
                 navigate('/');
                 notification.open({
                     message: 'Đăng Nhập Thành Công',
@@ -63,6 +65,7 @@ const Login = () => {
                 });
             });
     };
+    
 
     // const token = localStorage.getItem('token');
 

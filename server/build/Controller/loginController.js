@@ -75,6 +75,7 @@ class loginController {
                                 if (err) {
                                     return res.status(500).json({ message: "Lỗi máy chủ" });
                                 }
+                                console.log("Session ID mới: " + req.session.id); // In ra session_id mới
                                 // Trả về thông tin người dùng
                                 return res.status(200).json({
                                     auth: true,
@@ -125,22 +126,25 @@ class loginController {
                 return res.status(200).json(user);
             }
             catch (error) {
-                console.log(error); // Thêm dòng này
-                console.log(error.response); // Thêm dòng này
+                console.log(error);
+                console.log(error.response);
                 return res.status(500).json("There was a problem with the server.");
             }
         });
     }
     Logout(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            req.session.destroy(err => {
+        req.logout(function (err) {
+            if (err) {
+                console.log('Lỗi khi hủy đăng nhập:', err);
+                return res.status(500).json({ message: "Lỗi máy chủ" });
+            }
+            req.session.destroy(function (err) {
                 if (err) {
-                    // Xử lý lỗi nếu có
-                    console.log(err);
-                    return res.status(500).json({ message: "Lỗi máy chủ khi đăng xuất" });
+                    console.log('Không thể hủy session', err);
+                    return res.status(500).json({ message: "Lỗi máy chủ" });
                 }
-                // Trả về thông báo thành công
-                res.status(200).json({ message: 'Đăng xuất thành công' });
+                res.clearCookie('connect.sid'); // Xóa cookie session
+                res.status(200).json({ message: "Đăng xuất thành công" }); // Trả về thông báo cho client
             });
         });
     }

@@ -10,6 +10,7 @@ const mySQL_1 = require("./config/database/mySQL");
 const configSession_1 = require("./config/configSession");
 const route = require("./routers");
 const path = require("path");
+const cookieParser = require("cookie-parser");
 const app = (0, express_1.default)();
 const port = 3000;
 (0, mySQL_1.connectToDatabase)();
@@ -17,18 +18,6 @@ const port = 3000;
 (0, configSession_1.configSession)(app);
 // Cấu hình máy chủ để phục vụ tệp tĩnh
 app.use('/images', express_1.default.static(path.join(process.cwd(), 'public/images')));
-// // Cấu hình máy chủ để phục vụ tệp tĩnh
-// const directoryPath = path.join(__dirname, 'src/public/images');
-// // Kiểm tra xem thư mục đã tồn tại hay chưa
-// if (!fs.existsSync(directoryPath)) {
-//   // Nếu thư mục không tồn tại, tạo nó
-//   try {
-//     fs.mkdirSync(directoryPath, { recursive: true });
-//     console.log(`Thư mục ${directoryPath} đã được tạo thành công.`);
-//   } catch (err) {
-//     console.error(`Không thể tạo thư mục ${directoryPath}:`, err);
-//   }
-// }
 app.use((0, cors_1.default)({
     origin: "http://localhost:5173",
     methods: "GET,POST,PUT,DELETE",
@@ -36,6 +25,7 @@ app.use((0, cors_1.default)({
 }));
 app.use(express_1.default.json({ limit: "50mb" }));
 app.use(express_1.default.urlencoded({ limit: "50mb", extended: true }));
+app.use(cookieParser());
 route(app);
 app.get('/', (req, res) => {
     res.send('Hello');

@@ -10,6 +10,7 @@ import { HiOutlineBellAlert, HiOutlineShoppingBag } from "react-icons/hi2";
 import { Dropdown } from 'react-bootstrap';
 import { PiShoppingCartSimpleLight } from "react-icons/pi";
 import { IoIosLogOut } from "react-icons/io";
+import axios from "axios";
 
 import { logout } from "../redux/useSlice";
 const Header = () => {
@@ -39,11 +40,20 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("data");
-    localStorage.removeItem("expiryTime");
-    localStorage.removeItem("token");
-    localStorage.removeItem("isLogin");
-    dispatch(logout());
+    axios.get(`${import.meta.env.VITE_APP_API_URL}/login/logout`, {
+      withCredentials: true
+    })
+        .then(response => {
+            console.log(response.data.message); // "Logged out"
+            localStorage.removeItem("data");
+            localStorage.removeItem("expiryTime");
+            localStorage.removeItem("token");
+            localStorage.removeItem("isLogin");
+            dispatch(logout());
+        })
+        .catch(error => {
+            console.error("Error logging out", error);
+        });
   };
 
 
