@@ -68,5 +68,19 @@ class newController {
             res.status(500).json({ success: false, message: "Lỗi xóa banner PC" });
         });
     }
+    GetNewID(req, res) {
+        const id = req.params.id;
+        const query = 'Select * from news where id = ?';
+        (0, callbackToPromise_1.excuteQuery)(query, [id])
+            .then(news => {
+            res.json({ success: true, news });
+        })
+            .catch(error => {
+            console.log(error);
+            res.status(500).json({ success: false, message: "Lỗi lấy dữ liệu tin tức" });
+        });
+    }
+    UpdateNew(req, res) {
+    }
 }
 module.exports = new newController();

@@ -2,7 +2,7 @@ import express from 'express'
 import slideController from '../Controller/slideController'
 import multer from 'multer';
 import path from 'path';
-
+import { isAuthenticated } from '../config/configSession';
 
 // Cấu hình multer
 const storage = multer.diskStorage({
@@ -42,6 +42,8 @@ router.get('/getlistslidepc', slideController.ListSlidePC);
 router.get('/getlistslidemobile', slideController.ListSlideMobile);
 
 router.delete('/deletebannerPC/:id', slideController.DeletebannerPC);
-router.delete('/deletebannermobile/:id', slideController.Deletebannermobile)
+router.delete('/deletebannermobile/:id', slideController.Deletebannermobile);
+router.get('/getslideid/:id', slideController.GetSlideID);
+router.put('/updateslide/:id', slideController.UpdateSlide);
 
 export = router;

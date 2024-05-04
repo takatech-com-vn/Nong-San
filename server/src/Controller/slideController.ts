@@ -72,7 +72,7 @@ class slideController {
 
         excuteQuery(query, [])
             .then(banner_pcs => {
-                res.json({ success: true, banner_pcs});
+                res.json({ success: true, banner_pcs });
             })
             .catch(error => {
                 res.status(500).json({ success: false, message: "Lỗi lấy dữ liệu slide pc"})
@@ -84,7 +84,7 @@ class slideController {
 
         excuteQuery(query, [])
             .then(banner_mobiles => {
-                res.json({ success: true, banner_mobiles, message: "Xóa banner thành công"});
+                res.json({ success: true, banner_mobiles });
             })
             .catch(error => {
                 res.status(500).json({ success: false, message: "Lỗi lấy dữ liệu slide mobile"})
@@ -149,6 +149,24 @@ class slideController {
                 console.log(error);
                 res.status(500).json({ success: false, message: "Lỗi xóa banner Mobile"});
             });
+    }
+
+    GetSlideID (req: Request, res: Response) {
+        const id = req.params.id;
+
+        const query = 'Select * from banner_pcs where id = ?'
+
+        excuteQuery(query, [id])
+            .then(banner_pcs => {
+                res.json({ success: true, banner_pcs});
+            })
+            .catch(() => {
+                res.status(500).json({ success: false, message: "Lỗi lấy dữ liệu"})
+            })
+    }
+    
+    UpdateSlide (req: Request, res: Response) {
+        
     }
 }
 

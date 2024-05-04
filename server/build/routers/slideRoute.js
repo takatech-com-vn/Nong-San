@@ -39,4 +39,6 @@ router.get('/getlistslidepc', slideController_1.default.ListSlidePC);
 router.get('/getlistslidemobile', slideController_1.default.ListSlideMobile);
 router.delete('/deletebannerPC/:id', slideController_1.default.DeletebannerPC);
 router.delete('/deletebannermobile/:id', slideController_1.default.Deletebannermobile);
+router.get('/getslideid/:id', slideController_1.default.GetSlideID);
+router.put('/updateslide/:id', slideController_1.default.UpdateSlide);
 module.exports = router;

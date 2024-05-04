@@ -3,7 +3,6 @@ import { excuteQuery } from "../util/callbackToPromise";
 import bcryptjs, { hashSync } from 'bcryptjs';
 import { User } from "../services/user";
 import jwt from 'jsonwebtoken';
-import { Session } from '../services/session';
 
 
 class loginController {
@@ -74,6 +73,8 @@ class loginController {
                             if (err) {
                                 return res.status(500).json({ message: "Lỗi máy chủ" });
                             }
+
+                            console.log("Session ID mới: " + req.session.id); // In ra session_id mới
                             // Trả về thông tin người dùng
                             return res.status(200).json({
                                 auth: true,
@@ -124,25 +125,31 @@ class loginController {
             // Trả về thông tin người dùng
             return res.status(200).json(user);
         } catch (error: any) {
-            console.log(error); // Thêm dòng này
-            console.log(error.response); // Thêm dòng này
+            console.log(error);
+            console.log(error.response);
             return res.status(500).json("There was a problem with the server.");
         }
     }
 
 
-    async Logout(req: Request, res: Response) {
-        req.session.destroy(err => {
+    Logout(req: Request, res: Response) {
+        req.logout(function(err) { // Hủy phiên session và xử lý lỗi
             if (err) {
-                // Xử lý lỗi nếu có
-                console.log(err);
-                return res.status(500).json({ message: "Lỗi máy chủ khi đăng xuất" });
+                console.log('Lỗi khi hủy đăng nhập:', err);
+                return res.status(500).json({ message: "Lỗi máy chủ" });
             }
-
-            // Trả về thông báo thành công
-            res.status(200).json({ message: 'Đăng xuất thành công' });
+    
+            req.session.destroy(function(err) { // Xóa session khỏi cơ sở dữ liệu
+                if (err) {
+                    console.log('Không thể hủy session', err);
+                    return res.status(500).json({ message: "Lỗi máy chủ" });
+                }
+    
+                res.clearCookie('connect.sid'); // Xóa cookie session
+                res.status(200).json({ message: "Đăng xuất thành công" }); // Trả về thông báo cho client
+            });
         });
-    }
+    }    
 
 
     async ForgotPassword(req: Request, res: Response) {

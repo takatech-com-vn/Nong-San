@@ -2,6 +2,7 @@ import express from 'express';
 import newController from '../Controller/newController';
 import multer from 'multer';
 import path from 'path';
+import { isAuthenticated } from '../config/configSession';
 
 // Cấu hình multer
 const storage = multer.diskStorage({
@@ -22,6 +23,8 @@ const router = express.Router();
 
 router.post('/createnew', upload.single('image'), newController.CreateNew);
 router.get('/getnew', newController.ListNew);
-router.delete('/deletenew/:id', newController.DeleteNew);
+router.delete('/deletenew/:id',newController.DeleteNew);
+router.get('/getnewid/:id',newController.GetNewID);
+router.put('/updatenew/:id',newController.UpdateNew);
 
 export = router
