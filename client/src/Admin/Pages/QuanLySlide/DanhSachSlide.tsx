@@ -100,18 +100,7 @@ const DanhSachSlide: React.FC = () => {
           >
             Sửa
           </button>
-          <Modal
-            title="EditSlider"
-            centered
-            open={openModal}
-            onOk={() => setOpenModal(false)}
-            onCancel={() => setOpenModal(false)}
-            width={1000}
-            footer={false}
 
-          >
-            <EditSlider banner={editSlider} setModal={setOpenModal} />
-          </Modal>
           <button
             className="button-delete"
             onClick={() => handleDelete(banner)}
@@ -123,7 +112,23 @@ const DanhSachSlide: React.FC = () => {
     },
   ];
 
-  return <Table columns={columns} dataSource={data} />
+  return (
+    <>
+      <Table columns={columns} dataSource={data} />
+      <Modal
+        title="EditSlider"
+        centered
+        open={openModal}
+        onOk={() => setOpenModal(false)}
+        onCancel={() => setOpenModal(false)}
+        width={1000}
+        footer={false}
+
+      >
+        <EditSlider banner={editSlider} setModal={setOpenModal} />
+      </Modal>
+    </>
+  )
 };
 
 export default DanhSachSlide;
