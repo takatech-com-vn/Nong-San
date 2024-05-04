@@ -16,7 +16,7 @@ import { logout } from "../redux/useSlice";
 const Header = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
-  console.log('cc', user)
+  // console.log('user', user)
   const [isScrolled, setIsScrolled] = useState(false);
   const checkScroll = () => {
     if (window.pageYOffset > 1) {

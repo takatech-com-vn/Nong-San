@@ -1,11 +1,11 @@
 // EStoreRegister.tsx
-import React, { useEffect, useState } from 'react';
-import { Button, message, Steps, theme } from 'antd';
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, message, notification, Steps, theme } from 'antd';
 import Content1 from './Contents/Content1';
 import Content2 from './Contents/Content2';
 import Content3 from './Contents/Content3';
 import Content4 from './Contents/Content4';
-
+import ValidationContext from './Contents/ValidationContext';
 const steps = [
     {
         title: 'Thông tin chung',
@@ -28,13 +28,64 @@ const steps = [
 const EStoreRegister: React.FC = () => {
     const { token } = theme.useToken();
     const [current, setCurrent] = useState(0);
-
+    const validationContext = useContext(ValidationContext);
     const next = () => {
-        setCurrent(current + 1);
+        if (validationContext.validate()) {
+            setCurrent(current + 1);
+        } else {
+            // Hiển thị thông báo lỗi nếu dữ liệu không hợp lệ
+        }
     };
 
     const prev = () => {
         setCurrent(current - 1);
+    };
+    const handleSubmit = () => {
+        const captchaValid = sessionStorage.getItem('captchaValid');
+        if (captchaValid === 'true') {
+            // Đối tượng chứa các trường dữ liệu
+            const data: { [key: string]: string } = {
+                "tenGianHang": "",
+                "tenChuGianHang": "",
+                "phoneCaNhan": "",
+                "emailCaNhan": "",
+                "danhMucSanPham": "",
+                "loaiGianHang": "",
+                "loaiDonVi": "",
+                "nguoiDaiDien": "",
+                "tenCongTy": "",
+                "maSoDoanhNghiep": "",
+                "diaChiThuongTru": "",
+                "soGiayChungNhanDKKD": "",
+                "ngayCapGiayChungNhanDKKD": "",
+                "noiCapGiayChungNhanDKKD": "",
+                "phoneCongTy": "",
+                "maBuuDien": "",
+                "selectedCity": "",
+                "selectedDistrict": "",
+                "selectedWard": "",
+                "diaChiCongTy": "",
+                "fileChupBanDangKyDoanhNghiep": "",
+                "tenNguoiLienHe": "",
+                "diaChiKhoHang": "",
+                "toaDoKhoHang": "",
+                "phoneKhoHang": "",
+            };
+            Object.keys(data).forEach(key => {
+                const value = sessionStorage.getItem(key);
+                if (value) {
+                    data[key] = value;
+                }
+            });
+            console.log("data đăng ký bán hàng",data);
+
+            message.success('Processing complete!');
+        } else {
+            notification.error({
+                message: 'Vui lòng nhập captcha',
+                description: 'Bạn chưa nhập captcha hoặc captcha bạn nhập không đúng. Vui lòng thử lại.',
+            });
+        }
     };
 
     const items = steps.map((item) => ({ key: item.title, title: item.title }));
@@ -73,7 +124,7 @@ const EStoreRegister: React.FC = () => {
                         </Button>
                     )}
                     {current === steps.length - 1 && (
-                        <Button type="primary" onClick={() => message.success('Processing complete!')}>
+                        <Button type="primary" onClick={handleSubmit}>
                             nộp
                         </Button>
                     )}
