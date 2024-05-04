@@ -5,7 +5,8 @@ import { connection, connectToDatabase } from './config/database/mySQL';
 import { configSession } from './config/configSession';
 import route = require('./routers');
 import path = require('path');
-import fs from 'fs'
+import fs from 'fs';
+import cookieParser = require('cookie-parser');
 const app: Express = express();
 const port: number = 3000;
 
@@ -18,20 +19,6 @@ configSession(app);
 // Cấu hình máy chủ để phục vụ tệp tĩnh
 app.use('/images', express.static(path.join(process.cwd(), 'public/images')));
 
-// // Cấu hình máy chủ để phục vụ tệp tĩnh
-// const directoryPath = path.join(__dirname, 'src/public/images');
-
-// // Kiểm tra xem thư mục đã tồn tại hay chưa
-// if (!fs.existsSync(directoryPath)) {
-//   // Nếu thư mục không tồn tại, tạo nó
-//   try {
-//     fs.mkdirSync(directoryPath, { recursive: true });
-//     console.log(`Thư mục ${directoryPath} đã được tạo thành công.`);
-//   } catch (err) {
-//     console.error(`Không thể tạo thư mục ${directoryPath}:`, err);
-//   }
-// }
-
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -41,6 +28,7 @@ app.use(
 );
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(cookieParser())
 
 route(app);
 

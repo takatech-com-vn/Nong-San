@@ -12,59 +12,58 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.configSession = void 0;
+exports.isAuthenticated = exports.configSession = void 0;
 const passport_1 = __importDefault(require("passport"));
 const dotenv_1 = require("dotenv");
-const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
 const callbackToPromise_1 = require("../util/callbackToPromise");
+const sessionStore_1 = __importDefault(require("./sessionStore"));
+const express_session_1 = __importDefault(require("express-session"));
 (0, dotenv_1.config)();
 const configSession = (app) => {
-    const options = {
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASS,
-        database: process.env.DB_NAME,
-        clearExpired: true,
-        checkExpirationInterval: 60 * 1000, // Check every 1 minute
-        expiration: 30 * 24 * 60 * 60 * 1000, // expires in 1 month
-    };
-    const sessionStore = new MySQLStore(options);
-    app.use(session({
+    app.use((0, express_session_1.default)({
         secret: process.env.SESSION_SECRET || 'your_default_secret',
         resave: false,
         saveUninitialized: false,
-        store: sessionStore,
+        store: sessionStore_1.default,
         proxy: true,
-        cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // expires in 1 month
+        cookie: { maxAge: 30 * 24 * 60 * 60 * 1000, secure: false }, // expires in 1 month
     }));
     // Initialize Passport.js
     app.use(passport_1.default.initialize());
     app.use(passport_1.default.session());
+    // mã hóa thông tin người dùng và tạo phiên (save)
     passport_1.default.serializeUser(function (user, done) {
         done(null, user.id);
     });
+    // giải mã thông tin người dùng
     passport_1.default.deserializeUser(function (id, done) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                //TÌm kiếm người dùng dựa trên ID từ cơ sở dữ liệu
                 const query = 'Select * from users where id = ?';
                 const users = (yield (0, callbackToPromise_1.excuteQuery)(query, [id]));
+                // console.log('Users: ', users); // In ra dữ liệu người dùng
                 if (users.length > 0) {
                     const user = users[0];
-                    //Gọi hàm done kèm theo người dùng
                     done(null, user);
                 }
                 else {
-                    //Nếu không tìm thấy, gọi hàm done kèm theo giá trị false
                     done(null, false);
                 }
             }
             catch (error) {
+                console.error('Lỗi khi deserialize người dùng:', error); // In ra lỗi
                 done(error);
             }
         });
     });
 };
 exports.configSession = configSession;
+const isAuthenticated = (req, res, next) => {
+    console.log('Is authenticated:', req.isAuthenticated()); // In ra trạng thái xác thực
+    console.log("Kiểm tra session: " + req.session.id);
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.status(401).json({ message: "Unauthorized" });
+};
+exports.isAuthenticated = isAuthenticated;

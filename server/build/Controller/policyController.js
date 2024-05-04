@@ -35,5 +35,18 @@ class policyController {
             res.status(500).json({ success: false });
         });
     }
+    GetPolicyID(req, res) {
+        const id = req.params.id;
+        const query = 'Select * from policis where id = ?';
+        (0, callbackToPromise_1.excuteQuery)(query, [id])
+            .then(policis => {
+            res.json({ success: true, policis });
+        })
+            .catch(() => {
+            res.status(500).json({ success: false, message: "Lỗi lấy dữ liệu policy" });
+        });
+    }
+    UpdatePolicy(req, res) {
+    }
 }
 module.exports = new policyController();

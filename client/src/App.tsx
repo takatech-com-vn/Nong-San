@@ -68,7 +68,8 @@ function App() {
     if (token) {
       axios
         .get(`${import.meta.env.VITE_APP_API_URL}/login/user`, {
-          headers: { 'x-access-token': token }
+          headers: { 'x-access-token': token },
+          withCredentials: true,
         })
         .then((res) => {
           dispatch(setUser(res.data));
