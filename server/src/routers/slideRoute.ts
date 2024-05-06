@@ -44,6 +44,7 @@ router.get('/getlistslidemobile', slideController.ListSlideMobile);
 router.delete('/deletebannerPC/:id', slideController.DeletebannerPC);
 router.delete('/deletebannermobile/:id', slideController.Deletebannermobile);
 router.get('/getslideid/:id', slideController.GetSlideID);
-router.put('/updateslide/:id', slideController.UpdateSlide);
+router.put('/updateslidepc/:id', upload.single('image'), slideController.UpdateSlidePC);
+router.put('/updateslidemb/:id', uploadMobile.single('image'), slideController.UpdateSlideMB);
 
 export = router;

@@ -93,8 +93,69 @@ class newController {
             })
     }
 
-    UpdateNew (req: Request, res: Response) {
-        
+    getNewById = async (id: string) => {
+        const query = 'SELECT * FROM news WHERE id = ?';
+        const params = [id];
+    
+        try {
+            const result: any = await excuteQuery(query, params);
+            if (result.length > 0) {
+                return result[0]; // Trả về slide đầu tiên (và duy nhất) từ kết quả
+            } else {
+                throw new Error('Không tìm thấy slide với id: ' + id);
+            }
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+
+    UpdateNew = async (req: Request, res: Response) => {
+        const id = req.params.id;
+        const name = req.body.name;
+        const short_description = req.body.shortDescription;
+        const content = req.body.content;
+        const file = req.file; // Truy cập file từ req.file
+    
+        // Lấy thông tin về slide hiện tại từ cơ sở dữ liệu
+        const currentNew = await this.getNewById(id);
+    
+        // Kiểm tra xem currentSlide có tồn tại không
+        if (!currentNew) {
+            console.log("Không tìm thấy tin tức với id: " + id);
+            res.status(404).json({ success: false, message: 'Không tìm thấy slide' });
+            return;
+        }
+    
+        let imagePath = currentNew.path; // Sử dụng đường dẫn hình ảnh hiện tại nếu không có hình ảnh mới
+    
+        if (file) {
+            // Tạo đường dẫn hình ảnh từ req.body.path
+            imagePath = '/images/' + req.body.path;
+    
+            // Xóa hình ảnh cũ từ thư mục trên máy chủ
+            fs.unlink(path.join(__dirname, '../../public', currentNew.path), err => {
+                if (err) console.log(`Error removing file: ${err}`);
+            });
+        }
+    
+        const query = 'UPDATE news SET name_new = ?, path = ?, short_description = ?, content = ?, updated_at = NOW() WHERE id = ?';
+        const params = [name, imagePath, short_description, content,id]
+    
+        excuteQuery(query, params)
+            .then(result => {
+                res.json({ success: true, message: "Cập nhật slide thành công", result });
+            })
+            .catch(error => {
+                console.log(error)
+                // Xóa hình ảnh mới đã được lưu nếu có lỗi
+                if (file) {
+                    fs.unlink(path.join(__dirname, '../../public', imagePath), err => {
+                        if (err) console.log(`Error removing file: ${err}`);
+                    });
+                }
+                res.json({ success: false, message: "Cập nhật slide thất bại" });
+            })
     }
 }
 

@@ -28,19 +28,18 @@ function EditSlider({ banner, setModal }: EditBannerProps) {
 
         }
     }, [banner]);
-    console.log('name', banner)
+    // console.log('name', banner)
+    
     const handleSubmit = () => {
         if (fileList.length > 0 && fileList[0].originFileObj) {
             const formData = new FormData();
             formData.append('name', name);
             formData.append('image', fileList[0].originFileObj);
 
-            // Xác định URL dựa trên loại banner
-            const url = banner?.type === 'pc'
-                ? `${import.meta.env.VITE_APP_API_URL}/slide/createslide`
-                : `${import.meta.env.VITE_APP_API_URL}/slide/createslidemobile`;
-
-            axios.post(url, formData)
+            const url = banner && banner.type === 'pc' && banner.id
+                ? `${import.meta.env.VITE_APP_API_URL}/slide/updateslidepc/${banner.id}`
+                : `${import.meta.env.VITE_APP_API_URL}/slide/updateslidemb/${banner && banner.id ? banner.id : ''}`;
+            axios.put(url, formData)
                 .then(() => {
                     message.success(`Cập nhật slide ${banner?.type} thành công`);
                 })
@@ -55,7 +54,7 @@ function EditSlider({ banner, setModal }: EditBannerProps) {
 
     return (
         <Form className="w-full rounded" onFinish={handleSubmit}>
-            <h2 className="mb-4 text-xl font-bold text-gray-700">Thêm sản phẩm</h2>
+            <h2 className="mb-4 text-xl font-bold text-gray-700">Sửa slide</h2>
             <div>
                 <Form.Item label="Tên chính sách" >
                     <Input style={{ width: '500px' }} placeholder="Nhập tên chính sách" onChange={e => setName(e.target.value)} value={name} />

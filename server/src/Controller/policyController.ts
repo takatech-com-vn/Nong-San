@@ -60,7 +60,20 @@ class policyController {
     }
 
     UpdatePolicy (req: Request, res: Response) {
-        
+        const id = req.params.id;
+        const name = req.body.name;
+        const content = req.body.content;
+
+        const query = 'Update policis set name = ?, content = ? Where id = ?'
+        const params = [name, content, id]
+
+        excuteQuery(query, params)
+            .then(result => {
+                res.json({ success: true, message: "Cập nhật chính sách thành công"})
+            })
+            .catch(() => {
+                res.json({ success: false, message: "Cập nhật chính sách thất bại" });
+            })
     }
 }
 export = new policyController();

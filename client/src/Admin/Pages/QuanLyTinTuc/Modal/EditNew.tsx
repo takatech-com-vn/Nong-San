@@ -48,13 +48,17 @@ function EditNew({ news, setModal }: EditNewProps) {
             formData.append('content', content);
             formData.append('image', fileList[0].originFileObj);
 
-            axios.post(`${import.meta.env.VITE_APP_API_URL}/new/createnew`, formData)
-                .then(response => {
-                    message.success("Thêm tin tức thành công", response.data.success);
-                })
-                .catch(() => {
-                    message.error("Thêm tin tức thất bại");
-                })
+            if (news) {
+                axios.put(`${import.meta.env.VITE_APP_API_URL}/new/updatenew/${news.id}`, formData)
+                    .then(response => {
+                        message.success("Sửa tin tức thành công", response.data.success);
+                    })
+                    .catch(() => {
+                        message.error("Sửa tin tức thất bại");
+                    })
+            } else {
+                console.log('News is null');
+            }
             setModal(false);
         } else {
             console.log('Vui lòng chọn một file');
