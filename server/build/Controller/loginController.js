@@ -75,7 +75,7 @@ class loginController {
                                 if (err) {
                                     return res.status(500).json({ message: "Lỗi máy chủ" });
                                 }
-                                console.log("Session ID mới: " + req.session.id); // In ra session_id mới
+                                // console.log("Session ID mới: " + req.session.id); // In ra session_id mới
                                 // Trả về thông tin người dùng
                                 return res.status(200).json({
                                     auth: true,

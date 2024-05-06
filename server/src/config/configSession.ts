@@ -53,8 +53,8 @@ export const configSession = (app: Express) => {
 };
 
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
-  console.log('Is authenticated:', req.isAuthenticated()); // In ra trạng thái xác thực
-  console.log("Kiểm tra session: " + req.session.id);
+  // console.log('Is authenticated:', req.isAuthenticated()); // In ra trạng thái xác thực
+  // console.log("Kiểm tra session: " + req.session.id);
   if (req.isAuthenticated()) {
       return next();
   }
