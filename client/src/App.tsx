@@ -15,6 +15,7 @@ import { RootState } from './redux/store';
 import Loader from './components/Loader/Loader';
 import Footer from './layouts/Footer';
 import EStoreRegister from './pages/EStoreRegister/EStoreRegister';
+import DetailProduct from './pages/DetailProduct/DetailProduct';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -78,6 +79,7 @@ function App() {
         .catch((error) => {
           console.log(error);
           setIsLoading(false); // Also set loading to false if there's an error
+          console.log('cc',)
         });
     } else {
       setIsLoading(false); // If there's no token, we're not loading
@@ -106,6 +108,7 @@ function App() {
             <Routes>
               <Route index element={<HomePage />} />
               <Route path='/san-pham' element={<ProductPage />} />
+              <Route path="/detail/:id" element={<DetailProduct />} />
               <Route path='/EStore-register' element={<EStoreRegister />} />
             </Routes>
             <Footer/>
