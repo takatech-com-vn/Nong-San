@@ -59,8 +59,8 @@ const configSession = (app) => {
 };
 exports.configSession = configSession;
 const isAuthenticated = (req, res, next) => {
-    console.log('Is authenticated:', req.isAuthenticated()); // In ra trạng thái xác thực
-    console.log("Kiểm tra session: " + req.session.id);
+    // console.log('Is authenticated:', req.isAuthenticated()); // In ra trạng thái xác thực
+    // console.log("Kiểm tra session: " + req.session.id);
     if (req.isAuthenticated()) {
         return next();
     }
