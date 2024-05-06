@@ -25,6 +25,6 @@ router.post('/createnew', upload.single('image'), newController.CreateNew);
 router.get('/getnew', newController.ListNew);
 router.delete('/deletenew/:id',newController.DeleteNew);
 router.get('/getnewid/:id',newController.GetNewID);
-router.put('/updatenew/:id',newController.UpdateNew);
+router.put('/updatenew/:id', upload.single('image'), newController.UpdateNew);
 
 export = router
