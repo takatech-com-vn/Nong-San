@@ -47,6 +47,18 @@ class policyController {
         });
     }
     UpdatePolicy(req, res) {
+        const id = req.params.id;
+        const name = req.body.name;
+        const content = req.body.content;
+        const query = 'Update policis set name = ?, content = ? Where id = ?';
+        const params = [name, content, id];
+        (0, callbackToPromise_1.excuteQuery)(query, params)
+            .then(result => {
+            res.json({ success: true, message: "Cập nhật chính sách thành công" });
+        })
+            .catch(() => {
+            res.json({ success: false, message: "Cập nhật chính sách thất bại" });
+        });
     }
 }
 module.exports = new policyController();

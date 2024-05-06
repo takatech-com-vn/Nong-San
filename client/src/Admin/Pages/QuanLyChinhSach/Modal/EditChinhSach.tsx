@@ -32,12 +32,12 @@ function EditChinhSach({ policy, setModal }: EditChinhSachProps) {
             content: content
         };
 
-        axios.post(`${import.meta.env.VITE_APP_API_URL}/policy/create`, policyData)
+        axios.put(`${import.meta.env.VITE_APP_API_URL}/policy/updatepolicy/${policy?.id}`, policyData)
             .then(reponse => {
-                message.success("Thêm chính sách thành công", reponse.data.success);
+                message.success("Sửa chính sách thành công", reponse.data.success);
             })
             .catch(() => {
-                message.error("Thêm chính sách thất bại");
+                message.error("Sửa chính sách thất bại");
             })
         setModal(false);
     }
@@ -46,7 +46,7 @@ function EditChinhSach({ policy, setModal }: EditChinhSachProps) {
 
     return (
         <Form className="w-full rounded" onFinish={handleSubmit}>
-            <h2 className="mb-4 text-xl font-bold text-gray-700">Thêm sản phẩm</h2>
+            <h2 className="mb-4 text-xl font-bold text-gray-700">Sửa chính sách</h2>
             <div>
                 <Form.Item label="Tên chính sách">
                     <Input style={{ width: '500px' }} placeholder="Nhập tên chính sách" onChange={e => setName(e.target.value)} value={name} />
