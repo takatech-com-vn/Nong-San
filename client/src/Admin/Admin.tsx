@@ -3,7 +3,6 @@ import { MenuFoldOutlined, MenuUnfoldOutlined, } from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { FaBalanceScale, FaChartLine, FaGift, FaListUl, FaStore, FaTachometerAlt, FaUserAlt, FaWarehouse } from 'react-icons/fa';
-import QuanLyHonHang from './Pages/QuanLyHonHang';
 import DanhSachChinhSach from './Pages/QuanLyChinhSach/DanhSachChinhSach';
 import ThemChinhSach from './Pages/QuanLyChinhSach/ThemChinhSach';
 import Loader from '../components/Loader/Loader';
@@ -14,6 +13,9 @@ import ThemSlideMobile from './Pages/QuanLySlide/ThemSlideMobile';
 import DanhSachSlide from './Pages/QuanLySlide/DanhSachSlide';
 import ThemTinTuc from './Pages/QuanLyTinTuc/ThemTinTuc';
 import DanhSachTinTuc from './Pages/QuanLyTinTuc/DanhSachTinTuc';
+import QuanLySanPham from './Pages/QuanLySanPham';
+import ThemPhanLoai from './Pages/QuanLyPhanLoai/ThemPhanLoai';
+import DanhSachPhanLoai from './Pages/QuanLyPhanLoai/DanhSachPhanLoai';
 
 const { Header, Sider, Content } = Layout;
 
@@ -65,13 +67,27 @@ const Admin: React.FC = () => {
                         {
                             key: '2',
                             icon: <FaListUl />,
-                            label: 'Quản lí đơn hàng',
+                            label: 'Quản lí Sản phẩm',
                             children: [
                                 {
                                     key: "9",
                                     icon: <FaListUl />,
-                                    label: <Link to="quanlydonhang">Danh sách đơn hàng</Link>,
-                                    onClick: () => setCurrentItem('Danh sách đơn hàng')
+                                    label: <Link to="quanlysanpham">Danh sách sản phẩm</Link>,
+                                    onClick: () => setCurrentItem('Danh sách sản phẩm')
+                                },
+
+                                {
+                                    key: "37",
+                                    icon: <FaListUl />,
+                                    label: <Link to="themphanloai">Thêm phân loại</Link>,
+                                    onClick: () => setCurrentItem('Thêm phân loại')
+                                },
+
+                                {
+                                    key: "38",
+                                    icon: <FaListUl />,
+                                    label: <Link to="danhsachphanloai">Danh sách phân loại</Link>,
+                                    onClick: () => setCurrentItem('Danh sách phân loại')
                                 },
                             ],
                         },
@@ -196,7 +212,9 @@ const Admin: React.FC = () => {
                         <Route path="themtintuc" element={<ThemTinTuc />} />
                         <Route path="danhsachtintuc" element={<DanhSachTinTuc />} />
 
-                        <Route path="quanlydonhang" element={<QuanLyHonHang />} />
+                        <Route path="quanlysanpham" element={<QuanLySanPham />} />
+                        <Route path="themphanloai" element={<ThemPhanLoai/>} />
+                        <Route path="danhsachphanloai" element={<DanhSachPhanLoai/>} />
                         
                         <Route path="themchinhsach" element={<ThemChinhSach />} />
                         <Route path="danhsachchinhsach" element={<DanhSachChinhSach />} />

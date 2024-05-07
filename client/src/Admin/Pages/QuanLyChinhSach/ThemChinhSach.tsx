@@ -32,7 +32,7 @@ function ThemChinhSach() {
 
   return (
     <Form className="w-full rounded" onFinish={handleSubmit}>
-      <h2 className="mb-4 text-xl font-bold text-gray-700">Thêm sản phẩm</h2>
+      <h2 className="mb-4 text-xl font-bold text-gray-700">Thêm chính sách</h2>
       <div>
         <Form.Item label="Tên chính sách" name="name_product">
             <Input style={{width: '500px'}} placeholder="Nhập tên chính sách" onChange={e => setName(e.target.value)}/>
@@ -53,7 +53,7 @@ function ThemChinhSach() {
 
       <Form.Item>
         <Button type="primary" htmlType="submit">
-          Thêm danh sách
+          Thêm chính sách
         </Button>
       </Form.Item>
     </Form>

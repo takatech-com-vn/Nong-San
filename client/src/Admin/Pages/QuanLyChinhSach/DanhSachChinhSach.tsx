@@ -11,6 +11,7 @@ const DanhSachChinhSach: React.FC = () => {
   const [data, setData] = useState<Policy[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [editChinhSach, setEditChinhSach] = useState<Policy | null>(null);
+
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -22,7 +23,7 @@ const DanhSachChinhSach: React.FC = () => {
           message.error(response.data.message)
         }
       } catch (error) {
-        message.error("Lỗi lấy dữ liệu tin tức");
+        message.error("Lỗi lấy dữ liệu chính sách");
       }
     }
 
@@ -32,7 +33,6 @@ const DanhSachChinhSach: React.FC = () => {
   const handleEdit = (policy: Policy) => {
     setOpenModal(true);
     setEditChinhSach(policy);
-    console.log("Chỉnh sửa chính sách: ", policy)
   }
 
   const handleDelete = (policy: Policy) => {
@@ -41,13 +41,13 @@ const DanhSachChinhSach: React.FC = () => {
         if (response.data.success) {
           // Xóa tin tức khỏi state nếu xóa thành công
           setData(prevData => prevData.filter(item => item.id !== policy.id));
-          message.success('Xóa tin tức thành công');
+          message.success('Xóa chính sách thành công');
         } else {
-          message.error('Xóa tin tức thất bại');
+          message.error('Xóa chính sách thất bại');
         }
       })
       .catch(error => {
-        console.error('Lỗi xóa banner: ', error)
+        console.error('Lỗi xóa chính sách: ', error)
       })
   }
 
@@ -106,7 +106,7 @@ const DanhSachChinhSach: React.FC = () => {
 
           >
             <EditChinhSach policy={editChinhSach} setModal={setOpenModal} />
-          </Modal>
+    </Modal>
     </>
   )
 }
