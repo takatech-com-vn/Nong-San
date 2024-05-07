@@ -26,6 +26,7 @@ function EditChinhSach({ policy, setModal }: EditChinhSachProps) {
         }
     }, [policy]);
     console.log('name', policy)
+    
     const handleSubmit = () => {
         const policyData = {
             name: name,
