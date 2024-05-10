@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MenuFoldOutlined, MenuUnfoldOutlined, } from '@ant-design/icons';
-import { Affix, Button, Layout, Menu, theme } from 'antd';
+import { Affix, Avatar, Button, Layout, Menu, Tooltip, theme } from 'antd';
 import { Link, Route, Routes } from 'react-router-dom';
 import { FaBalanceScale, FaChartLine, FaGift, FaListUl, FaStore, FaTachometerAlt, FaUserAlt, FaWarehouse } from 'react-icons/fa';
 import QuanLyHonHang from './Pages/Quanlydonhang/QuanLyHonHang';
@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import Loader from '../components/Loader/Loader';
 import AddProduct from './Pages/Quanlykhohang/AddProduct';
+import { UserOutlined } from '@ant-design/icons';
+import { GoHome } from 'react-icons/go';
 // import axios from 'axios';
 // import { setUser } from '../redux/useSlice';
 
@@ -171,17 +173,33 @@ const Brands: React.FC = () => {
             </Sider>
             <Layout className={`${!collapsed ? 'ml-[200px]' : "ml-[80px]"}`}>
                 <Affix offsetTop={top}>
-                    <Header style={{ padding: 0, background: colorBgContainer, }}>
-                        <Button
-                            type="text"
-                            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                            onClick={() => setCollapsed(!collapsed)}
-                            style={{
-                                fontSize: '16px',
-                                width: 64,
-                                height: 40,
-                            }}
-                        />
+                    <Header style={{ padding: 0, background: colorBgContainer, }} className='border-b'>
+                        <div className='flex flex-row justify-between'>
+                            <div>
+                                <Button
+                                    type="text"
+                                    icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                                    onClick={() => setCollapsed(!collapsed)}
+                                    style={{
+                                        fontSize: '16px',
+                                        width: 64,
+                                        height: 40,
+                                    }}
+                                />
+                            </div>
+                            <div className='mr-5 flex flex-row items-center gap-2'>
+                                <Tooltip title="Trang chủ">
+                                    <button>
+                                        <Link to="/">
+                                        <GoHome size={20} />
+                                        </Link>
+                                    </button>
+                                </Tooltip>
+                                <Avatar icon={<UserOutlined />} />
+                            </div>
+                        </div>
+
+
                     </Header>
                 </Affix>
 
