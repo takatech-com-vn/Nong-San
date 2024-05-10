@@ -1,11 +1,11 @@
 import React from 'react';
 
-const QuanLyHonHang = () => {
+const QuanLySanPham = () => {
     return (
         <div className='h-[2000px]'>
-            Quản lý đơn hàng
+            Quản lý Sản phẩm
         </div>
     );
 };
 
-export default QuanLyHonHang;
+export default QuanLySanPham;
