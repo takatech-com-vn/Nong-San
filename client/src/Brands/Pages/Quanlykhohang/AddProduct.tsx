@@ -1,5 +1,5 @@
-import React, { ReactElement, useState } from 'react';
-import { Affix, Anchor, Button, Cascader, Col, Collapse, Row, Select } from 'antd';
+import React, { useState } from 'react';
+import { Affix, Anchor, Button, Cascader, Col, Collapse, Form, Row, Select } from 'antd';
 import { Input } from 'antd';
 import { Checkbox } from 'antd';
 import { MultipleCascaderProps } from 'antd/es/cascader';
@@ -8,11 +8,36 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { PlusOutlined } from '@ant-design/icons';
 import { Image, Upload } from 'antd';
 import type { GetProp, UploadFile, UploadProps } from 'antd';
-import Product_variations from './product_variations';
-import { Values } from '../../../services/Values';
-import { AiTwotoneDelete } from 'react-icons/ai';
+// import Product_variations from './product_variations';
+// import { Values } from '../../../services/Values';
+// import { AiTwotoneDelete } from 'react-icons/ai';
+import { CheckboxValueType } from 'antd/es/checkbox/Group';
+import { DatePicker, } from 'antd';
 const { TextArea } = Input;
+const { Option } = Select;
+import { Dayjs } from 'dayjs';
+import ProductVariations from './ProductVariations';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+
+interface ProductType {
+    value: string;
+    label: string;
+}
+
+interface Manufacturer {
+    value: string;
+    label: string;
+}
+interface Option {
+    value: string | number;
+    label: string;
+    children?: Option[];
+}
+interface options {
+    value: string | number;
+    label: string;
+}
+
 
 const getBase64 = (file: FileType): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -23,23 +48,13 @@ const getBase64 = (file: FileType): Promise<string> =>
     });
 
 
-const onChangeCheckbox: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues) => {
-    console.log('checked = ', checkedValues);
-};
-const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    console.log('Change:', e.target.value);
-};
 
 const optionsCheckbox = [
     { label: 'Sản phẩm khuyến mại', value: 'Sản phẩm khuyến mại' },
     { label: 'Nông sản mùa vụ giá tốt', value: 'Nông sản mùa vụ giá tốt' },
     { label: 'Sản phẩm mới', value: 'Sản phẩm mới' },
 ];
-interface Option {
-    value: string | number;
-    label: string;
-    children?: Option[];
-}
+
 const options: Option[] = [
     {
         label: 'Nông sản đặc trưng tỉnh Đắk Lắk',
@@ -63,17 +78,181 @@ const options: Option[] = [
         ],
     },
 ];
+const manufacturersByType: Record<string, Manufacturer[]> = {
+    coffee: [
+        { value: 'starbucks', label: 'Starbucks' },
+        { value: 'dunkin', label: 'Dunkin' }
+    ],
+    tea: [
+        { value: 'lipton', label: 'Lipton' },
+        { value: 'twinings', label: 'Twinings' }
+    ],
+};
 
+const productTypes: ProductType[] = [
+    { value: 'coffee', label: 'Coffee' },
+    { value: 'tea', label: 'Tea' },
+];
 const AddProduct = () => {
+    const [form] = Form.useForm();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [top, setTop] = React.useState<number>(100);
-    const [danhMucSanPham, setDanhMucSanPham] = useState<string[]>([]);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
-    const [fileList, setFileList] = useState<UploadFile[]>([])
-    const [description] = useState("");
-    const [variations, setVariations] = useState<ReactElement[]>([]);
+    //thông tin cơ bản
+    const [tenSanPham, setTenSanPham] = useState('');
+    const [danhMucSanPham, setDanhMucSanPham] = useState<string[]>([]);
+    const [selectedCheckboxes, setSelectedCheckboxes] = useState<CheckboxValueType[]>([]);
+    const [thuTuSapXep, setThuTuSapXep] = useState('')
+    const [khoHang, setKhoHang] = useState('')
+    const [moTaSP, setMoTaSP] = useState("");
+    const [hinhSp, setHinhSP] = useState<UploadFile[]>([])
 
+    //thông số kỹ thuật
+    const [loaiSanPham, setLoaiSanPham] = useState<string>('');
+    const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
+    const [hangSanXuat, setHangSanXuat] = useState<string | undefined>();
+    const [banSi, setBanSi] = useState('')
+    const [giaSi, setGiaSi] = useState('')
+    const [loaiThucPham, setLoaiThucPham] = useState<string[]>([]);
+    const [xuatXu, setXuatXu] = useState('')
+    const [toChucSanXuat, setToChucSanXuat] = useState('')
+    const [slTrungBinhThang, setSlTrungBinhThang] = useState('')
+    const [loaiLuuTru, setLoaiLuuTru] = useState<string[]>([]);
+    const [organicFood, setOrganicFood] = useState<CheckboxValueType[]>([]);
+    const [kieuDongGoi, setKieuDongGoi] = useState<string[]>([]);
+    const [trongLuong, setTrongLuong] = useState('')
+    const [ngaySanXuat, setNgaySanXuat] = useState<string | null>(null);
+    const [ngayHetHan, setNgayHetHan] = useState<string | null>(null);
+    const [thanhPhan, setThanhPhan] = useState('')
+    const [giamCanDacBiet, setGiamCanDacBiet] = useState<string[]>([]);
+    const [maVung, setMaVung] = useState('')
+    const [thoiGianBaoQuan, setThoiGianBaoQuan] = useState('')
+
+    //thông tin bán hàng
+    const [ma, setMa] = useState('');
+
+    // Thông tin đóng gói
+    const [canNang, setCanNang] = useState('')
+    const [dai, setDai] = useState('')
+    const [rong, setRong] = useState('')
+    const [cao, setCao] = useState('')
+    const kichThuocDongGoi = { dai, rong, cao };
+    // Seo
+    const [tieuDeTrang, setTieuDeTrang] = useState('')
+    const [tuKhoa, setTuKhoa] = useState('')
+    const [moTaTrang, setMoTaTrang] = useState('')
+    const [duongDanDep, setDuongDanDep] = useState('')
+    const toiUuSeo = { tieuDeTrang, tuKhoa, moTaTrang, duongDanDep };
+
+    const submitFormData = () => {
+        //thông tin bán hàng
+        const dataBienthe = form.getFieldsValue();
+        const thongTinBanHang = { ma, dataBienthe };
+
+        const formData = {
+            tenSanPham,
+            danhMucSanPham,
+            fileList: hinhSp.map(file => file.name),
+            // variationsCount: variations.length,
+            selectedCheckboxes,
+            thuTuSapXep,
+            khoHang,
+            moTaSP,
+            loaiSanPham,
+            hangSanXuat,
+            banSi,
+            giaSi,
+            loaiThucPham,
+            xuatXu,
+            toChucSanXuat,
+            slTrungBinhThang,
+            loaiLuuTru,
+            organicFood,
+            kieuDongGoi,
+            trongLuong,
+            ngaySanXuat,
+            ngayHetHan,
+            thanhPhan,
+            giamCanDacBiet,
+            maVung,
+            thoiGianBaoQuan,
+            ma,
+            thongTinBanHang,
+            canNang,
+            kichThuocDongGoi,
+            toiUuSeo,
+        };
+        console.log('Form Data:', formData);
+        // console.log('dataBienthe:', form.getFieldsValue());
+
+    };
+
+    const handleTypeChange = (value: string): void => {
+        setLoaiSanPham(value); // Updates the selected product type state
+        const newManufacturers = manufacturersByType[value] || [];
+        setManufacturers(newManufacturers); // Updates the manufacturers based on the selected product type
+    };
+
+    const handleManufacturerChange = (value: string): void => {
+        setHangSanXuat(value);  // Set the selected manufacturer
+    };
+
+    const handleKhoHangChange = (value: string): void => {
+        setKhoHang(value);
+    };
+    const handleChangeBanSi = (value: string): void => {
+        setBanSi(value);
+    }
+    const handleLoaiThucPhamChange: MultipleCascaderProps<options>['onChange'] = (value) => {
+        const selectedValues = value as unknown as string[];
+        setLoaiThucPham(selectedValues);
+        console.log("Selected Food Types:", value); // Optional: log the current selection
+    };
+
+    const handleLoaiLuuTruChange: MultipleCascaderProps<options>['onChange'] = (value) => {
+        const selectedValues = value as unknown as string[];
+        setLoaiLuuTru(selectedValues); // Đặt giá trị của Loại lưu trữ
+    };
+    const onChangeCheckbox = (checkedValues: CheckboxValueType[]) => {
+        setOrganicFood(checkedValues);
+    };
+
+    const handleKieuDongGoiChange: MultipleCascaderProps<options>['onChange'] = (value) => {
+        const selectedValues = value as unknown as string[];
+        setKieuDongGoi(selectedValues); // Đặt giá trị của Loại lưu trữ
+    };
+    const handleTrongLuongChange = (value: string): void => {
+        setTrongLuong(value);
+    };
+    const onChangeNgaySanXuat = (date: Dayjs) => {
+        console.log(date);
+        if (date) {
+            const formattedDate = date.format('YYYY-MM-DD');
+            setNgaySanXuat(formattedDate);
+        } else {
+            setNgaySanXuat(null);
+        }
+    };
+    const onChangeNgayHetHan = (date: Dayjs) => {
+        console.log(date);
+        if (date) {
+            const formattedDate = date.format('YYYY-MM-DD');
+            setNgayHetHan(formattedDate);
+        } else {
+            setNgayHetHan(null);
+        }
+    };
+
+    const handleGiamCanDacBietChange: MultipleCascaderProps<options>['onChange'] = (value) => {
+        const selectedValues = value as unknown as string[];
+        setGiamCanDacBiet(selectedValues); // Đặt giá trị của Loại lưu trữ
+    };
+
+    // Xử lý thay đổi trên Checkbox.Group
+    const handleCheckboxChange = (checkedValues: CheckboxValueType[]) => {
+        setSelectedCheckboxes(checkedValues);
+    };
     const onChangeDanhMuc: MultipleCascaderProps<Option>['onChange'] = (value) => {
         // Ép kiểu giá trị nhận được về mảng chuỗi và lưu vào state
         const selectedValues = value as unknown as string[];
@@ -90,7 +269,7 @@ const AddProduct = () => {
     };
 
     const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
-        setFileList(newFileList);
+        setHinhSP(newFileList);
 
     const uploadButton = (
         <button style={{ border: 0, background: 'none' }} type="button">
@@ -99,33 +278,35 @@ const AddProduct = () => {
         </button>
     );
 
-    const handleFormSubmit = (values: Values) => {
-        console.log("values: " + JSON.stringify(values));
-    };
-    const addVariation = () => {
-        setVariations(prevVariations => [
-            ...prevVariations,
-            <div key={prevVariations.length} style={{ position: 'relative', }}>
-                <Product_variations onSubmit={handleFormSubmit} />
-                <button
-                    onClick={() => removeVariation(prevVariations.length)}
-                    className='text-[30px] text-red-600'
-                    style={{
-                        position: 'absolute',
-                        right: 0,
-                        top: 0,
-                        padding: '10px',
-                        cursor: 'pointer'
-                    }}
-                >
-                    <AiTwotoneDelete />
-                </button>
-            </div>
-        ]);
-    };
-    const removeVariation = (index: number) => {
-        setVariations(prevVariations => prevVariations.filter((_, i) => i !== index));
-    };
+    // const handleFormSubmit = (values: Values) => {
+    //     console.log("values: " + values);
+    // };
+    // const addVariation = () => {
+    //     const timestamp = Date.now().toString(); // Tạo id từ timestamp
+    //     setVariations(prevVariations => [
+    //         ...prevVariations,
+    //         <div key={timestamp} style={{ position: 'relative', }}>
+    //             <Product_variations onSubmit={handleFormSubmit} />
+    //             <button
+    //                 onClick={() => removeVariation(timestamp)}
+    //                 className='text-[30px] text-red-600'
+    //                 style={{
+    //                     position: 'absolute',
+    //                     right: 0,
+    //                     top: 0,
+    //                     padding: '10px',
+    //                     cursor: 'pointer'
+    //                 }}
+    //             >
+    //                 <AiTwotoneDelete />
+    //             </button>
+    //         </div>
+    //     ]);
+    // };
+    // const removeVariation = (idToRemove: string) => {
+    //     setVariations(prevVariations => prevVariations.filter(variation => variation.key !== idToRemove));
+    // };
+
     return (
         <div>
             <React.StrictMode>
@@ -137,17 +318,17 @@ const AddProduct = () => {
                                 <span className='text-[18px] text-black font-medium mb-4 w-full'>Thông tin cơ bản</span>
                                 <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
                                     <div className="mb-1 col-span-2">
-                                        <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="namebrand">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="tenSanPham">
                                             Tên sản phẩm <span className='text-red-600'>*</span>
                                         </label>
-                                        <Input showCount maxLength={255} onChange={onChange} />
+                                        <Input showCount maxLength={255} value={tenSanPham} onChange={e => setTenSanPham(e.target.value)} />
                                         <div className='mt-2'>
-                                            <Checkbox.Group options={optionsCheckbox} defaultValue={['Pear']} onChange={onChangeCheckbox} className='flex flex-col gap-2' />
+                                            <Checkbox.Group options={optionsCheckbox} defaultValue={['Pear']} onChange={handleCheckboxChange} className='flex flex-col gap-2' />
                                         </div>
                                     </div>
                                     <div>
                                         <div className="mb-1">
-                                            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="username2">
+                                            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="danhMucSanPham">
                                                 Danh mục sản phẩm<span className='text-red-600'>*</span>
                                             </label>
 
@@ -163,10 +344,10 @@ const AddProduct = () => {
                                             />
                                         </div>
                                         <div className="mb-1">
-                                            <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
-                                                Thứ tự sắp xếp<span className='text-red-600'>*</span>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="thuTuSapXep">
+                                                Thứ tự sắp xếp
                                             </label>
-                                            <Input placeholder="" />
+                                            <Input placeholder="" value={thuTuSapXep} onChange={e => setThuTuSapXep(e.target.value)} />
                                         </div>
                                         <div className="mb-1">
                                             <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
@@ -181,18 +362,21 @@ const AddProduct = () => {
                                                 filterSort={(optionA, optionB) =>
                                                     (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                                                 }
+                                                onChange={handleKhoHangChange}
+                                                value={khoHang}
                                                 options={[
                                                     {
-                                                        value: '1',
+                                                        value: 'Kho 1',
                                                         label: 'Kho 1',
                                                     },
                                                     {
-                                                        value: '2',
+                                                        value: 'Kho 2',
                                                         label: 'Kho 2',
                                                     },
                                                 ]}
                                             />
                                         </div>
+
                                     </div>
                                 </div>
                                 <div className="mb-1">
@@ -201,7 +385,11 @@ const AddProduct = () => {
                                     </label>
                                     <CKEditor
                                         editor={ClassicEditor}
-                                        data={description}
+                                        data={moTaSP}
+                                        onChange={(event, editor) => {
+                                            const data = editor.getData();
+                                            setMoTaSP(data);
+                                        }}
                                     />
                                 </div>
                                 <div className="mb-1">
@@ -210,13 +398,14 @@ const AddProduct = () => {
                                     </label>
                                     <Upload
                                         accept=".png,.jpeg,.jpg"
-                                        action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
                                         listType="picture-card"
-                                        fileList={fileList}
+                                        fileList={hinhSp}
                                         onPreview={handlePreview}
                                         onChange={handleChange}
+                                        beforeUpload={() => false}
+
                                     >
-                                        {fileList.length >= 10 ? null : uploadButton}
+                                        {hinhSp.length >= 10 ? null : uploadButton}
                                     </Upload>
                                     {previewImage && (
                                         <Image
@@ -243,55 +432,36 @@ const AddProduct = () => {
                                             Loại sản phẩm <span className='text-red-600'>*</span>
                                         </label>
                                         <Select
-                                            showSearch
                                             className='w-full'
-                                            placeholder="Search to Select"
-                                            optionFilterProp="children"
-                                            filterOption={(input, option) => (option?.label ?? '').includes(input)}
-                                            filterSort={(optionA, optionB) =>
-                                                (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                                            }
-                                            options={[
-                                                {
-                                                    value: '1',
-                                                    label: 'Kho 1',
-                                                },
-                                                {
-                                                    value: '2',
-                                                    label: 'Kho 2',
-                                                },
-                                            ]}
-                                        />
+                                            showSearch
+                                            placeholder="Chọn loại sản phẩm"
+                                            onChange={handleTypeChange}
+                                        >
+                                            {productTypes.map(type => (
+                                                <Option key={type.value} value={type.value}>{type.label}</Option>
+                                            ))}
+                                        </Select>
                                     </div>
 
                                     <div className="mb-1">
                                         <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="username2">
                                             Hãng sản xuất
                                         </label>
-
                                         <Select
                                             showSearch
                                             className='w-full'
-                                            placeholder="Search to Select"
-                                            optionFilterProp="children"
-                                            filterOption={(input, option) => (option?.label ?? '').includes(input)}
-                                            filterSort={(optionA, optionB) =>
-                                                (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                                            }
-                                            options={[
-                                                {
-                                                    value: '1',
-                                                    label: 'Kho 1',
-                                                },
-                                                {
-                                                    value: '2',
-                                                    label: 'Kho 2',
-                                                },
-                                            ]}
-                                        />
+                                            placeholder="Chọn hãng sản xuất"
+                                            onChange={handleManufacturerChange}
+                                            disabled={!loaiSanPham} // Disable if no type is selected
+                                        >
+                                            {manufacturers.map(manufacturer => (
+                                                <Option key={manufacturer.value} value={manufacturer.value}>{manufacturer.label}</Option>
+                                            ))}
+                                        </Select>
+
                                     </div>
                                     <div className="mb-1">
-                                        <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="banSi">
                                             Bán sỉ<span className='text-red-600'>*</span>
                                         </label>
                                         <Select
@@ -299,27 +469,25 @@ const AddProduct = () => {
                                             className='w-full'
                                             placeholder="Search to Select"
                                             optionFilterProp="children"
-                                            filterOption={(input, option) => (option?.label ?? '').includes(input)}
-                                            filterSort={(optionA, optionB) =>
-                                                (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                                            }
+                                            onChange={handleChangeBanSi}
+                                            value={banSi}
                                             options={[
                                                 {
-                                                    value: '1',
+                                                    value: 'Có',
                                                     label: 'Có',
                                                 },
                                                 {
-                                                    value: '2',
+                                                    value: 'Không',
                                                     label: 'Không',
                                                 },
                                             ]}
                                         />
                                     </div>
                                     <div className="mb-1">
-                                        <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="giaSi">
                                             Giá sỉ
                                         </label>
-                                        <Input placeholder="" />
+                                        <Input placeholder="" value={giaSi} onChange={e => setGiaSi(e.target.value)} />
                                     </div>
                                     <div className="mb-1">
                                         <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
@@ -329,47 +497,38 @@ const AddProduct = () => {
                                             className='mt-1 h-[36px]'
                                             style={{ width: '100%' }}
                                             options={[
-                                                {
-                                                    label: 'Nhà làm',
-                                                    value: 'Nhà làm',
-                                                },
-                                                {
-                                                    label: 'Khác',
-                                                    value: 'Khác',
-                                                },
-                                                {
-                                                    label: 'Theo mùa',
-                                                    value: 'Theo mùa',
-                                                },
-                                                {
-                                                    label: 'Truyền thống',
-                                                    value: 'Truyền thống',
-                                                },
+                                                { label: 'Nhà làm', value: 'Nhà làm' },
+                                                { label: 'Khác', value: 'Khác' },
+                                                { label: 'Theo mùa', value: 'Theo mùa' },
+                                                { label: 'Truyền thống', value: 'Truyền thống' },
                                             ]}
                                             multiple
                                             maxTagCount="responsive"
                                             placeholder=""
+                                            onChange={handleLoaiThucPhamChange}
+                                            value={loaiThucPham}
                                         />
+
                                     </div>
                                     <div className="mb-1">
                                         <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
                                             Xuất xứ
                                         </label>
-                                        <Input placeholder="" />
+                                        <Input placeholder="" value={xuatXu} onChange={e => setXuatXu(e.target.value)} />
 
                                     </div>
                                     <div className="mb-1">
                                         <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
                                             Tổ chức chịu trách nhiệm sản xuất
                                         </label>
-                                        <Input placeholder="" />
+                                        <Input placeholder="" value={toChucSanXuat} onChange={e => setToChucSanXuat(e.target.value)} />
 
                                     </div>
                                     <div className="mb-1">
                                         <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
                                             Số lượng trung bình / tháng
                                         </label>
-                                        <Input placeholder="" />
+                                        <Input placeholder="" value={slTrungBinhThang} onChange={e => setSlTrungBinhThang(e.target.value)} />
 
                                     </div>
                                     <div className="mb-1">
@@ -389,6 +548,8 @@ const AddProduct = () => {
                                                     value: 'Khác',
                                                 },
                                             ]}
+                                            value={loaiLuuTru} // Đặt giá trị đã chọn
+                                            onChange={handleLoaiLuuTruChange} // Xử lý sự kiện thay đổi
                                             multiple
                                             maxTagCount="responsive"
                                             placeholder=""
@@ -443,13 +604,15 @@ const AddProduct = () => {
                                             multiple
                                             maxTagCount="responsive"
                                             placeholder=""
+                                            onChange={handleKieuDongGoiChange}
+                                            value={kieuDongGoi}
                                         />
                                     </div>
                                     <div className="mb-1">
                                         <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
                                             Trọng lượng
                                         </label>
-                                        <Cascader
+                                        <Select
                                             className='mt-1 h-[36px]'
                                             style={{ width: '100%' }}
                                             options={[
@@ -476,30 +639,29 @@ const AddProduct = () => {
                                                     value: '150g',
                                                 },
                                             ]}
-                                            multiple
                                             maxTagCount="responsive"
-                                            placeholder=""
+                                            value={trongLuong}
+                                            onChange={handleTrongLuongChange}
                                         />
                                     </div>
                                     <div className="mb-1">
                                         <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
                                             Thành phần
                                         </label>
-                                        <Input placeholder="" />
-
+                                        <TextArea rows={2} value={thanhPhan} onChange={e => setThanhPhan(e.target.value)} />
                                     </div>
                                     <div className="mb-1">
                                         <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
                                             Ngày sản xuất
                                         </label>
-                                        <Input placeholder="" />
+                                        <DatePicker className='w-full' onChange={onChangeNgaySanXuat} />
 
                                     </div>
                                     <div className="mb-1">
                                         <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
                                             Ngày hết hạn
                                         </label>
-                                        <Input placeholder="" />
+                                        <DatePicker className='w-full' onChange={onChangeNgayHetHan} />
 
                                     </div>
                                     <div className="mb-1">
@@ -548,14 +710,14 @@ const AddProduct = () => {
                                             ]}
                                             multiple
                                             maxTagCount="responsive"
-                                            placeholder=""
+                                            onChange={handleGiamCanDacBietChange}
                                         />
                                     </div>
                                     <div className="mb-1">
                                         <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
                                             Mã vùng
                                         </label>
-                                        <Input placeholder="" />
+                                        <Input placeholder="" value={maVung} onChange={e => setMaVung(e.target.value)} />
 
                                     </div>
                                     <div className="mb-1">
@@ -563,7 +725,7 @@ const AddProduct = () => {
                                             Thời gian bảo quản
                                         </label>
 
-                                        <Input placeholder="" />
+                                        <Input placeholder="" value={thoiGianBaoQuan} onChange={e => setThoiGianBaoQuan(e.target.value)} />
                                     </div>
                                 </div>
                             </div>
@@ -574,10 +736,10 @@ const AddProduct = () => {
                                 <span className='text-[18px] text-black font-medium mb-4 w-full'>Thông tin bán hàng</span>
                                 <div className='grid grid-cols-2 gap-3'>
                                     <div className="mb-1">
-                                        <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="ma">
                                             Mã<span className='text-red-600'>*</span>
                                         </label>
-                                        <Input placeholder="" />
+                                        <Input placeholder="" value={ma} onChange={e => setMa(e.target.value)} />
 
                                     </div>
                                 </div>
@@ -585,11 +747,16 @@ const AddProduct = () => {
                                     <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
                                         Các biến thể<span className='text-red-600'>*</span>
                                     </label>
-                                    <button className='w-full p-2 rounded-lg border-dotted border-[2px] border-green-700'
+                                    {/* {variations} */}
+
+
+                                    <ProductVariations form={form} />
+
+                                    {/* <button className='w-full p-2 rounded-lg border-dotted border-[2px] border-green-700'
                                         onClick={addVariation}>
                                         Thêm phân loại hàng
-                                    </button>
-                                    {variations}
+                                    </button> */}
+
                                 </div>
                             </div>
                         </div>
@@ -602,8 +769,7 @@ const AddProduct = () => {
                                         <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
                                             Cân nặng (Sau khi đóng gói)<span className='text-red-600'>*</span>
                                         </label>
-                                        <Input placeholder="Gram" />
-
+                                        <Input placeholder="Gram" suffix="Garm" value={canNang} onChange={e => setCanNang(e.target.value)} />
                                     </div>
                                 </div>
                                 <div className=''>
@@ -613,12 +779,16 @@ const AddProduct = () => {
                                             <p className='text-[12px]'>(Phí vận chuyển thực tế sẽ thay đổi nếu bạn nhập sai khích thước)</p>
                                         </label>
                                         <div className='grid grid-cols-3 gap-3'>
-                                            <Input placeholder="Dài" />
-                                            <Input placeholder="Rộng" />
-                                            <Input placeholder="Cao" />
+                                            <Form.Item label="Dài:" labelCol={{ span: 24 }} wrapperCol={{ span: 24 }}>
+                                                <Input placeholder="Dài" value={dai} onChange={e => setDai(e.target.value)} />
+                                            </Form.Item>
+                                            <Form.Item label="Rộng:" labelCol={{ span: 24 }} wrapperCol={{ span: 24 }}>
+                                                <Input placeholder="Rộng" value={rong} onChange={e => setRong(e.target.value)} />
+                                            </Form.Item>
+                                            <Form.Item label="Cao:" labelCol={{ span: 24 }} wrapperCol={{ span: 24 }}>
+                                                <Input placeholder="Cao" value={cao} onChange={e => setCao(e.target.value)} />
+                                            </Form.Item>
                                         </div>
-
-
                                     </div>
                                 </div>
                             </div>
@@ -634,30 +804,30 @@ const AddProduct = () => {
                                                 <p>Thiết lập các thẻ mô tả giúp khách hàng dễ dàng tìm thấy trang trên công cụ tìm kiếm như Google.</p>
                                                 <div className='grid grid-cols-1 gap-3'>
                                                     <div className="mb-1">
-                                                        <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
-                                                            Tiêu đề trang<span className='text-red-600'>*</span>
+                                                        <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="tieuDeTrang">
+                                                            Tiêu đề trang
                                                         </label>
-                                                        <Input placeholder="Tiêu đề trang" />
+                                                        <Input placeholder="Tiêu đề trang" value={tieuDeTrang} onChange={e => setTieuDeTrang(e.target.value)} />
 
                                                     </div>
                                                     <div className="mb-1">
-                                                        <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
-                                                            Từ khóa<span className='text-red-600'>*</span>
+                                                        <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="tuKhoa">
+                                                            Từ khóa
                                                         </label>
-                                                        <TextArea rows={4} />
+                                                        <TextArea rows={4} value={tuKhoa} onChange={e => setTuKhoa(e.target.value)} />
                                                     </div>
                                                     <div className="mb-1">
-                                                        <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
-                                                            Mô tả trang<span className='text-red-600'>*</span>
+                                                        <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="moTaTrang">
+                                                            Mô tả trang
                                                         </label>
-                                                        <TextArea rows={4} />
+                                                        <TextArea rows={4} value={moTaTrang} onChange={e => setMoTaTrang(e.target.value)} />
 
                                                     </div>
                                                     <div className="mb-1">
-                                                        <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="danhmucsanpham">
-                                                            Đường dẫn đẹp<span className='text-red-600'>*</span>
+                                                        <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="duongDanDep">
+                                                            Đường dẫn đẹp
                                                         </label>
-                                                        <Input placeholder="Đường dẫn đẹp" />
+                                                        <Input placeholder="Đường dẫn đẹp" value={duongDanDep} onChange={e => setDuongDanDep(e.target.value)} />
 
                                                     </div>
                                                 </div>
@@ -666,15 +836,15 @@ const AddProduct = () => {
                                 />
                             </div>
                         </div>
+
                         <div className='flex items-center justify-end mb-[500px]'>
                             <Button style={{ right: 0 }} >
                                 Quay lại
                             </Button>
-                            <Button type="primary"  >
-                                Tiếp tục
+                            <Button type="primary" onClick={submitFormData}>
+                                Lưu lại
                             </Button>
                         </div>
-
                     </Col>
 
                     <Col span={4}>

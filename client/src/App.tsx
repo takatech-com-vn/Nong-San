@@ -79,7 +79,6 @@ function App() {
         .catch((error) => {
           console.log(error);
           setIsLoading(false); // Also set loading to false if there's an error
-          console.log('cc',)
         });
     } else {
       setIsLoading(false); // If there's no token, we're not loading
