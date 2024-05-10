@@ -231,6 +231,18 @@ body {
     color: #008000;
     font-weight: bold;
 }
+:where(.css-dev-only-do-not-override-1qfezbu).ant-btn-default:not(:disabled):not(.ant-btn-disabled) {
+    margin-right: 0px !important;
+}
+#quantity-input {
+    /* border: none;
+    box-shadow: none;
+    background: none;
+    font-weight: bold;
+    border: none; */
+    text-align: center;
+    /* max-width: 50px; */
+  }
 /* end custom ant dsn */
 
 .footer-item{
@@ -272,6 +284,11 @@ border: 1px solid rgba(255, 255, 255, 0.7) !important;
     margin: 4px 2px; /* Margin */
     cursor: pointer; /* Con trỏ chuột */
     display: none;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* end custom css */

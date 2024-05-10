@@ -4,4 +4,8 @@ export interface Values {
     price_product: number;
     price_coupons: number;
     coupons_product: string;
+    imageFileList : string;
 }
+export interface ProductVariationsProps {
+    onSubmit: (values: Values) => void;
+  }

@@ -31,26 +31,26 @@ function EditSlider({ banner, setModal }: EditBannerProps) {
     // console.log('name', banner)
     
     const handleSubmit = () => {
+        const formData = new FormData();
+        formData.append('name', name);
+    
         if (fileList.length > 0 && fileList[0].originFileObj) {
-            const formData = new FormData();
-            formData.append('name', name);
             formData.append('image', fileList[0].originFileObj);
-
-            const url = banner && banner.type === 'pc' && banner.id
-                ? `${import.meta.env.VITE_APP_API_URL}/slide/updateslidepc/${banner.id}`
-                : `${import.meta.env.VITE_APP_API_URL}/slide/updateslidemb/${banner && banner.id ? banner.id : ''}`;
-            axios.put(url, formData)
-                .then(() => {
-                    message.success(`Cập nhật slide ${banner?.type} thành công`);
-                })
-                .catch(() => {
-                    message.error(`Cập nhật slide ${banner?.type} thất bại`);
-                })
-            setModal(false);
-        } else {
-            console.log('Vui lòng chọn một file');
         }
+    
+        const url = banner && banner.type === 'pc' && banner.id
+            ? `${import.meta.env.VITE_APP_API_URL}/slide/updateslidepc/${banner.id}`
+            : `${import.meta.env.VITE_APP_API_URL}/slide/updateslidemb/${banner && banner.id ? banner.id : ''}`;
+        axios.put(url, formData)
+            .then(() => {
+                message.success(`Cập nhật slide ${banner?.type} thành công`);
+            })
+            .catch(() => {
+                message.error(`Cập nhật slide ${banner?.type} thất bại`);
+            })
+        setModal(false);
     }
+    
 
     return (
         <Form className="w-full rounded" onFinish={handleSubmit}>
