@@ -5,6 +5,7 @@ class brandController {
     CreateBrand (req: Request, res: Response) {
         const data = req.body;
         console.log("data: " + JSON.stringify(data));
+        console.log("data: " + data);
     }
 }
 

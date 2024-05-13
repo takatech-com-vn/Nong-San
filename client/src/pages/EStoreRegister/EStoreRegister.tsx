@@ -6,6 +6,7 @@ import Content2 from './Contents/Content2';
 import Content3 from './Contents/Content3';
 import Content4 from './Contents/Content4';
 import ValidationContext from './Contents/ValidationContext';
+import axios from 'axios';
 const steps = [
     {
         title: 'Thông tin chung',
@@ -79,8 +80,13 @@ const EStoreRegister: React.FC = () => {
                 }
             });
             console.log("data đăng ký bán hàng", data);
-
-            message.success('Processing complete!');
+            axios.post(`${import.meta.env.VITE_APP_API_URL}/brand/createbrand`, data)
+            .then(reponse => {
+                message.success("Thêm brand thành công", reponse.data.success);
+            })
+            .catch(() => {
+                message.error("Thêm brand thất bại");
+            })
         } else {
             notification.error({
                 message: 'Vui lòng nhập captcha',
