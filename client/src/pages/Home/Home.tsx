@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Pagination } from 'antd';
+import { Pagination, message } from 'antd';
+
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { setProducts } from '../../redux/productSlice';
@@ -14,13 +15,16 @@ import CardProduct2 from "./components/CardProduct2";
 import CardBrand from "./components/CardBrand";
 import CardNews from "./components/CardNews";
 import { Banner } from "../../services/Banner";
+import { New } from "../../services/New";
+import { useNavigate } from "react-router-dom";
 
 
 const Home: React.FC = () => {
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const productsdata = useSelector((state: RootState) => state.product.products);
-  // console.log(productsdata)
+  const [newsdata, setNewsData] = useState<New[]>([]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
   //data product
@@ -51,7 +55,7 @@ const Home: React.FC = () => {
           ...banner,
           // Đảm bảo rằng chỉ có một /images trong đường dẫn
           path: `${import.meta.env.VITE_APP_API_URL}${banner.path}`
-      }));
+        }));
         setDataBanners(banners);
         console.log("banners: " + JSON.stringify(banners));
       } catch (error) {
@@ -61,21 +65,55 @@ const Home: React.FC = () => {
     fetchData();
   }, []);
 
-  const [isScrolled, setIsScrolled] = useState(false);
-  const checkScroll = () => {
-    if (window.pageYOffset > 1) {
-      setIsScrolled(true);
-    } else {
-      setIsScrolled(false);
+  //data news
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/new/getnew`);
+        if (response.data.success) {
+          setNewsData(response.data.news);
+        } else {
+          message.error(response.data.message);
+        }
+      } catch (error) {
+        message.error("Lỗi lấy dữ liệu tin tức");
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  const [mouseDownTime, setMouseDownTime] = useState<number>(0);
+  const handleMouseDown = () => {
+    setMouseDownTime(Date.now());
+  };
+  // chi tiết tin tức
+  const handleMouseUp = (e: React.MouseEvent<HTMLElement>, news: New) => {
+    const mouseUpTime = Date.now();
+    if (mouseUpTime - mouseDownTime < 150) { // Chỉ xử lý nhấp nếu thời gian nhấn xuống rất ngắn
+      e.stopPropagation();
+      navigate(`/news/${news.id}`);
     }
   };
 
-  useEffect(() => {
-    window.addEventListener("scroll", checkScroll);
-    return () => {
-      window.removeEventListener("scroll", checkScroll);
-    };
-  }, []);
+
+
+  //-------------//
+  // const [isScrolled, setIsScrolled] = useState(false);
+  // const checkScroll = () => {
+  //   if (window.pageYOffset > 1) {
+  //     setIsScrolled(true);
+  //   } else {
+  //     setIsScrolled(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   window.addEventListener("scroll", checkScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", checkScroll);
+  //   };
+  // }, []);
   // slider setting
   const settings = {
     dots: true,
@@ -83,6 +121,9 @@ const Home: React.FC = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    pauseOnHover: true,
     nextArrow: <NextArrow onClick={function (): void {
       throw new Error("Function not implemented.");
     }} />,
@@ -166,19 +207,6 @@ const Home: React.FC = () => {
       }
     ],
   };
-
-  // const data = [
-  //   {
-  //     imageUrl:
-  //       "https://chonongsandaklak.vn/upload/2006294/20231017/banner1_new-1920x769_1_45209.png",
-  //     buttonText: "Hội chợ trực tuyến",
-  //   },
-  //   {
-  //     imageUrl:
-  //       "https://chonongsandaklak.vn/upload/2006294/20231116/370296858_6392210657551570_989834110336836902_n_8b8b5.png",
-  //     buttonText: "Hội chợ trực tuyến",
-  //   },
-  // ];
 
   const products = [
     {
@@ -266,50 +294,50 @@ const Home: React.FC = () => {
     },
   ]
 
-  //fake data news
-  const news = [
-    {
-      id: 1,
-      name: 'Sản xuất và tiêu thụ nông sản Đắk Lắk',
-      image: 'https://chonongsandaklak.vn/publish/thumbnail/2006294/480x270xdefault/upload/2006294/fck/admindlk/image(4).png',
 
-    },
-    {
-      id: 2,
-      name: 'Ngũ cốc hạt phổ biến',
-      image: 'https://chonongsandaklak.vn/publish/thumbnail/2006294/480x270xdefault/upload/2006294/20230815/grab4a40dT_E1_BB_8Fng_quan_v_E1_BB_81__C4_91_E1_BA_ADu_n_C3_A0nh.jpg',
-
-    },
-    {
-      id: 3,
-      name: 'Xuất khẩu nông sản đạt gần 28 tỉ USD trong 6 tháng, Mỹ là thị trường lớn nhất',
-      image: 'https://chonongsandaklak.vn/publish/thumbnail/2006294/480x270xdefault/upload/2006294/20221123/vai-thieu-bac-giang-2021-1-16257994449132063979936_9461b.jpg',
-
-    },
-    {
-      id: 4,
-      name: 'Đắk Lắk: Tiềm năng nông sản',
-      image: 'https://chonongsandaklak.vn/publish/thumbnail/2006294/480x270xdefault/upload/2006294/20231031/cay-giong-bo-304-nen-31_4ca63.jpg',
-
-    },
-    {
-      id: 5,
-      name: 'Thúc đẩy nền nông nghiệp minh bạch, trách nhiệm',
-      image: 'https://chonongsandaklak.vn/publish/thumbnail/2006294/480x270xdefault/upload/2006294/20221123/logo-nong-san-sach7a-2read-only-1664163272627257957423_669e3.jpeg',
-
-    },
-  ]
 
   // Tính toán sản phẩm hiển thị cho trang hiện tại
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = productsdata.slice(indexOfFirstItem, indexOfLastItem);
+  const [headerHeight, setHeaderHeight] = useState(60); // Giá trị ban đầu là chiều cao ước tính của header
+  const [isShow, setIsShow] = useState(false); // Tạo biến isShow để kiểm tra xem header đã được kéo xuống hay chưa
 
+  const handleScroll = () => {
+    if (window.pageYOffset > 1) {
+      setIsShow(true);
+    } else {
+      setIsShow(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      const headerElement = document.getElementById('header');
+      if (headerElement) {
+        setHeaderHeight(headerElement.offsetHeight);
+
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Gọi ngay lần đầu để lấy chiều cao chính xác
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   return (
-    <div className={`wrapper h-auto  ${isScrolled ? "pt-[280px] md:pt-[260px]" : "pt-3 md:pt-0"}`} >
+    <div className={`wrapper h-auto  pt-[${headerHeight}px] `} >
       {/* menu - slider */}
-      <div className="flex flex-col">
-        <div className="z-10">
+      <div className={`flex flex-col ${isShow ? 'mt-[50px]' : ""}`}>
+        <div className="z-[1]">
           <Menu />
         </div>
         <div className="max-h-[380px] items-center  justify-between">
@@ -411,8 +439,10 @@ const Home: React.FC = () => {
 
           <div className="w-full h-auto py-[15px] ">
             <Slider {...settingNews} className="news-slider">
-              {news.map((product) => (
-                <CardNews key={product.id} news={product} />
+              {newsdata.map(news => (
+                <div onMouseDown={handleMouseDown} onMouseUp={(e) => handleMouseUp(e, news)} key={news.id}>
+                  <CardNews news={news} />
+                </div>
               ))}
             </Slider>
           </div>

@@ -4,4 +4,5 @@ export interface New {
     path: string;
     short_description: string;
     content: string;
+    created_at:string
 }

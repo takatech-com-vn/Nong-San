@@ -44,15 +44,16 @@ const DetailProduct = () => {
                 const data = response.data;
                 // Lưu thông tin chi tiết của sản phẩm vào state
                 setDetail(data);
-                console.log('data', data)
+               
                 // Lưu thông tin cấu hình của sản phẩm vào state
                 // setConfiguration(data.configuration);
             })
             .catch((error) => {
                 console.error("There was an error!", error);
             });
+          
     };
-
+  console.log('data', Detail) 
     // slider setting
     const settings = {
         dots: false,
@@ -140,7 +141,7 @@ const DetailProduct = () => {
         return selectedProduct ? selectedProduct.price : Detail?.price;
     };
     return (
-        <div className={`wrapper h-auto bg-[#fafafb] p-[16px] mt-[20px] ${isScrolled ? "pt-[280px] md:pt-[260px]" : "pt-3 md:pt-0"}`}>
+        <div className={`wrapper h-auto bg-[#fafafb] p-[16px] mt-[20px] ${isScrolled ? "mt-[60px]" : "pt-3 md:pt-0"}`}>
             <div>
                 <Breadcrumb
                     items={[

@@ -70,6 +70,7 @@ const EStoreRegister: React.FC = () => {
                 "diaChiKhoHang": "",
                 "toaDoKhoHang": "",
                 "phoneKhoHang": "",
+                "yeuCauDapUng": "",
             };
             Object.keys(data).forEach(key => {
                 const value = sessionStorage.getItem(key);
@@ -77,7 +78,7 @@ const EStoreRegister: React.FC = () => {
                     data[key] = value;
                 }
             });
-            console.log("data đăng ký bán hàng",data);
+            console.log("data đăng ký bán hàng", data);
 
             message.success('Processing complete!');
         } else {
@@ -108,7 +109,7 @@ const EStoreRegister: React.FC = () => {
     }, []);
 
     return (
-        <div className={`wrapper h-auto bg-[#fafafb] rounded-[20px] p-[16px] mt-[20px] ${isScrolled ? "pt-[280px] md:pt-[260px]" : "pt-3 md:pt-0"}`}>
+        <div className={`wrapper h-auto bg-[#fafafb] rounded-[20px] p-[16px] mt-[20px] ${isScrolled ? "mt-[60px]" : "pt-3 md:pt-0"}`}>
             <div className='h-auto mt-[20px] leading-[20px] text-[14px]'>
                 <Steps current={current} items={items} className='w-[70%] m-auto' />
                 <div style={contentStyle}>{steps[current].content}</div>

@@ -59,9 +59,9 @@ function ThemTinTuc() {
                         beforeUpload={(file, fileList) => {
                             // Nếu đã có một ảnh được chọn, hủy bỏ tải lên
                             if (fileList.length > 1) {
-                                return false;
+                                return true;
                             }
-                            return true;
+                            return false;
                         }}
                         onChange={({ fileList }) => {
                             // Chỉ giữ lại ảnh cuối cùng được chọn
