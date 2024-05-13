@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import ColLeft from "./components/colLeft";
@@ -13,25 +13,26 @@ import { IoIosLogOut } from "react-icons/io";
 import axios from "axios";
 
 import { logout } from "../redux/useSlice";
+import { Affix } from "antd";
 const Header = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
   // console.log('user', user)
-  const [isScrolled, setIsScrolled] = useState(false);
-  const checkScroll = () => {
-    if (window.pageYOffset > 1) {
-      setIsScrolled(true);
-    } else {
-      setIsScrolled(false);
-    }
-  };
+  // const [isScrolled, setIsScrolled] = useState(false);
+  // const checkScroll = () => {
+  //   if (window.pageYOffset > 1) {
+  //     setIsScrolled(true);
+  //   } else {
+  //     setIsScrolled(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    window.addEventListener("scroll", checkScroll);
-    return () => {
-      window.removeEventListener("scroll", checkScroll);
-    };
-  }, []);
+  // useEffect(() => {
+  //   window.addEventListener("scroll", checkScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", checkScroll);
+  //   };
+  // }, []);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -154,11 +155,13 @@ const Header = () => {
           )}
         </div>
       </div>
-      <div
-        className={` ${isScrolled ? "fixed top-[0] left-0 right-0 z-50" : ""} bg-white`}
+      <Affix offsetTop={0} >
+            <div
+        // className={` ${isScrolled ? "fixed top-[0] left-0 right-0 z-50" : ""} bg-white`}
+        className="bg-white"
       >
-        <div className="wrapper">
-          <nav className="w-full h-[203.65px] bg-white mt-2">
+        <div className="wrapper" id="header">
+          <nav className="w-full h-auto bg-white pt-2">
             <div className="flex flex-row gap-[25px] border-b border-gray-300 py-[0px] md:py-[24px] justify-between md:justify-normal">
               <ColLeft></ColLeft>
               <span className=" hidden md:flex">
@@ -181,6 +184,8 @@ const Header = () => {
           </nav>
         </div>
       </div>
+      </Affix>
+  
     </header>
   );
 };

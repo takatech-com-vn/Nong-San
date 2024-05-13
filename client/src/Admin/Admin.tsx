@@ -56,6 +56,8 @@ const Admin: React.FC = () => {
                     <span> Admin</span>
                 </div>
                 <Menu
+                    style={{ height: '100%', overflow: 'auto' , paddingBottom:'60px'}}
+                    className='custom-scrollbar'
                     theme="dark"
                     mode="inline"
                     defaultSelectedKeys={['1']}
@@ -229,11 +231,12 @@ const Admin: React.FC = () => {
                         <Route path="danhsachtintuc" element={<DanhSachTinTuc />} />
 
                         <Route path="quanlysanpham" element={<QuanLySanPham />} />
+
                         <Route path="themphanloai" element={<ThemPhanLoai/>} />
                         <Route path="themhangsanxuat" element={<Themhangsx/>} />
                         <Route path="danhsachphanloai" element={<DanhSachPhanLoai/>} />
                         <Route path="danhsachhangsx" element={<DanhSachHangsx/>} />
-                        
+               
                         <Route path="themchinhsach" element={<ThemChinhSach />} />
                         <Route path="danhsachchinhsach" element={<DanhSachChinhSach />} />
                     </Routes>

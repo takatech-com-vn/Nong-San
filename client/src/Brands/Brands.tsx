@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MenuFoldOutlined, MenuUnfoldOutlined, } from '@ant-design/icons';
-import { Affix, Avatar, Button, Layout, Menu, Tooltip, theme } from 'antd';
+import { Affix, Avatar, Button, Dropdown, Layout, Menu, Tooltip, theme } from 'antd';
 import { Link, Route, Routes } from 'react-router-dom';
 import { FaBalanceScale, FaChartLine, FaGift, FaListUl, FaStore, FaTachometerAlt, FaUserAlt, FaWarehouse } from 'react-icons/fa';
 import QuanLyHonHang from './Pages/Quanlydonhang/QuanLyHonHang';
@@ -15,9 +15,28 @@ import { UserOutlined } from '@ant-design/icons';
 import { GoHome } from 'react-icons/go';
 // import axios from 'axios';
 // import { setUser } from '../redux/useSlice';
-
 const { Header, Sider, Content } = Layout;
+import type { MenuProps } from 'antd';
+import { IoIosLogOut } from 'react-icons/io';
+import TongQuan from './Pages/TongQuan/TongQuan';
 
+const items: MenuProps['items'] = [
+    {
+        key: '0',
+        label: <a href="#">Tài khoản của tôi</a>,
+        icon: <UserOutlined />,
+    },
+    {
+        type: 'divider',
+    },
+    {
+        key: '1',
+        label: <a href="#">Đăng xuất</a>,
+        icon: <IoIosLogOut size={20} />
+    },
+
+
+];
 const Brands: React.FC = () => {
     //   const dispatch = useDispatch();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -56,7 +75,7 @@ const Brands: React.FC = () => {
                     <span>  Brand Name</span>
                 </div>
                 <Menu
-                    style={{ height: '100%', overflow: 'auto' }}
+                    style={{ height: '100%', overflow: 'auto', paddingBottom:'60px'}}
                     className='custom-scrollbar'
                     theme="dark"
                     mode="inline"
@@ -65,7 +84,7 @@ const Brands: React.FC = () => {
                         {
                             key: '1',
                             icon: <FaTachometerAlt />,
-                            label: 'Tổng quan',
+                            label: <Link to="*">Tổng quan</Link>,
                         },
                         {
                             key: '2',
@@ -188,14 +207,17 @@ const Brands: React.FC = () => {
                                 />
                             </div>
                             <div className='mr-5 flex flex-row items-center gap-2'>
+
                                 <Tooltip title="Trang chủ">
                                     <button>
                                         <Link to="/">
-                                        <GoHome size={20} />
+                                            <GoHome size={20} />
                                         </Link>
                                     </button>
                                 </Tooltip>
-                                <Avatar icon={<UserOutlined />} />
+                                <Dropdown menu={{ items }} trigger={['hover']}>
+                                    <Avatar icon={<UserOutlined />} />
+                                </Dropdown>
                             </div>
                         </div>
 
@@ -213,6 +235,7 @@ const Brands: React.FC = () => {
                     }}
                 >
                     <Routes>
+                        <Route path="*" element={<TongQuan />} />
                         <Route path="quanlydonhang" element={<QuanLyHonHang />} />
                         <Route path="sanpham" element={<Sanpham />} />
                         <Route path="themsanpham" element={<AddProduct />} />
