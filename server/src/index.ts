@@ -21,7 +21,7 @@ app.use('/images', express.static(path.join(process.cwd(), 'public/images')));
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: "http://localhost:5173",
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
