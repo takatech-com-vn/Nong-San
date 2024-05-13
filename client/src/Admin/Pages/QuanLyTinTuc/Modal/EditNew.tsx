@@ -41,29 +41,29 @@ function EditNew({ news, setModal }: EditNewProps) {
     console.log('name', shortDescription)
 
     const handleSubmit = () => {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('shortDescription', shortDescription);
+        formData.append('content', content);
+    
         if (fileList.length > 0 && fileList[0].originFileObj) {
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('shortDescription', shortDescription);
-            formData.append('content', content);
             formData.append('image', fileList[0].originFileObj);
-
-            if (news) {
-                axios.put(`${import.meta.env.VITE_APP_API_URL}/new/updatenew/${news.id}`, formData)
-                    .then(response => {
-                        message.success("Sửa tin tức thành công", response.data.success);
-                    })
-                    .catch(() => {
-                        message.error("Sửa tin tức thất bại");
-                    })
-            } else {
-                console.log('News is null');
-            }
-            setModal(false);
-        } else {
-            console.log('Vui lòng chọn một file');
         }
+    
+        if (news) {
+            axios.put(`${import.meta.env.VITE_APP_API_URL}/new/updatenew/${news.id}`, formData)
+                .then(response => {
+                    message.success("Sửa tin tức thành công", response.data.success);
+                })
+                .catch(() => {
+                    message.error("Sửa tin tức thất bại");
+                })
+        } else {
+            console.log('News is null');
+        }
+        setModal(false);
     }
+    
 
     return (
         <Form className="w-full rounded" onFinish={handleSubmit}>
