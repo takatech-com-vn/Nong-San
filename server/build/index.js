@@ -19,7 +19,7 @@ const port = 3000;
 // Cấu hình máy chủ để phục vụ tệp tĩnh
 app.use('/images', express_1.default.static(path.join(process.cwd(), 'public/images')));
 app.use((0, cors_1.default)({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
 }));
