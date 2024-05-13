@@ -10,4 +10,8 @@ router.get('/getcategory', productController_1.default.GetCategory);
 router.delete('/deletecategory/:id', productController_1.default.DeleteCategory);
 router.get('/getcategory/:id', productController_1.default.GetCategoryID);
 router.put('/updatecategory/:id', productController_1.default.UpdateCategory);
+router.post('/addmanufacturer', productController_1.default.CreateManufacturer);
+router.get('/getmanufacturer', productController_1.default.GetManufacturer);
+router.delete('/deletemanufacturer/:id', productController_1.default.DeleteManufacturer);
+router.put('/updatemanufacturer/:id', productController_1.default.UpdateManufacturer);
 module.exports = router;

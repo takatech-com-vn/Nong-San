@@ -28,7 +28,6 @@ function ThemPhanLoai() {
 
   return (
     <Form className="w-full rounded" onFinish={handleSubmit}>
-      <h2 className="mb-4 text-xl font-bold text-gray-700">Thêm phân loại</h2>
       <div>
         <Form.Item label="Tên phân loại" name="name">
             <Input style={{width: '500px'}} placeholder="Nhập tên sản phẩm phân loại" onChange={e => setName(e.target.value)}/>

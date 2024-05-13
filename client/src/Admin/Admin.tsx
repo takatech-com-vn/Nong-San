@@ -16,6 +16,8 @@ import DanhSachTinTuc from './Pages/QuanLyTinTuc/DanhSachTinTuc';
 import QuanLySanPham from './Pages/QuanLySanPham';
 import ThemPhanLoai from './Pages/QuanLyPhanLoai/ThemPhanLoai';
 import DanhSachPhanLoai from './Pages/QuanLyPhanLoai/DanhSachPhanLoai';
+import Themhangsx from './Pages/QuanLyPhanLoai/Themhangsx';
+import DanhSachHangsx from './Pages/QuanLyPhanLoai/DanhSachHangsx';
 
 const { Header, Sider, Content } = Layout;
 
@@ -86,10 +88,24 @@ const Admin: React.FC = () => {
                                 },
 
                                 {
+                                    key: "39",
+                                    icon: <FaListUl />,
+                                    label: <Link to="themhangsanxuat">Thêm hãng sản xuất</Link>,
+                                    onClick: () => setCurrentItem('Thêm hãng sản xuất')
+                                },
+
+                                {
                                     key: "38",
                                     icon: <FaListUl />,
                                     label: <Link to="danhsachphanloai">Danh sách phân loại</Link>,
                                     onClick: () => setCurrentItem('Danh sách phân loại')
+                                },
+
+                                {
+                                    key: "40",
+                                    icon: <FaListUl />,
+                                    label: <Link to="danhsachhangsx">Danh sách hãng sản xuất</Link>,
+                                    onClick: () => setCurrentItem('Danh sách hãng sản xuất')
                                 },
                             ],
                         },
@@ -215,9 +231,12 @@ const Admin: React.FC = () => {
                         <Route path="danhsachtintuc" element={<DanhSachTinTuc />} />
 
                         <Route path="quanlysanpham" element={<QuanLySanPham />} />
-                        <Route path="themphanloai" element={<ThemPhanLoai />} />
-                        <Route path="danhsachphanloai" element={<DanhSachPhanLoai />} />
 
+                        <Route path="themphanloai" element={<ThemPhanLoai/>} />
+                        <Route path="themhangsanxuat" element={<Themhangsx/>} />
+                        <Route path="danhsachphanloai" element={<DanhSachPhanLoai/>} />
+                        <Route path="danhsachhangsx" element={<DanhSachHangsx/>} />
+               
                         <Route path="themchinhsach" element={<ThemChinhSach />} />
                         <Route path="danhsachchinhsach" element={<DanhSachChinhSach />} />
                     </Routes>
