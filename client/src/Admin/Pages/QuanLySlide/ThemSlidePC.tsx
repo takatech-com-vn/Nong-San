@@ -5,7 +5,7 @@ import {
     Input,
     Upload,
     message
-  } from "antd";
+} from "antd";
 import axios from 'axios';
 import { UploadFile } from 'antd/lib/upload/interface';
 
@@ -18,7 +18,9 @@ function ThemSlidePC() {
             const formData = new FormData();
             formData.append('name', name);
             formData.append('image', fileList[0].originFileObj);
-    
+            formData.forEach((value, key) => {
+                console.log(key, value);
+            });
             axios.post(`${import.meta.env.VITE_APP_API_URL}/slide/createslide`, formData)
                 .then(() => {
                     message.success('Thêm slide pc thành công');
@@ -29,14 +31,14 @@ function ThemSlidePC() {
         } else {
             console.log('Vui lòng chọn một file');
         }
-    }    
+    }
 
-  return (
-    <Form className="w-full rounded" onFinish={handleSubmit}>
+    return (
+        <Form className="w-full rounded" onFinish={handleSubmit}>
             <h2 className="mb-4 text-xl font-bold text-gray-700">Thêm sản phẩm</h2>
             <div>
                 <Form.Item label="Tên chính sách" name="name_product">
-                    <Input style={{width: '500px'}} placeholder="Nhập tên chính sách" onChange={e => setName(e.target.value)}/>
+                    <Input style={{ width: '500px' }} placeholder="Nhập tên chính sách" onChange={e => setName(e.target.value)} />
                 </Form.Item>
 
                 <Form.Item label="Slide" name="image_slice">
@@ -68,8 +70,8 @@ function ThemSlidePC() {
                     Thêm slide pc
                 </Button>
             </Form.Item>
-    </Form>
-  )
+        </Form>
+    )
 }
 
 export default ThemSlidePC

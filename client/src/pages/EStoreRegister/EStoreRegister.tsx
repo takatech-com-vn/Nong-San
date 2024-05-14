@@ -66,7 +66,7 @@ const EStoreRegister: React.FC = () => {
                 "selectedDistrict": "",
                 "selectedWard": "",
                 "diaChiCongTy": "",
-                "fileChupBanDangKyDoanhNghiep": "",
+                "image": "",
                 "tenNguoiLienHe": "",
                 "diaChiKhoHang": "",
                 "toaDoKhoHang": "",
