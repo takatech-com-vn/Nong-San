@@ -1,15 +1,19 @@
 // Content2.tsx
 
 import React, { useEffect, useState } from 'react';
-import { Form, Select } from 'antd';
+import { Form, GetProp, Select, UploadFile, UploadProps } from 'antd';
 import { Cascader } from 'antd';
 import type { MultipleCascaderProps, } from 'antd/es/cascader';
-import { InboxOutlined } from '@ant-design/icons';
+// import { InboxOutlined } from '@ant-design/icons';
 // import type { UploadFile, } from 'antd';
-import { Upload } from 'antd';
-import { AiTwotoneDelete } from 'react-icons/ai';
+// import { AiTwotoneDelete } from 'react-icons/ai';
+import { PlusOutlined } from '@ant-design/icons';
+
+import { Image, Upload } from 'antd';
 import axios from 'axios';
 // const { SHOW_CHILD } = Cascader;
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+
 interface City {
     Id: string;
     Name: string;
@@ -84,7 +88,17 @@ const onSearch = (value: string) => {
 const filterOption = (input: string, option?: { label: string; value: string }) =>
     (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
-const { Dragger } = Upload;
+// const { Dragger } = Upload;
+
+const getBase64 = (file: FileType): Promise<string> =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+    });
+
+
 const Content2: React.FC = () => {
     const [danhMucSanPham, setDanhMucSanPham] = useState<string[]>([]);
     const [loaiGianHang, setLoaiGianHang] = useState<string[]>([])
@@ -99,7 +113,7 @@ const Content2: React.FC = () => {
     const [phoneCongTy, setPhoneCongTy] = useState('');
     const [maBuuDien, setMaBuuDien] = useState('');
     const [diaChiCongTy, setDiaChiCongTy] = useState('');
-    const [fileChupBanDangKyDoanhNghiep, setFileChupBanDangKyDoanhNghiep] = useState<string | null>(null);
+    // const [fileChupBanDangKyDoanhNghiep, setFileChupBanDangKyDoanhNghiep] = useState<string | null>(null);
     const [cities, setCities] = useState<City[]>([]);
     const [selectedCity, setSelectedCity] = useState<string>("");
     const [selectedDistrict, setSelectedDistrict] = useState<string>("");
@@ -137,30 +151,34 @@ const Content2: React.FC = () => {
         sessionStorage.setItem('selectedWard', JSON.stringify(value));
     };
 
-    // const [fileList, setFileList] = useState<UploadFile[]>([]);
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
     useEffect(() => {
-        // Khôi phục hình ảnh từ sessionStorage khi component được render
-        const storedImageData = sessionStorage.getItem('fileChupBanDangKyDoanhNghiep');
-        if (storedImageData) setFileChupBanDangKyDoanhNghiep(storedImageData);
+        const storedImageData = sessionStorage.getItem('image');
+        if (storedImageData) {
+            setFileList(JSON.parse(storedImageData));
+             console.log('log img',fileList)
+        }
     }, []);
 
-    const handleBeforeUpload = (file: File) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-            // Chuyển đổi hình ảnh thành base64 và lưu vào state
-            const base64Data = reader.result as string;
-            setFileChupBanDangKyDoanhNghiep(base64Data);
-            // Lưu base64 vào sessionStorage
-            sessionStorage.setItem('fileChupBanDangKyDoanhNghiep', base64Data);
-        };
-        return false; // Hủy quá trình tải lên mặc định của Upload
+    useEffect(() => {
+        console.log('log img', fileList);
+    }, [fileList]);
+
+    const handleBeforeUpload = ({ fileList }: { fileList: UploadFile[] }) => {
+        // Chỉ giữ lại ảnh cuối cùng được chọn
+        if (fileList.length > 1) {
+            fileList.shift();
+        }
+
+        // Lưu fileList vào sessionStorage
+        sessionStorage.setItem('image', JSON.stringify(fileList));
+        setFileList(fileList);
     };
-    const handleRemove = () => {
-        // Xóa hình ảnh khỏi state và sessionStorage khi người dùng loại bỏ nó
-        setFileChupBanDangKyDoanhNghiep(null);
-        sessionStorage.removeItem('fileChupBanDangKyDoanhNghiep');
-    };
+    // const handleRemove = () => {
+    //     // Xóa hình ảnh khỏi state và sessionStorage khi người dùng loại bỏ nó
+    //     setFileList([]);
+    //     sessionStorage.removeItem('image');
+    // };
 
     useEffect(() => {
         const storedDanhMucSanPham = sessionStorage.getItem('danhMucSanPham');
@@ -179,7 +197,7 @@ const Content2: React.FC = () => {
         const storedQuanHuyen = sessionStorage.getItem('selectedDistrict');
         const storedPhuongXa = sessionStorage.getItem('selectedWard');
         const storedDiaChiCongTy = sessionStorage.getItem('diaChiCongTy');
-        const storedFileChupBanDangKyDoanhNghiep = sessionStorage.getItem('fileChupBanDangKyDoanhNghiep');
+        // const storedFileChupBanDangKyDoanhNghiep = sessionStorage.getItem('fileChupBanDangKyDoanhNghiep');
 
         if (storedDanhMucSanPham) { setDanhMucSanPham(JSON.parse(storedDanhMucSanPham)); }
         if (storedLoaiGianHang) { setLoaiGianHang(JSON.parse(storedLoaiGianHang)); }
@@ -197,7 +215,7 @@ const Content2: React.FC = () => {
         if (storedQuanHuyen) { setSelectedDistrict(storedQuanHuyen); }
         if (storedPhuongXa) { setSelectedWard(storedPhuongXa); }
         if (storedDiaChiCongTy) { setDiaChiCongTy(storedDiaChiCongTy); }
-        if (storedFileChupBanDangKyDoanhNghiep) { setFileChupBanDangKyDoanhNghiep(storedFileChupBanDangKyDoanhNghiep); }
+        // if (storedFileChupBanDangKyDoanhNghiep) { setFileChupBanDangKyDoanhNghiep(storedFileChupBanDangKyDoanhNghiep); }
     }, []);
 
     useEffect(() => {
@@ -211,8 +229,6 @@ const Content2: React.FC = () => {
         sessionStorage.setItem('phoneCongTy', phoneCongTy);
         sessionStorage.setItem('maBuuDien', maBuuDien);
         sessionStorage.setItem('diaChiCongTy', diaChiCongTy);
-
-
     }, [nguoiDaiDien, tenCongTy, maSoDoanhNghiep, diaChiThuongTru, soGiayChungNhanDKKD, ngayCapGiayChungNhanDKKD, noiCapGiayChungNhanDKKD, phoneCongTy, maBuuDien, diaChiCongTy]);
 
     // Hàm xử lý sự kiện khi có sự thay đổi trong Cascader
@@ -235,7 +251,22 @@ const Content2: React.FC = () => {
         setLoaiDonVi(value);
         sessionStorage.setItem('loaiDonVi', value);
     };
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState('');
+    const handlePreview = async (fileList: UploadFile) => {
+        if (!fileList.url && !fileList.preview) {
+            fileList.preview = await getBase64(fileList.originFileObj as FileType);
+        }
 
+        setPreviewImage(fileList.url || (fileList.preview as string));
+        setPreviewOpen(true);
+    };
+    const uploadButton = (
+        <button style={{ border: 0, background: 'none' }} type="button">
+            <PlusOutlined />
+            <div style={{ marginTop: 8 }}>Upload</div>
+        </button>
+    );
     return (
         <div className='h-auto flex flex-col mt-[40px]'>
             <span className='text-[20px] text-black font-medium mb-4'>Đại diện thương hiệu</span>
@@ -511,32 +542,29 @@ const Content2: React.FC = () => {
                     <label className="block text-sm font-medium text-gray-700 " htmlFor="fileChupBanDangKyDoanhNghiep">
                         File chụp bản đăng ký doanh nghiệp
                     </label>
-                    <Dragger
-                        accept=".png,.jpg,.jpeg"
-                        beforeUpload={handleBeforeUpload}
-                        fileList={[]}
-                        onRemove={handleRemove}
-                        showUploadList={{
-                            showRemoveIcon: true,
-                        }}
-                    >
-                        {fileChupBanDangKyDoanhNghiep ? (
-                            <div className='relative group'>
-                                <img src={fileChupBanDangKyDoanhNghiep} alt="Uploaded" className='w-full h-auto group-hover:opacity-50' />
-                                <button onClick={handleRemove} className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  opacity-0 group-hover:!opacity-100'>
-                                    <AiTwotoneDelete className='text-red-600 text-[30px]' />
-                                </button>
-                            </div>
+                    <Upload
+                        accept=".png,.jpeg,.jpg"
+                        listType="picture-card"
+                        fileList={fileList}
+                        onPreview={handlePreview}
+                        onChange={handleBeforeUpload}
+                        beforeUpload={() => false}
+                        className=''
 
-                        ) : (
-                            <>
-                                <p className="ant-upload-drag-icon">
-                                    <InboxOutlined />
-                                </p>
-                                <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                            </>
-                        )}
-                    </Dragger>
+                    >
+                        {fileList.length >= 1 ? null : uploadButton}
+                    </Upload>
+                    {previewImage && (
+                        <Image
+                            wrapperStyle={{ display: 'none' }}
+                            preview={{
+                                visible: previewOpen,
+                                onVisibleChange: (visible) => setPreviewOpen(visible),
+                                afterOpenChange: (visible) => !visible && setPreviewImage(''),
+                            }}
+                            src={previewImage}
+                        />
+                    )}
                 </div>
             </div>
         </div>
