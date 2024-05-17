@@ -10,6 +10,9 @@ const DanhSachTinTuc: React.FC = () => {
   const [data, setData] = useState<New[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [editingNews, setEditingNews] = useState<New | null>(null);
+  const [modalContent, setModalContent] = useState<string>(''); // State to store modal content
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // State to control modal visibility
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -48,7 +51,23 @@ const DanhSachTinTuc: React.FC = () => {
         console.error('Lỗi xóa banner: ', error)
       })
   }
+  const renderDescription = (content: string, record: New) => (
+    <span key={record.id}>
+      <div dangerouslySetInnerHTML={{ __html: content.slice(0, 100) }} />
+      {content.length > 100 && <a onClick={() => showModal(content)}>...Xem thêm</a>}
+    </span>
+  );
 
+  // Function to show modal and set modal content
+  const showModal = (content: string) => {
+    setModalContent(content);
+    setIsModalVisible(true);
+  };
+
+  // Function to hide modal
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   const columns: ColumnsType<New> = [
 
     {
@@ -77,7 +96,8 @@ const DanhSachTinTuc: React.FC = () => {
       title: 'Mô tả',
       dataIndex: 'content',
       key: 'content',
-      width: '20%'
+      width: '20%',
+      render:renderDescription
     },
 
     {
@@ -118,6 +138,14 @@ const DanhSachTinTuc: React.FC = () => {
         footer={false}
       >
         <EditNew news={editingNews} setModal={setOpenModal} />
+      </Modal>
+      <Modal
+        title="Chi tiết nội dung"
+        open={isModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <div dangerouslySetInnerHTML={{ __html: modalContent }} />
       </Modal>
     </>
   )

@@ -14,5 +14,7 @@ export interface Product {
     }
 
     ]
+    category: string;
+    danhmuc: string
 }
 
