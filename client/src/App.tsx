@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './redux/useSlice';
 import HomePage from './pages/Home/Home'
-import ProductPage from './pages/Product/Product'
-import Header from './layouts/Header'
+import ProductPage from './pages/Product/AllProducts'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import { useNavigate, Navigate } from 'react-router-dom';
@@ -17,6 +16,9 @@ import Footer from './layouts/Footer';
 import EStoreRegister from './pages/EStoreRegister/EStoreRegister';
 import DetailProduct from './pages/DetailProduct/DetailProduct';
 import DetailNews from './pages/News/DetailNews';
+import DetailPolicy from './pages/Policy/DetailPolicy';
+import AllProducts from './pages/Product/AllProducts';
+import Header2 from './layouts/Header2';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -104,13 +106,15 @@ function App() {
 
         <Route path='*' element={
           <>
-            <Header />
+            <Header2 />
             <Routes>
               <Route index element={<HomePage />} />
               <Route path='/san-pham' element={<ProductPage />} />
               <Route path="/detail/:id" element={<DetailProduct />} />
               <Route path='/EStore-register' element={<EStoreRegister />} />
               <Route path="/news/:id" element={<DetailNews />} />
+              <Route path="/policy/:id" element={<DetailPolicy />} />
+              <Route path="/products" element={<AllProducts />} />
             </Routes>
             <Footer/>
           </>

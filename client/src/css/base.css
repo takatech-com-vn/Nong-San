@@ -1,16 +1,60 @@
 html,
 body {
-    @apply bg-white text-black font-font1
+    @apply bg-[#f0f2f5] text-black font-font1
+}
+
+/* since nested groupes are not supported we have to use 
+     regular css for the nested dropdowns 
+  */
+.custom-menu li>ul {
+    transform: translateX(100%) scale(0);
+}
+
+.custom-menu li:hover>ul {
+    transform: translateX(101%) scale(1);
+}
+
+.custom-menu li>button svg {
+    transform: rotate(-90deg);
+}
+
+.custom-menu li:hover>button svg {
+    transform: rotate(-270deg);
+}
+
+/* Below styles fake what can be achieved with the tailwind config
+     you need to add the group-hover variant to scale and define your custom
+     min width style.
+  	 See https://codesandbox.io/s/tailwindcss-multilevel-dropdown-y91j7?file=/index.html
+  	 for implementation with config file
+  */
+.group:hover .group-hover\:scale-100 {
+    transform: scale(1)
+}
+
+.group:hover .group-hover\:-rotate-180 {
+    transform: rotate(180deg)
+}
+
+.scale-0 {
+    transform: scale(0)
+}
+
+.min-w-32 {
+    min-width: 8rem
 }
 
 .wrapper {
     max-width: 1330px;
     width: 100%;
     margin-inline: auto;
-    padding-left: 15px;
-    padding-right: 15px;
+
+    @apply px-[15px] md:px-[15px]
 }
 
+.home-sections {
+    @apply bg-[#0055aa] text-white
+}
 
 .form-control {
     width: 123px;
@@ -50,7 +94,7 @@ body {
 
 /* custom css */
 .li-navbar {
-    @apply p-[10px] text-[16px] uppercase text-[#fff200] hover:bg-[#004d00] hover:border-b-2 border-white hover:text-white;
+    @apply p-[10px] text-sm uppercase text-[#ffffff] hover:border-b-2 border-[#ff8300] hover:text-[#ff8300];
 }
 
 /* custom slick-dots */
@@ -71,7 +115,7 @@ body {
 }
 
 .slick-dots li.slick-active button:before {
-    background-color: green;
+    background-color: #ff8300;
     width: 35px;
     height: 4px;
     border-radius: 5px;
@@ -183,12 +227,12 @@ body {
 /* end custom react-bootstrap */
 
 /* custom and dsn */
-:where(.css-dev-only-do-not-override-1qfezbu).ant-pagination .ant-pagination-item-active {
+/* :where(.css-dev-only-do-not-override-1qfezbu).ant-pagination .ant-pagination-item-active {
     font-weight: 600;
     background-color: #ffffff;
     border-color: #1677ff;
     border-radius: 9999px;
-}
+} */
 
 /* Switch Step */
 :where(.css-dev-only-do-not-override-1qfezbu).ant-btn-primary {
@@ -196,28 +240,35 @@ body {
     background: #008000 !important;
     box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
 }
+
 :where(.css-dev-only-do-not-override-1qfezbu).ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
     color: #008000;
     border-color: #008000;
     background: #ffffff;
 }
-:where(.css-dev-only-do-not-override-1qfezbu).ant-btn-default:not(:disabled):not(.ant-btn-disabled){
+
+:where(.css-dev-only-do-not-override-1qfezbu).ant-btn-default:not(:disabled):not(.ant-btn-disabled) {
     margin-right: 10px;
 }
+
 :where(.css-dev-only-do-not-override-1qfezbu).ant-steps .ant-steps-item-process .ant-steps-item-icon {
     background-color: #128d12;
     border-color: #008000;
 }
+
 :where(.css-dev-only-do-not-override-1qfezbu).ant-steps .ant-steps-item-finish .ant-steps-item-icon {
     background-color: #e6ffee;
     border-color: #e6f4ff;
 }
-:where(.css-dev-only-do-not-override-1qfezbu).ant-steps .ant-steps-item-finish .ant-steps-item-icon >.ant-steps-icon {
+
+:where(.css-dev-only-do-not-override-1qfezbu).ant-steps .ant-steps-item-finish .ant-steps-item-icon>.ant-steps-icon {
     color: #008000;
 }
+
 :where(.css-dev-only-do-not-override-1qfezbu).ant-steps .ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title::after {
     background-color: #008000;
 }
+
 :where(.css-dev-only-do-not-override-1qfezbu).ant-anchor-wrapper:not(.ant-anchor-wrapper-horizontal) .ant-anchor .ant-anchor-ink {
     position: absolute;
     inset-inline-start: 0;
@@ -227,13 +278,16 @@ body {
     width: 2px;
     background-color: #008000;
 }
+
 :where(.css-dev-only-do-not-override-1qfezbu).ant-anchor-wrapper .ant-anchor .ant-anchor-link-active>.ant-anchor-link-title {
     color: #008000;
     font-weight: bold;
 }
+
 :where(.css-dev-only-do-not-override-1qfezbu).ant-btn-default:not(:disabled):not(.ant-btn-disabled) {
     margin-right: 0px !important;
 }
+
 #quantity-input {
     /* border: none;
     box-shadow: none;
@@ -242,53 +296,121 @@ body {
     border: none; */
     text-align: center;
     /* max-width: 50px; */
-  }
+}
+
+:where(.css-dev-only-do-not-override-1qfezbu).ant-divider-horizontal.ant-divider-with-text-left::after {
+    width: calc(100% - 0.05* 100%);
+}
+
+:where(.css-dev-only-do-not-override-1qfezbu).ant-divider-horizontal.ant-divider-with-text::before,
+:where(.css-dev-only-do-not-override-1qfezbu).ant-divider-horizontal.ant-divider-with-text::after {
+    position: relative;
+    border-block-start: 3px solid transparent;
+    border-block-start-color: inherit;
+    border-block-end: 0;
+    transform: translateY(50%);
+    content: '';
+}
+
+:where(.css-dev-only-do-not-override-1qfezbu).ant-divider-horizontal.ant-divider-with-text {
+    display: flex;
+    align-items: center;
+    margin: 0px 0;
+    color: rgba(0, 0, 0, 0.88);
+    font-weight: 500;
+    font-size: 16px;
+    white-space: nowrap;
+    text-align: center;
+    border-block-start: 0 rgba(5, 5, 5, 0.06);
+}
+
 /* end custom ant dsn */
 
-.footer-item{
+.footer-item {
     @apply text-[14px] py-[10px] text-gray-700
 }
-.Glassmorphism{
-background: rgba(255, 255, 255, 0.16) !important;
-border-radius: 10px !important;
-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-backdrop-filter: blur(3.7px) !important;
--webkit-backdrop-filter: blur(3.7px);
-border: 1px solid rgba(255, 255, 255, 0.7) !important;
+
+.Glassmorphism {
+    background: rgba(255, 255, 255, 0.16) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+    backdrop-filter: blur(3.7px) !important;
+    -webkit-backdrop-filter: blur(3.7px);
+    border: 1px solid rgba(255, 255, 255, 0.7) !important;
 }
+
 /* thumb */
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background-color: rgb(74, 76, 74);
     border-radius: 10px;
     display: block;
-  }
-  /* Track */
-  .custom-scrollbar::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px grey; 
+}
+
+/* Track */
+.custom-scrollbar::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
     border-radius: 10px;
     display: block;
-  }
-   .custom-scrollbar::-webkit-scrollbar {
+}
+
+.custom-scrollbar::-webkit-scrollbar {
     width: 4px;
-  }
-  /* Trong file CSS của bạn */
+}
+
+/* Trong file CSS của bạn */
 #reload_href {
-    background-color: #4CAF50; /* Màu nền */
-    border: none; /* Không viền */
-    color: white; /* Màu chữ */
-    padding: 15px 32px; /* Padding */
-    text-align: center; /* Căn giữa chữ */
-    text-decoration: none; /* Không gạch chân */
-    display: inline-block; /* Hiển thị inline */
-    font-size: 16px; /* Kích thước chữ */
-    margin: 4px 2px; /* Margin */
-    cursor: pointer; /* Con trỏ chuột */
+    background-color: #4CAF50;
+    /* Màu nền */
+    border: none;
+    /* Không viền */
+    color: white;
+    /* Màu chữ */
+    padding: 15px 32px;
+    /* Padding */
+    text-align: center;
+    /* Căn giữa chữ */
+    text-decoration: none;
+    /* Không gạch chân */
+    display: inline-block;
+    /* Hiển thị inline */
+    font-size: 16px;
+    /* Kích thước chữ */
+    margin: 4px 2px;
+    /* Margin */
+    cursor: pointer;
+    /* Con trỏ chuột */
     display: none;
 }
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+/* tag giảm giá */
+.discount-tag {
+    position: relative;
+    width: 36.3px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    height: 100%;
+    background-color: darkorange;
+    color: white;
+    font-weight: bold;
+}
+
+.discount-tag:before {
+    content: "";
+    border-left: 18.15px solid darkorange;
+    border-right: 18.15px solid darkorange;
+    border-bottom: 10px solid transparent;
+    padding-top: 2px;
+    position: absolute;
+    z-index: 2;
+    bottom: -10px;
+    left: 0px;
+    right: 0px;
 }
 
 /* end custom css */

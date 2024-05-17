@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Pagination, message } from 'antd';
-
+import { Divider, Pagination, message } from 'antd';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { setProducts } from '../../redux/productSlice';
@@ -8,7 +9,6 @@ import { RootState } from '../../redux/store';
 import Slider from "react-slick";
 import Card from "./components/Card";
 import { NextArrow, PrevArrow } from "../../components/slick/index";
-import Menu from "./components/Menu";
 import CardProduct from "./components/CardProduct";
 import { GoArrowRight } from "react-icons/go";
 import CardProduct2 from "./components/CardProduct2";
@@ -17,6 +17,7 @@ import CardNews from "./components/CardNews";
 import { Banner } from "../../services/Banner";
 import { New } from "../../services/New";
 import { useNavigate } from "react-router-dom";
+import MenuBar from "./components/Menu";
 
 
 const Home: React.FC = () => {
@@ -172,7 +173,7 @@ const Home: React.FC = () => {
     ],
   };
   const settingNews = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 4,
@@ -210,8 +211,8 @@ const Home: React.FC = () => {
 
   const products = [
     {
-      name: 'Bột Cacao',
-      image: 'https://chonongsandaklak.vn/publish/thumbnail/2006294/400x400xdefault/upload/2006294/20240116/id-1-coc-ca-cao-nong-tang-cuong-10-luong-mau-len-nao-01_4bb6c.jpg',
+      name: 'MÁY CHỦ/ SERVER DELL T30 GIÁ RẺ CHO DN.',
+      image: 'https://vietnam.atalink.com/_next/image?url=https%3A%2F%2Fapi.atalink.com%2Fphotos%2Fimg_ae925655-606d-4ddb-9da8-de5b9bbf460b%2Fview&w=256&q=100',
       discount: '-47%',
       price: '80.000 ₫ ',
       originalPrice: '150.000 ₫',
@@ -265,7 +266,7 @@ const Home: React.FC = () => {
     {
       id: 1,
       name: 'Shop1',
-      image: 'https://chonongsandaklak.vn/publish/thumbnail/2006294/400x400xfull/upload/2006294/20231114/Hinh_anh_che_Ngoc_Thuy__01__a93d3.jpg',
+      image: 'https://api.atalink.com/photos/img_59a1a852-ec6d-43a3-a40e-05dbd6586312/view?variant=origin',
 
     },
     {
@@ -300,170 +301,211 @@ const Home: React.FC = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = productsdata.slice(indexOfFirstItem, indexOfLastItem);
-  const [headerHeight, setHeaderHeight] = useState(60); // Giá trị ban đầu là chiều cao ước tính của header
-  const [isShow, setIsShow] = useState(false); // Tạo biến isShow để kiểm tra xem header đã được kéo xuống hay chưa
+  // const [headerHeight, setHeaderHeight] = useState(60); // Giá trị ban đầu là chiều cao ước tính của header
+  // const [isShow, setIsShow] = useState(false); // Tạo biến isShow để kiểm tra xem header đã được kéo xuống hay chưa
 
-  const handleScroll = () => {
-    if (window.pageYOffset > 1) {
-      setIsShow(true);
-    } else {
-      setIsShow(false);
-    }
-  };
+  // const handleScroll = () => {
+  //   if (window.pageYOffset > 1) {
+  //     setIsShow(true);
+  //   } else {
+  //     setIsShow(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-  useEffect(() => {
-    const handleResize = () => {
-      const headerElement = document.getElementById('header');
-      if (headerElement) {
-        setHeaderHeight(headerElement.offsetHeight);
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     const headerElement = document.getElementById('header');
+  //     if (headerElement) {
+  //       setHeaderHeight(headerElement.offsetHeight);
 
-      }
-    };
+  //     }
+  //   };
 
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Gọi ngay lần đầu để lấy chiều cao chính xác
+  //   window.addEventListener('resize', handleResize);
+  //   handleResize(); // Gọi ngay lần đầu để lấy chiều cao chính xác
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('resize', handleResize);
+  //   };
+  // }, []);
   return (
-    <div className={`wrapper h-auto  pt-[${headerHeight}px] `} >
-      {/* menu - slider */}
-      <div className={`flex flex-col ${isShow ? 'mt-[50px]' : ""}`}>
-        <div className="z-[1]">
-          <Menu />
-        </div>
-        <div className="max-h-[380px] items-center  justify-between">
-          <Slider {...settings}>
-            {dataBanners.map((banner, id) => (
-              <Card
-                key={id}
-                banner={banner}
-              />
-            ))}
-          </Slider>
-        </div>
+    <div className={` h-auto  mt-[56px] bg-gradient-to-b from-[#c2effa] via-[#f0f2f5] to-[#f0f2f5]`} >
+      <div className="z-[10] px-3 lg:px-0  bg-white">
+        <MenuBar />
       </div>
+      <div className="wrapper">
 
 
-      <div>
-        {/* Deal hot */}
-        <div className="mt-[40px]">
-          <div className="w-full h-[38px] bg-[#008000] rounded-t-[3px]  py-[10px] px-[15px]
-          flex flex-row justify-between items-center
-          text-[#fff200]">
-            <div className="font-bold text-[16px]">Deal hot</div>
-            <div className="text-[14px]">Xem tất cả</div>
-          </div>
-
-          <div className="w-full h-auto p-[15px] ">
-            <Slider {...settingProduct}>
-              {products.map((product, index) => (
-                <CardProduct key={index} product={product} />
-              ))}
-            </Slider>
-          </div>
-        </div>
-        {/* Nông sản mùa vụ giá tốt */}
-        <div className="mt-[40px]">
-          <div className="w-full h-[38px] bg-[#008000] rounded-t-[3px]  py-[10px] px-[15px]
-          flex flex-row justify-between items-center
-          text-[#fff200]">
-            <div className="font-bold text-[16px]">Nông sản mùa vụ giá tốt</div>
-            <div className="text-[14px]">Xem tất cả</div>
-          </div>
-
-          <div className="w-full h-auto p-[15px] ">
-            <Slider {...settingProduct}>
-              {products.map((product, index) => (
-                <CardProduct key={index} product={product} />
+        {/* menu - slider */}
+        <div className={`flex flex-col`}>
+          <div className="max-h-[500px] items-center  justify-between w-auto">
+            <Slider {...settings}>
+              {dataBanners.map((banner, id) => (
+                <Card
+                  key={id}
+                  banner={banner}
+                />
               ))}
             </Slider>
           </div>
         </div>
 
-        {/* Gợi ý hôm nay */}
-        <div className="mt-[40px] flex flex-col justify-center items-center ">
-          <div className="w-full h-[50px] bg-white rounded-t-[3px]  py-[10px]  
+
+        <div>
+          {/* Deal hot */}
+          <div className="mt-[10px]">
+            <div className="w-full h-[38px] home-sections rounded-t-[3px]  py-[10px] px-[15px]
+          flex flex-row justify-between items-center 
+          ">
+              <div className="font-bold text-[16px] hover:text-[#ff8300]">Deal hot</div>
+              <div className="text-[14px] hover:text-[#ff8300]">Xem thêm</div>
+            </div>
+
+            <div className="w-full h-auto py-[5px] ">
+              <Slider {...settingProduct}>
+                {products.map((product, index) => (
+                  <CardProduct key={index} product={product} />
+                ))}
+              </Slider>
+            </div>
+          </div>
+          {/* Nông sản mùa vụ giá tốt */}
+          <div className="">
+            <div className="w-full h-[38px] home-sections rounded-t-[3px]  py-[10px] px-[15px]
+          flex flex-row justify-between items-center
+          ">
+              <div className="font-bold text-[16px] hover:text-[#ff8300]">Nông sản mùa vụ giá tốt</div>
+              <div className="text-[14px] hover:text-[#ff8300]">Xem thêm</div>
+            </div>
+
+            <div className="w-full h-auto py-[5px] ">
+              <Slider {...settingProduct}>
+                {products.map((product, index) => (
+                  <CardProduct key={index} product={product} />
+                ))}
+              </Slider>
+            </div>
+          </div>
+
+          {/* Gợi ý hôm nay */}
+          <div className=" flex flex-col justify-center items-center ">
+            <Divider orientation="left">
+              <div className="w-full rounded-t-[3px] mb-2 flex flex-row justify-start items-center">
+                <div className="font-medium uppercase text-[20px] mr-2 text-[#2f4b8a] leading-10 hover:text-[#ff8300]">Gợi ý hôm nay </div>
+                <GoArrowRight className="text-[24px]" />
+              </div>
+            </Divider>
+
+            <div className="w-full  h-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+              {currentItems.map((product) => (
+                <CardProduct2 key={product.id} product={product} />
+              ))}
+
+            </div>
+            <div className="flex justify-end w-full">
+              <Pagination
+                current={currentPage}
+                total={productsdata.length}
+                pageSize={itemsPerPage}
+                onChange={(page) => setCurrentPage(page)}
+                className=""
+              />
+
+            </div>
+
+          </div>
+          {/* Thiết bị văn phòng */}
+          <div className=" flex flex-col justify-center items-center ">
+            <Divider orientation="left">
+              <div className="w-full rounded-t-[3px]  mb-2 
           flex flex-row justify-start items-center
-          text-[#008000]">
-            <div className="font-bold text-[24px] mr-2">Gợi ý hôm nay </div>
-            <GoArrowRight className="text-[24px]" />
-          </div>
-          <div className="border-4 mb-[20px] w-full border-gray-100"></div>
-          <div className="w-full  h-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {currentItems.map((product) => (
-              <CardProduct2 key={product.id} product={product} />
-            ))}
+          ">
+                <div className="font-medium uppercase text-[20px] mr-2 text-[#2f4b8a] leading-10 hover:text-[#ff8300]">Thiết bị văn phòng </div>
+                <GoArrowRight className="text-[24px]" />
+              </div>
+            </Divider>
 
-          </div>
-          <Pagination
-            current={currentPage}
-            total={productsdata.length}
-            pageSize={itemsPerPage}
-            onChange={(page) => setCurrentPage(page)}
-            className="mt-3"
-          />
-
-        </div>
-
-        {/* Gian hàng nổi bật */}
-        <div className="mt-[40px] flex flex-col justify-center items-center ">
-          <div className="w-full h-[50px] bg-white rounded-t-[3px]  py-[10px]  
-          flex flex-row justify-start items-center
-          text-[#2e2e2e]">
-            <div className="font-bold text-[24px] mr-2">Gian hàng nổi bật </div>
-          </div>
-          <div className="w-full  h-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {brands.map((product) => (
-              <CardBrand key={product.id} brand={product} />
-            ))}
-
-          </div>
-        </div>
-
-        {/* Tin tức*/}
-        <div className="mt-[40px]">
-          <div className="w-full h-[38px] bg-[#008000] rounded-t-[3px]  py-[10px] px-[15px]
-          flex flex-row justify-between items-center
-          text-[#fff200]">
-            <div className="font-bold text-[16px]">Tin tức</div>
-          </div>
-
-          <div className="w-full h-auto py-[15px] ">
-            <Slider {...settingNews} className="news-slider">
-              {newsdata.map(news => (
-                <div onMouseDown={handleMouseDown} onMouseUp={(e) => handleMouseUp(e, news)} key={news.id}>
-                  <CardNews news={news} />
-                </div>
+            <div className="w-full  h-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+              {currentItems.map((product) => (
+                <CardProduct2 key={product.id} product={product} />
               ))}
-            </Slider>
-          </div>
-        </div>
 
-        {/* video */}
-        <div className="w-full flex justify-center items-center">
-          <div className="flex justify-center items-center bg-black w-[900px] h-[526px] rounded-lg overflow-hidden shadow-lg">
-            <iframe
-              className="rounded-md"
-              width="860"
-              height="500"
-              src="https://www.youtube.com/embed/uELju5DBhB0"
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-        </div>
+            </div>
+            <div className="flex justify-end w-full">
+              <Pagination
+                current={currentPage}
+                total={productsdata.length}
+                pageSize={itemsPerPage}
+                onChange={(page) => setCurrentPage(page)}
+                className=""
+              />
 
+            </div>
+
+          </div>
+
+          {/* Gian hàng nổi bật */}
+          <div className="mt-[10px] flex flex-col justify-center items-center ">
+            <Divider orientation="left">
+              <div className="w-full rounded-t-[3px]  mb-2 
+          flex flex-row justify-start items-center
+          ">
+                <div className="font-medium uppercase text-[20px] mr-2 text-[#2f4b8a] leading-10 hover:text-[#ff8300]">Gian hàng nổi bật</div>
+                <GoArrowRight className="text-[24px]" />
+              </div>
+            </Divider>
+            <div className="w-full  h-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              {brands.map((product) => (
+                <CardBrand key={product.id} brand={product} />
+              ))}
+
+            </div>
+          </div>
+
+          {/* Tin tức*/}
+          <div className="mt-[10px]">
+            <div className="w-full h-[38px] home-sections rounded-t-[3px]  py-[10px] px-[15px]
+          flex flex-row justify-between items-center
+          ">
+              <div className="font-bold text-[16px]">Tin tức</div>
+            </div>
+
+            <div className="w-full h-auto py-[10px] ">
+              <Slider {...settingNews} className="news-slider">
+                {newsdata.map(news => (
+                  <div onMouseDown={handleMouseDown} onMouseUp={(e) => handleMouseUp(e, news)} key={news.id}>
+                    <CardNews news={news} />
+                  </div>
+                ))}
+              </Slider>
+            </div>
+          </div>
+
+        
+
+          {/* video */}
+          {/* <div className="w-full flex justify-center items-center">
+            <div className="flex justify-center items-center bg-black w-[900px] h-[526px] rounded-lg overflow-hidden shadow-lg">
+              <iframe
+                className="rounded-md"
+                width="860"
+                height="500"
+                src="https://www.youtube.com/embed/uELju5DBhB0"
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div> */}
+
+        </div>
       </div>
     </div>
   );

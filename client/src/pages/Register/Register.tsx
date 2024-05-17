@@ -3,11 +3,11 @@ import axios from 'axios';
 import imglogin from "../../../src/assets/images/imglogin.png";
 import logo from "../../../src/assets/images/logo.png";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import Accordion from 'react-bootstrap/Accordion';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import { ToastPosition } from "react-bootstrap/ToastContainer";
 import { BiSolidHide, BiSolidShow } from "react-icons/bi";
+import { Collapse } from "antd";
 interface RegisterState {
     username: string;
     password: string;
@@ -93,14 +93,14 @@ const Register: React.FC = () => {
     return (
         <div>
             <div className=" bg-bg-login bg-cover min-h-screen flex justify-center items-center relative">
-                <div className="bg-white min-h-screen flex-1" ></div>
+                <div className=" min-h-screen flex-1" ></div>
                 <div className="backdrop-blur-[4px] min-h-screen flex-1"></div>
                 <div className="w-full md:w-[1000px] flex mx-auto absolute overflow-hidden z-10 bg-gray-800 p-8 rounded-lg shadow-md before:w-24 before:h-24 before:absolute 
              before:bg-purple-600 before:rounded-full before:-z-10 before:blur-2xl after:w-32 after:h-32 after:absolute after:bg-sky-400 
              after:rounded-full after:-z-10 after:blur-xl after:top-24 after:-right-12">
                     <div className="flex-1">
                         <div className="md:pr-[60px]">
-                            <img src={logo} alt="logo" className="mb-4" />
+                            <img src={logo} alt="logo" className="mb-4 h-8 md:h-14" />
                             <h2 className="text-2xl font-bold text-white mb-6">Đăng ký</h2>
                             <form onSubmit={validateForm}>
                                 <div className="mb-4">
@@ -159,7 +159,7 @@ const Register: React.FC = () => {
 
                                 <div className="flex justify-center mb-4">
                                     <button
-                                        className="w-full bg-green-600 text-white px-4 py-2 font-bold rounded-md hover:opacity-80"
+                                        className="w-full bg-[#0055aa] text-white px-4 py-2 font-bold rounded-md hover:opacity-80"
                                         type="submit"
                                     >
                                         Đăng ký
@@ -175,21 +175,23 @@ const Register: React.FC = () => {
                                     </a>
                                 </div>
                                 <div className="text-white flex items-center justify-center mb-2">
-                                    <p>Bạn đã có tài khoản <a className="text-green-600 after:content-['_↗'] ..." href="/login" target="_blank">Đăng nhập</a> ngay</p>
+                                    <p>Bạn đã có tài khoản <a className="text-[#ff8300] after:content-['_↗'] ..." href="/login" target="_blank">Đăng nhập</a> ngay</p>
                                 </div>
-                                <Accordion >
-                                    <Accordion.Item eventKey="0">
-                                        <Accordion.Header >Hướng dẫn đăng ký</Accordion.Header>
-                                        <Accordion.Body className="text-[16px]">
-                                            Bước 1: Nhập đầy đủ và chính xác các thông tin ở form đăng ký <br />
-                                            Họ và tên: Nhập đầy đủ và chính xác họ tên của bạn  <br />
-                                            Email: Nhập chính xác email của bạn. Chúng tôi sẽ gửi mã xác thực nên vui lòng đảm bảo email bạn nhập vào là chính xác và có tồn tại <br />
-                                            Mật khẩu: phải có ít nhất 8 ký tự bao gồm chữ số, chữ hoa, chữ thường và ký tự đặc biệt, không chứa tên đăng nhập <br />
-                                            Bước 2: Đọc điều khoản sử dụng và xác nhận bạn đồng ý với điều khoản sử dụng của chúng tôi <br />
-                                            Bước 3: Nhấn nút đăng ký để hoàn tất việc đăng ký tài khoản thành viên <br />
-                                        </Accordion.Body>
-                                    </Accordion.Item>
-                                </Accordion>
+                                <Collapse className="bg-white"
+                                    items={[{
+                                        key: '1', label: 'Hướng dẫn đăng ký', children:
+                                            <div>
+                                                <p>
+                                                    Bước 1: Nhập đầy đủ và chính xác các thông tin ở form đăng ký <br />
+                                                    Họ và tên: Nhập đầy đủ và chính xác họ tên của bạn  <br />
+                                                    Email: Nhập chính xác email của bạn. Chúng tôi sẽ gửi mã xác thực nên vui lòng đảm bảo email bạn nhập vào là chính xác và có tồn tại <br />
+                                                    Mật khẩu: phải có ít nhất 8 ký tự bao gồm chữ số, chữ hoa, chữ thường và ký tự đặc biệt, không chứa tên đăng nhập <br />
+                                                    Bước 2: Đọc điều khoản sử dụng và xác nhận bạn đồng ý với điều khoản sử dụng của chúng tôi <br />
+                                                    Bước 3: Nhấn nút đăng ký để hoàn tất việc đăng ký tài khoản thành viên <br />
+                                                </p>
+                                            </div>
+                                    }]}
+                                />
                             </form>
                         </div>
                     </div>

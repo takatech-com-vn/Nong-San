@@ -1,31 +1,32 @@
 import axios from 'axios';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { New } from '../../services/New';
 import { Breadcrumb } from 'antd';
 import { HomeOutlined, } from '@ant-design/icons';
-import { formatISODate } from '../../utils/dateUtils';
-const DetailNews = () => {
+import { Policy } from '../../services/Policy';
+// import { formatISODate } from '../../utils/dateUtils';
+
+const DetailPolicy = () => {
     const { id } = useParams();
-    const [Detail, setDetail] = useState<New | null>(null);
+    const [policy, setPolicy] = useState<Policy| null>(null);
 
     useEffect(() => {
         id && getProduct();
     }, [id]);
-    // Hàm lấy thông tin sản phẩm
+    // Hàm lấy thông tin 
     const getProduct = async () => {
         await axios
-            .get(`${import.meta.env.VITE_APP_API_URL}/new/getnewid/${id}`)
+            .get(`${import.meta.env.VITE_APP_API_URL}/policy/getpolicyid/${id}`)
             .then((response) => {
-                const data = response.data.news[0];
-                setDetail(data);
-                console.log('data', data.news)
+                const data = response.data.policis[0];
+                setPolicy(data);
+                console.log('data', data.policis)
             })
             .catch((error) => {
                 console.error("There was an error!", error);
             });
     };
-    console.log('detail', Detail)
+    console.log('policy', policy)
     //vị trí scoll
     useLayoutEffect(() => {
         window.scrollTo({
@@ -62,21 +63,21 @@ const DetailNews = () => {
                                     <span>Trang chủ</span></>)
                             },
                             {
-                                title: `${Detail ? Detail.name_new : id}`,
+                                title: `${policy ? policy.name : id}`,
                             },  
                         ]}
                     />
                 </div>
-                <div className='flex flex-row'>
+                <div className='flex flex-col md:flex-row'>
                     <div className='basis-9/12 '>
                         <div className='py-[12px]'>
-                            <span className='text-[12px] '>{Detail?.created_at ? formatISODate(Detail.created_at) : 'Ngày không rõ'}</span>
+                            {/* <span className='text-[12px] '>{policy?.created_at ? formatISODate(policy.created_at) : 'Ngày không rõ'}</span> */}
                         </div>
                         <div>
-                            <h1 className='text-2xl'>{Detail?.name_new}</h1>
+                            <h1 className='text-2xl'>{policy?.name}</h1>
                         </div>
                         <div className='h-[30px]'></div>
-                        {Detail?.content && <div dangerouslySetInnerHTML={{ __html: Detail.content }} />}
+                        {policy?.content && <div dangerouslySetInnerHTML={{ __html: policy.content }} />}
                     </div>
                     <div className='basis-3/12 bg-yellow-200'>2</div>
                 </div>
@@ -87,4 +88,4 @@ const DetailNews = () => {
     );
 };
 
-export default DetailNews;
+export default DetailPolicy;
