@@ -4,6 +4,6 @@ import { isAuthenticated } from '../config/configSession';
 
 const router = express.Router();
 
-router.post('/createbrand', isAuthenticated, brandController.CreateBrand)
+router.post('/createbrand', brandController.CreateBrand)
 
 export = router
