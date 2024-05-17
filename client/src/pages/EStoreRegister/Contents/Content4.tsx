@@ -1,12 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Checkbox } from 'antd';
-import type { GetProp } from 'antd';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
 import { TfiReload } from 'react-icons/tfi';
-
-const onChange: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues) => {
-    console.log('checked = ', checkedValues);
-};
 
 const options = [
     { label: 'Công ty được thành lập hợp pháp', value: 'Công ty được thành lập hợp pháp' },
@@ -18,49 +13,52 @@ const options = [
 const Content4: React.FC = () => {
     const captchaInputRef = useRef<HTMLInputElement>(null);
     const [captchaValid, setCaptchaValid] = useState<boolean>(false);
+    const [checkedValues, setCheckedValues] = useState<string[]>([]);
 
     useEffect(() => {
         loadCaptchaEnginge(6);
         sessionStorage.setItem('captchaValid', 'false');
+
+        // Load saved checkbox values from session storage
+        const savedChecks = sessionStorage.getItem('checkedValues');
+        if (savedChecks) {
+            setCheckedValues(JSON.parse(savedChecks));
+        }
     }, []);
+
+    const onChange = (checkedValues: string[]) => {
+        console.log('checked = ', checkedValues);
+        setCheckedValues(checkedValues);
+        sessionStorage.setItem('yeuCauDapUng', JSON.stringify(checkedValues));
+    };
+
     const reloadCaptcha = () => {
         loadCaptchaEnginge(6);
         setCaptchaValid(false);
         sessionStorage.setItem('captchaValid', 'false');
     };
-    
+
     const doSubmit = () => {
         const userCaptchaValue = captchaInputRef.current?.value;
-        if (userCaptchaValue && validateCaptcha(userCaptchaValue) === true) {
+        if (userCaptchaValue && validateCaptcha(userCaptchaValue)) {
             setCaptchaValid(true);
             sessionStorage.setItem('captchaValid', 'true');
-        } else if (!captchaValid) { // chỉ đặt lại captchaValid nếu nó chưa đúng
+        } else {
             setCaptchaValid(false);
             sessionStorage.setItem('captchaValid', 'false');
         }
     };
-    
 
     return (
         <div className='h-auto flex flex-col mt-[40px] text-black'>
-            <span className='text-[20px]  font-medium mb-4'>Yêu cầu bạn phải đáp ứng</span>
+            <span className='text-[20px] font-medium mb-4'>Yêu cầu bạn phải đáp ứng</span>
             <div className='flex flex-col gap-3'>
-                <div>
-                    <p>Chúng tôi mong muốn phát triển với Thị trường đa kênh và chọn lọc,
-                        đó là lý do tại sao chúng tôi yêu cầu các đối tác kinh doanh tuân thủ các tiêu chí về hình thức và chất lượng,
-                        nhằm mang đến cho họ trải nghiệm tốt nhất.. Vì lý do này, bước đầu tiên, điều quan trọng là bạn phải giúp chúng tôi
-                        bằng cách xác nhận xem bạn có đáp ứng các yêu cầu hoạt động sau không:
-                    </p>
-                </div>
-                <div className='w-'>
-                    <Checkbox.Group options={options} defaultValue={['Pear']} onChange={onChange} className='flex flex-col gap-2' />
-                </div>
+                <Checkbox.Group options={options} value={checkedValues} onChange={onChange} className='flex flex-col gap-2' />
                 <div className='flex flex-row gap-2'>
                     <span>Mã bảo mật</span>
                     <LoadCanvasTemplate /><button className='text-red-600 text-xl active:animate-spin' onClick={reloadCaptcha}><TfiReload /></button>
                     <input ref={captchaInputRef} type="text" placeholder="Nhập mã bảo mật" />
                     <button onClick={doSubmit} className={`${captchaValid ? 'bg-green-400' : 'bg-red-400'} p-1 rounded-lg text-white`}>Xác nhận</button>
-                    
                 </div>
             </div>
         </div>

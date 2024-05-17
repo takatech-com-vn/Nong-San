@@ -18,7 +18,19 @@ const getBase64 = (file: FileType): Promise<string> =>
 const ProductVariations: React.FC<ProductVariationsProps> = ({ form }) => {
   const [previewImage, setPreviewImage] = useState('');
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [itemCount, setItemCount] = useState(1);
   // const [mainImage, setMainImage] = useState<UploadFile[]>([]);
+  const handleAdd = (add: () => void): void => {
+    if (itemCount < 2) {
+      add();
+      setItemCount(itemCount + 1);
+    }
+  };
+
+  const handleRemove = (name: number, remove: (index: number) => void): void => {
+    remove(name);
+    setItemCount(itemCount - 1);
+  };
 
 
   const handlePreview = async (file: UploadFile) => {
@@ -59,11 +71,7 @@ const ProductVariations: React.FC<ProductVariationsProps> = ({ form }) => {
                 key={field.key}
                 extra={
                   <Tooltip placement="top" title={`Xóa biến thể ${field.name + 1}`}>
-                    <CloseOutlined
-                      onClick={() => {
-                        remove(field.name);
-                      }}
-                    />
+                    <CloseOutlined onClick={() => handleRemove(field.name, remove)} />
                   </Tooltip>
 
                 }
@@ -79,7 +87,7 @@ const ProductVariations: React.FC<ProductVariationsProps> = ({ form }) => {
                       <div >
                         {subFields.map((subField) => (
                           <div key={subField.key} className=' w-full bg-slate-100 rounded-lg relative flex justify-center gap-5 p-6 mb-3' >
-                           
+
                             <span className='absolute left-2 top-2'>{`${subField.name + 1}`}</span>
                             <div className='grid grid-cols-2 gap-x-5'>
                               <Form.Item label='Giá trị:' name={[subField.name, 'giaTri']}>
@@ -149,10 +157,11 @@ const ProductVariations: React.FC<ProductVariationsProps> = ({ form }) => {
               </Card>
             ))}
 
-            <Button type="dashed" onClick={() => add()} block className='w-full  rounded-lg border-dotted border-[2px] border-green-700'>
-              Thêm phân loại hàng
-            </Button>
-
+            {itemCount < 2 && (  // Chỉ hiển thị nút thêm nếu số lượng ít hơn 2
+              <Button type="dashed" onClick={() => handleAdd(add)} block>
+                Thêm phân loại hàng
+              </Button>
+            )}
           </div>
         )}
       </Form.List>

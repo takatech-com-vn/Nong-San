@@ -16,6 +16,7 @@ import Loader from './components/Loader/Loader';
 import Footer from './layouts/Footer';
 import EStoreRegister from './pages/EStoreRegister/EStoreRegister';
 import DetailProduct from './pages/DetailProduct/DetailProduct';
+import DetailNews from './pages/News/DetailNews';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -109,6 +110,7 @@ function App() {
               <Route path='/san-pham' element={<ProductPage />} />
               <Route path="/detail/:id" element={<DetailProduct />} />
               <Route path='/EStore-register' element={<EStoreRegister />} />
+              <Route path="/news/:id" element={<DetailNews />} />
             </Routes>
             <Footer/>
           </>
