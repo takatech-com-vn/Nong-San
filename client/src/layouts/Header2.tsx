@@ -13,6 +13,7 @@ import { Select } from 'antd';
 const { Option } = Select;
 // import { SearchOutlined } from '@ant-design/icons';
 import logo from "../../public/TAKAPOS+SB-01.png";
+import MenuBar from '../pages/Home/components/Menu';
 
 
 
@@ -285,6 +286,9 @@ const Header2 = () => {
 
                 {/* <hr/> */}
             </header>
+            <div className='mt-[56px] z-[10] px-3 lg:px-0  bg-white'>
+                  <MenuBar />
+            </div>
         </>
 
 

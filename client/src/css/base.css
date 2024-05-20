@@ -99,31 +99,34 @@ body {
 
 /* custom slick-dots */
 .slick-dots {
-    @apply bottom-[10px] h-[5px] md:bottom-[10px]
+    @apply bottom-[15px] h-[5px] md:bottom-[15px]
 }
 
 .slick-dots li button {
-    font-size: 15px;
+    font-size: 10px;
 }
 
 .slick-dots li button:before {
-    background-color: #999999;
-    width: 35px;
-    height: 4px;
+    background-color: white;
+    width: 10px;
+    height: 10px;
     border-radius: 5px;
     content: "";
+    @apply border border-[#ff8300]
+
 }
 
 .slick-dots li.slick-active button:before {
     background-color: #ff8300;
-    width: 35px;
-    height: 4px;
+    width: 10px;
+    height: 10px;
     border-radius: 5px;
     content: "";
+    @apply border border-[#ff8300]
 }
 
 .slick-dots li {
-    margin-right: 20px;
+    /* margin-right: 20px; */
 }
 
 /* end custom slick-dots */
