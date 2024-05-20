@@ -9,28 +9,29 @@ function DanhSachHangsx() {
     const [data, setData] = useState<Manufacturer[]>([]);
     const [openModal, setOpenModal] = useState(false);
     const [editHangSX, setEditHangSX] = useState<Manufacturer | null>(null);
+    const setSelectedCategory = useState<number | null>(null)[1];
   
-    useEffect(() => {
-      const fetch = async () => {
-        try {
+    const fetchData = async () => {
+      try {
           const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/product/getmanufacturer`)
-  
           if (response.data.success) {
-            setData(response.data.Manufacturer)
+              setData(response.data.Manufacturer)
           } else {
-            message.error(response.data.message)
+              message.error(response.data.message)
           }
-        } catch (error) {
+      } catch (error) {
           message.error("Lỗi lấy dữ liệu phân loại");
-        }
       }
-  
-      fetch();
+    }
+
+    useEffect(() => {
+        fetchData();
     }, []);
   
     const handleEdit = (manufacturerData: Manufacturer) => {
       setOpenModal(true);
       setEditHangSX(manufacturerData);
+      setSelectedCategory(manufacturerData.category_id);
     }
   
     const handleDelete = (manufacturerData: Manufacturer) => {
@@ -49,26 +50,32 @@ function DanhSachHangsx() {
         })
     }
   
-    const columns: ColumnsType<Manufacturer> = [
-  
+    const columns: ColumnsType<Manufacturer> = [      
+      {
+        title: 'Tên phân loại chính',
+        dataIndex: 'maincategory_name',
+        key: 'maincategory_name',
+        width: '25%'
+      },
+
       {
         title: 'Tên phân loại',
         dataIndex: 'name_category',
         key: 'name_category',
-        width: '30%'
+        width: '25%'
       },
 
       {
         title: 'Tên hãng sản xuất',
         dataIndex: 'name',
         key: 'name',
-        width: '30%'
+        width: '25%'
       },
   
       {
         title: 'Hành động',
         key: 'action',
-        width: '30%',
+        width: '25%',
         render: (_, manufacturerData) => (
           <div>
             <button
@@ -104,7 +111,7 @@ function DanhSachHangsx() {
               footer={false}
   
             >
-              <EditHangSX productManufacturer={editHangSX} setModal={setOpenModal} />
+              <EditHangSX productManufacturer={editHangSX} setModal={setOpenModal} onUpdateSuccess={fetchData} />
       </Modal>
       </>
     )

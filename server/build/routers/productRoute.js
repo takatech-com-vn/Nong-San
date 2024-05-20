@@ -5,6 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 const express_1 = __importDefault(require("express"));
 const productController_1 = __importDefault(require("../Controller/productController"));
 const router = express_1.default.Router();
+router.post('/maincreatecategory', productController_1.default.MainCreateCategory);
+router.get('/getmaincategory', productController_1.default.GetMainCategory);
+router.delete('/deletemaincategory/:id', productController_1.default.DeleteMainCategory);
+router.put('/updatemaincategory/:id', productController_1.default.UpdatMainCategory);
 router.post('/createcategory', productController_1.default.CreateCategory);
 router.get('/getcategory', productController_1.default.GetCategory);
 router.delete('/deletecategory/:id', productController_1.default.DeleteCategory);
