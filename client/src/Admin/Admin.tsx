@@ -104,14 +104,14 @@ const Admin: React.FC = () => {
                                 },
 
                                 {
-                                    key: "37",
+                                    key: "10",
                                     icon: <FaListUl />,
                                     label: <Link to="themphanloai">Thêm phân loại</Link>,
                                     onClick: () => setCurrentItem('Thêm phân loại')
                                 },
 
                                 {
-                                    key: "38",
+                                    key: "12",
                                     icon: <FaListUl />,
                                     label: <Link to="danhsachphanloai">Danh sách phân loại</Link>,
                                     onClick: () => setCurrentItem('Danh sách phân loại')
@@ -139,19 +139,19 @@ const Admin: React.FC = () => {
                             label: 'Quản lý slide',
                             children: [
                                 {
-                                    key: "13",
+                                    key: "14",
                                     icon: <FaListUl />,
                                     label: <Link to="themslidepc">Thêm slide pc</Link>,
                                     onClick: () => setCurrentItem('Thêm slide pc')
                                 },
                                 {
-                                    key: "14",
+                                    key: "15",
                                     icon: <FaListUl />,
                                     label: <Link to="themslidemobile">Thêm slide mobile</Link>,
                                     onClick: () => setCurrentItem('Thêm slide mobile')
                                 },
                                 {
-                                    key: "15",
+                                    key: "16",
                                     icon: <FaListUl />,
                                     label: <Link to="danhsachslide">Danh sách slide</Link>,
                                     onClick: () => setCurrentItem('Danh sách slide')
@@ -164,14 +164,14 @@ const Admin: React.FC = () => {
                             label: 'Quản lý tin tức',
                             children: [
                                 {
-                                    key: "16",
+                                    key: "17",
                                     icon: <FaListUl />,
                                     label: <Link to="themtintuc">Thêm tin tức</Link>,
                                     onClick: () => setCurrentItem('Thêm tin tức')
                                 },
 
                                 {
-                                    key: "17",
+                                    key: "18",
                                     icon: <FaListUl />,
                                     label: <Link to="danhsachtintuc">Danh sách tin tức</Link>,
                                     onClick: () => setCurrentItem('Danh sách tin tức')
@@ -184,13 +184,13 @@ const Admin: React.FC = () => {
                             label: 'Quản lý chính sách',
                             children: [
                                 {
-                                    key: "11",
+                                    key: "19",
                                     icon: <FaListUl />,
                                     label: <Link to="themchinhsach">Thêm chính sách</Link>,
                                     onClick: () => setCurrentItem('Thêm chính sách')
                                 },
                                 {
-                                    key: "12",
+                                    key: "20",
                                     icon: <FaListUl />,
                                     label: <Link to="danhsachchinhsach">Danh sách chính sách</Link>,
                                     onClick: () => setCurrentItem('Danh sách chính sách')

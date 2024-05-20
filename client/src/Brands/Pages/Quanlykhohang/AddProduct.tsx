@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Affix, Anchor, Button, Cascader, Col, Collapse, Form, Row, Select } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Affix, Anchor, Button, Cascader, Col, Collapse, Form, Row, Select, message } from 'antd';
 import { Input } from 'antd';
 import { Checkbox } from 'antd';
 import { MultipleCascaderProps } from 'antd/es/cascader';
@@ -17,17 +17,19 @@ const { TextArea } = Input;
 const { Option } = Select;
 import { Dayjs } from 'dayjs';
 import ProductVariations from './ProductVariations';
+import axios from 'axios';
+import { Manufacturer } from '../../../services/Manufacturer';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
-interface ProductType {
-    value: string;
-    label: string;
-}
+// interface ProductType {
+//     value: string;
+//     label: string;
+// }
 
-interface Manufacturer {
-    value: string;
-    label: string;
-}
+// interface Manufacturer {
+//     value: string;
+//     label: string;
+// }
 interface Option {
     value: string | number;
     label: string;
@@ -78,21 +80,21 @@ const options: Option[] = [
         ],
     },
 ];
-const manufacturersByType: Record<string, Manufacturer[]> = {
-    coffee: [
-        { value: 'starbucks', label: 'Starbucks' },
-        { value: 'dunkin', label: 'Dunkin' }
-    ],
-    tea: [
-        { value: 'lipton', label: 'Lipton' },
-        { value: 'twinings', label: 'Twinings' }
-    ],
-};
+// const manufacturersByType: Record<string, Manufacturer[]> = {
+//     coffee: [
+//         { value: 'starbucks', label: 'Starbucks' },
+//         { value: 'dunkin', label: 'Dunkin' }
+//     ],
+//     tea: [
+//         { value: 'lipton', label: 'Lipton' },
+//         { value: 'twinings', label: 'Twinings' }
+//     ],
+// };
 
-const productTypes: ProductType[] = [
-    { value: 'coffee', label: 'Coffee' },
-    { value: 'tea', label: 'Tea' },
-];
+// const productTypes: ProductType[] = [
+//     { value: 'coffee', label: 'Coffee' },
+//     { value: 'tea', label: 'Tea' },
+// ];
 const AddProduct = () => {
     const [form] = Form.useForm();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -109,8 +111,10 @@ const AddProduct = () => {
     const [hinhSp, setHinhSP] = useState<UploadFile[]>([])
 
     //thông số kỹ thuật
-    const [loaiSanPham, setLoaiSanPham] = useState<string>('');
     const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
+    const [productTypes, setProductTypes] = useState<string[]>([]);
+    const [loaiSanPham, setLoaiSanPham] = useState<string>('');
+    const [filteredManufacturers, setFilteredManufacturers] = useState<Manufacturer[]>([]);
     const [hangSanXuat, setHangSanXuat] = useState<string | undefined>();
     const [banSi, setBanSi] = useState('')
     const [giaSi, setGiaSi] = useState('')
@@ -189,13 +193,15 @@ const AddProduct = () => {
     };
 
     const handleTypeChange = (value: string): void => {
-        setLoaiSanPham(value); // Updates the selected product type state
-        const newManufacturers = manufacturersByType[value] || [];
-        setManufacturers(newManufacturers); // Updates the manufacturers based on the selected product type
+        setLoaiSanPham(value);
+        const newManufacturers = manufacturers.filter(manufacturer => manufacturer.name_category === value);
+        setFilteredManufacturers(newManufacturers);
     };
 
     const handleManufacturerChange = (value: string): void => {
-        setHangSanXuat(value);  // Set the selected manufacturer
+        // You can update any state or perform any action here if needed
+        setHangSanXuat(value)
+        console.log(value); // Example action
     };
 
     const handleKhoHangChange = (value: string): void => {
@@ -306,6 +312,24 @@ const AddProduct = () => {
     // const removeVariation = (idToRemove: string) => {
     //     setVariations(prevVariations => prevVariations.filter(variation => variation.key !== idToRemove));
     // };
+    useEffect(() => {
+        const fetchManufacturers = async () => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/product/getmanufacturer`);
+                if (response.data.success) {
+                    setManufacturers(response.data.Manufacturer);
+                    const uniqueProductTypes = Array.from(new Set(response.data.Manufacturer.map((m: Manufacturer) => m.name_category)));
+                     setProductTypes(uniqueProductTypes as string[]);
+                } else {
+                    message.error(response.data.message);
+                }
+            } catch (error) {
+                message.error("Lỗi lấy dữ liệu phân loại");
+            }
+        };
+
+        fetchManufacturers();
+    }, []);
 
     return (
         <div>
@@ -438,7 +462,7 @@ const AddProduct = () => {
                                             onChange={handleTypeChange}
                                         >
                                             {productTypes.map(type => (
-                                                <Option key={type.value} value={type.value}>{type.label}</Option>
+                                                <Option key={type} value={type}>{type}</Option>
                                             ))}
                                         </Select>
                                     </div>
@@ -454,12 +478,12 @@ const AddProduct = () => {
                                             onChange={handleManufacturerChange}
                                             disabled={!loaiSanPham} // Disable if no type is selected
                                         >
-                                            {manufacturers.map(manufacturer => (
-                                                <Option key={manufacturer.value} value={manufacturer.value}>{manufacturer.label}</Option>
+                                            {filteredManufacturers.map(manufacturer => (
+                                                <Option key={manufacturer.id} value={manufacturer.name}>{manufacturer.name}</Option>
                                             ))}
                                         </Select>
-
                                     </div>
+
                                     <div className="mb-1">
                                         <label className="block text-sm font-medium text-gray-700 mb-2 " htmlFor="banSi">
                                             Bán sỉ<span className='text-red-600'>*</span>
