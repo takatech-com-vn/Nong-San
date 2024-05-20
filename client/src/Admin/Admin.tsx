@@ -18,6 +18,8 @@ import ThemPhanLoai from './Pages/QuanLyPhanLoai/ThemPhanLoai';
 import DanhSachPhanLoai from './Pages/QuanLyPhanLoai/DanhSachPhanLoai';
 import Themhangsx from './Pages/QuanLyPhanLoai/Themhangsx';
 import DanhSachHangsx from './Pages/QuanLyPhanLoai/DanhSachHangsx';
+import ThemPhanLoaiChinh from './Pages/QuanLyPhanLoai/ThemPhanLoaiChinh';
+import DanhSachPhanLoaiChinh from './Pages/QuanLyPhanLoai/DanhSachPhanLoaiChinh';
 
 const { Header, Sider, Content } = Layout;
 
@@ -79,19 +81,33 @@ const Admin: React.FC = () => {
                                     label: <Link to="quanlysanpham">Danh sách sản phẩm</Link>,
                                     onClick: () => setCurrentItem('Danh sách sản phẩm')
                                 },
+                            ],
+                        },
+
+                        {
+                            key: '42',
+                            icon: <FaListUl />,
+                            label: 'Quản lí phân loại',
+                            children: [
+                                {
+                                    key: "43",
+                                    icon: <FaListUl />,
+                                    label: <Link to="themphanloaichinh">Thêm phân loại chính</Link>,
+                                    onClick: () => setCurrentItem('Thêm phân loại chính')
+                                },
+
+                                {
+                                    key: "44",
+                                    icon: <FaListUl />,
+                                    label: <Link to="danhsachphanloaichinh">Danh sách phân loại chính</Link>,
+                                    onClick: () => setCurrentItem('Danh sách phân loại chính')
+                                },
 
                                 {
                                     key: "37",
                                     icon: <FaListUl />,
                                     label: <Link to="themphanloai">Thêm phân loại</Link>,
                                     onClick: () => setCurrentItem('Thêm phân loại')
-                                },
-
-                                {
-                                    key: "39",
-                                    icon: <FaListUl />,
-                                    label: <Link to="themhangsanxuat">Thêm hãng sản xuất</Link>,
-                                    onClick: () => setCurrentItem('Thêm hãng sản xuất')
                                 },
 
                                 {
@@ -102,6 +118,13 @@ const Admin: React.FC = () => {
                                 },
 
                                 {
+                                    key: "39",
+                                    icon: <FaListUl />,
+                                    label: <Link to="themhangsanxuat">Thêm hãng sản xuất</Link>,
+                                    onClick: () => setCurrentItem('Thêm hãng sản xuất')
+                                },
+
+                                {
                                     key: "40",
                                     icon: <FaListUl />,
                                     label: <Link to="danhsachhangsx">Danh sách hãng sản xuất</Link>,
@@ -109,6 +132,7 @@ const Admin: React.FC = () => {
                                 },
                             ],
                         },
+
                         {
                             key: '3',
                             icon: <FaWarehouse />,
@@ -232,8 +256,10 @@ const Admin: React.FC = () => {
 
                         <Route path="quanlysanpham" element={<QuanLySanPham />} />
 
+                        <Route path="themphanloaichinh" element={<ThemPhanLoaiChinh/>} />
                         <Route path="themphanloai" element={<ThemPhanLoai/>} />
                         <Route path="themhangsanxuat" element={<Themhangsx/>} />
+                        <Route path="danhsachphanloaichinh" element={<DanhSachPhanLoaiChinh/>} />
                         <Route path="danhsachphanloai" element={<DanhSachPhanLoai/>} />
                         <Route path="danhsachhangsx" element={<DanhSachHangsx/>} />
                

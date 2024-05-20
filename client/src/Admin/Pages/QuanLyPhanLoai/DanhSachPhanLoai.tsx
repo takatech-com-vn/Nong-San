@@ -9,11 +9,11 @@ function DanhSachPhanLoai() {
   const [data, setData] = useState<ProductCategory[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [editPhanLoai, setEditPhanLoai] = useState<ProductCategory | null>(null);
+  const setSelectedCategory = useState<number | null>(null)[1];
 
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/product/getcategory`)
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/product/getcategory`)
 
         if (response.data.success) {
           setData(response.data.productcategoris)
@@ -25,12 +25,14 @@ function DanhSachPhanLoai() {
       }
     }
 
-    fetch();
+  useEffect(() => {
+      fetchData();
   }, []);
 
   const handleEdit = (categoryData: ProductCategory) => {
     setOpenModal(true);
     setEditPhanLoai(categoryData);
+    setSelectedCategory(categoryData.maincategory_id);
   }
 
   const handleDelete = (categoryData: ProductCategory) => {
@@ -44,18 +46,25 @@ function DanhSachPhanLoai() {
           message.error('Xóa phân loại thất bại');
         }
       })
-      .catch(error => {
-        console.error('Lỗi xóa phân loại: ', error)
+      .catch(() => {
+        message.error('Có liên kết với hãng sản xuất không thể xóa');
       })
   }
 
   const columns: ColumnsType<ProductCategory> = [
 
     {
+      title: 'Tên phân loại chính',
+      dataIndex: 'name',
+      key: 'name',
+      width: '35%'
+    },
+
+    {
       title: 'Tên phân loại',
       dataIndex: 'name_category',
       key: 'name',
-      width: '70%'
+      width: '35%'
     },
 
     {
@@ -97,7 +106,7 @@ function DanhSachPhanLoai() {
             footer={false}
 
           >
-            <EditPhanLoai productCategory={editPhanLoai} setModal={setOpenModal} />
+            <EditPhanLoai productCategory={editPhanLoai} setModal={setOpenModal} onUpdateSuccess={fetchData}/>
     </Modal>
     </>
   )

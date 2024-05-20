@@ -3,6 +3,11 @@ import productController from '../Controller/productController';
 
 const router = express.Router();
 
+router.post('/maincreatecategory', productController.MainCreateCategory);
+router.get('/getmaincategory', productController.GetMainCategory);
+router.delete('/deletemaincategory/:id', productController.DeleteMainCategory);
+router.put('/updatemaincategory/:id', productController.UpdatMainCategory);
+
 router.post('/createcategory', productController.CreateCategory);
 router.get('/getcategory', productController.GetCategory);
 router.delete('/deletecategory/:id', productController.DeleteCategory);
