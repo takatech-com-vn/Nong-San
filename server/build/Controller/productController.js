@@ -1,6 +1,15 @@
 "use strict";
 const callbackToPromise_1 = require("../util/callbackToPromise");
 class productController {
+    CreateProduct(req, res) {
+        const data = req.body;
+        const file = req.file;
+        console.log("data: " + JSON.stringify(data));
+        // Kiểm tra xem có hình ảnh được tải lên không
+        if (!file) {
+            console.log("Không tìm thấy hình ảnh");
+        }
+    }
     MainCreateCategory(req, res) {
         const name = req.body.name;
         const query = 'Insert into maincategoris (name) Values (?)';
