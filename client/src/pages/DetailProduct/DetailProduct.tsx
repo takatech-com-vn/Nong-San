@@ -8,9 +8,10 @@ import Slider from 'react-slick';
 import { NextArrow, PrevArrow } from '../../components/slick';
 import axios from 'axios';
 import { Product } from '../../services/Product';
-import { FaStar } from 'react-icons/fa';
+// import { FaStar } from 'react-icons/fa';
 import { CiHeart } from 'react-icons/ci';
 import { PiShoppingCartSimple } from 'react-icons/pi';
+import { formatCurrencyVND } from '../../utils/formatCurrency';
 // interface CarouselInstance {
 //     goTo: (index: number) => void;
 //     next: () => void;
@@ -44,16 +45,16 @@ const DetailProduct = () => {
                 const data = response.data;
                 // Lưu thông tin chi tiết của sản phẩm vào state
                 setDetail(data);
-               
+
                 // Lưu thông tin cấu hình của sản phẩm vào state
                 // setConfiguration(data.configuration);
             })
             .catch((error) => {
                 console.error("There was an error!", error);
             });
-          
+
     };
-  console.log('data', Detail) 
+    console.log('data', Detail)
     // slider setting
     const settings = {
         dots: false,
@@ -84,17 +85,17 @@ const DetailProduct = () => {
 
 
 
-    const [isScrolled, setIsScrolled] = useState(false);
-    const checkScroll = () => {
-        setIsScrolled(window.pageYOffset > 1);
-    };
+    // const [isScrolled, setIsScrolled] = useState(false);
+    // const checkScroll = () => {
+    //     setIsScrolled(window.pageYOffset > 1);
+    // };
 
-    useEffect(() => {
-        window.addEventListener("scroll", checkScroll);
-        return () => {
-            window.removeEventListener("scroll", checkScroll);
-        };
-    }, []);
+    // useEffect(() => {
+    //     window.addEventListener("scroll", checkScroll);
+    //     return () => {
+    //         window.removeEventListener("scroll", checkScroll);
+    //     };
+    // }, []);
 
     const [preview, setPreview] = useState<PreviewState>({});
 
@@ -136,12 +137,13 @@ const DetailProduct = () => {
     const handleCapacityChange = (capacity: string) => {
         setSelectedCapacity(capacity);
     };
-    const getPriceForSelectedType = () => {
+    const getPriceForSelectedType = (): number => {
         const selectedProduct = Detail?.variations.find(product => product.capacity === selectedCapacity);
-        return selectedProduct ? selectedProduct.price : Detail?.price;
+        return selectedProduct ? selectedProduct.price : Detail?.price ?? 0; // Trả về 0 nếu Detail?.price là undefined
     };
+
     return (
-        <div className={`wrapper h-auto bg-[#fafafb] p-[16px] mt-[20px] ${isScrolled ? "mt-[60px]" : "pt-3 md:pt-0"}`}>
+        <div className={`wrapper h-auto bg-[#fafafb] p-[16px] mt-[10px] }`}>
             <div>
                 <Breadcrumb
                     items={[
@@ -163,9 +165,9 @@ const DetailProduct = () => {
                         <div className=" items-center justify-between">
                             <Slider {...settings} ref={carouselRef}>
                                 {Detail?.thumbnail.map((image, index) => (
-                                    <div key={index} className="w-full h-[360px] rounded-[12px] overflow-hidden relative">
+                                    <div key={index} className="w-full h-[360px] rounded-[5px] overflow-hidden relative">
                                         <Image
-                                            className="w-full h-full object-cover rounded-[12px]"
+                                            className="w-full h-full object-cover rounded-[5px]"
                                             src={image}
                                             width={"100%"}
                                             height={'100%'}
@@ -198,7 +200,7 @@ const DetailProduct = () => {
                                         onClick={() => carouselRef.current?.slickGoTo(index)}
                                         style={{
                                             border:
-                                                currentImage === index ? "2px solid green" : "none",
+                                                currentImage === index ? "2px solid #0055aa" : "none",
                                         }}
                                         className='rounded-xl '
                                     />
@@ -209,17 +211,17 @@ const DetailProduct = () => {
                     <div className=' h-full w-[60%] relative'>
                         <div className='flex flex-row absolute top-0 right-0 text-[15px] gap-1'><CiHeart size={20} /> 1 lượt thích</div>
                         <div className=' p-3 flex flex-col gap-4 '>
-                            <h1 className='font-bold text-[20px] leading-5'>{Detail?.name}</h1>
-                            <button className="text-[17px] flex text-gray-300"><FaStar /><FaStar /><FaStar /><FaStar /><FaStar /></button>
-                            <span className='font-bold'>{getPriceForSelectedType()}đ</span>
+                            <h1 className='font-bold text-[18px] leading-5 text-[#1a428a] capitalize '>{Detail?.name}</h1>
+                            {/* <button className="text-[17px] flex text-gray-300"><FaStar /><FaStar /><FaStar /><FaStar /><FaStar /></button> */}
+                            <span className='font-bold text-[#ff8300]'>{formatCurrencyVND(getPriceForSelectedType())}</span>
                             <span className='font-bold'>Phân loại</span>
                             <div className='flex gap-3'>
                                 {Detail?.variations.map((variation, index) => (
                                     <button
                                         key={index}
-                                        className={`w-[200px] h-[71px] px-4 py-2 rounded-xl border-gray-500 border-[1px]  bg-white hover:border-green-600 
+                                        className={`w-[200px] h-[71px] px-4 py-2 rounded-[5px] border-gray-500 border-[1px]  bg-white hover:border-[#0055aa] hover:text-[#0055aa]
                                         items-center justify-center flex flex-col
-                                        ${selectedCapacity === variation.capacity ? 'border-green-700 text-green-700' : ''}`}
+                                        ${selectedCapacity === variation.capacity ? 'border-[#0055aa] text-[#0055aa]' : ''}`}
                                         onClick={() => handleCapacityChange(variation.capacity)}
                                     >
                                         {variation.capacity}<br />
@@ -248,18 +250,137 @@ const DetailProduct = () => {
 
                             <div className='flex flex-row gap-3'>
                                 <button
-                                    className={`w-[200px] h-[71px] px-4 py-2 rounded-xl border-[1px] border-green-700 text-green-700
+                                    className={`w-full h-[71px] px-4 py-2 rounded-[5px] border-[1px] border-[#0055aa] text-[#0055aa]
                                         items-center justify-center flex flex-col text-[15px]`}
                                 >
-                                    <a><PiShoppingCartSimple className='text-[20px]' /></a> <a> Thêm vào giỏ hàng </a>
+                                    <a><PiShoppingCartSimple className='text-sm' /></a> <a> Thêm vào giỏ hàng </a>
                                 </button>
                                 <button
-                                    className={`w-full h-[71px] px-4 py-2 rounded-xl border-[1px] bg-green-700 text-white
-                                        items-center justify-center flex flex-col text-[15px]`}
+                                    className={`w-full h-[71px] px-4 py-2 rounded-[5px] border-[1px] bg-[#ff8300] text-white
+                                        items-center justify-center flex flex-col text-sm`}
                                 >
-                                    <a className=' font-bold text-[18px]'>MUA NGAY</a> <a> (Giao hàng hoặc nhận tại cửa hàng)</a>
+                                    <a className=' font-bold '>YÊU CẦU BÁO GIÁ</a>
+                                </button>
+                                <button
+                                    className={`w-full h-[71px] px-4 py-2 rounded-[5px] border-[1px] bg-[#0055aa] text-white
+                                        items-center justify-center flex flex-col text-sm`}
+                                >
+                                    <a className='font-bold'>MUA NGAY</a> <a> (Giao hàng hoặc nhận tại cửa hàng)</a>
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div>
+                <div className='flex flex-row gap-3'>
+                    <img src="" alt="" className='rounded-full bg-slate-400 h-[70px] w-[70px]' />
+                    <div className='flex flex-col justify-center w-full gap-3'>
+                        <a href="" className='text-[#1a428a]'>{Detail?.brand}</a>
+                        <div className='text-[#0006] text-sm flex flex-row justify-between items-center'>
+                            <div>
+                                <label>Đánh giá:</label>
+                                <span className='text-[#ff8300]'>1</span>
+                            </div>
+                            <div>
+                                <label>Sản phẩm:</label>
+                                <span className='text-[#ff8300]'>10</span>
+                            </div>
+                            <div>
+                                <label>Tham gia:</label>
+                                <span className='text-[#ff8300]'>18/05/2024</span>
+                            </div>
+                            <div>
+                                <label>Người theo dõi:</label>
+                                <span className='text-[#ff8300]'>1k</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="flex flex-col lg:flex-row lg:flex-wrap lg:my-5">
+                <div className='basis-8/12 lg:pr-2'>
+                    <div className='flex flex-col gap-3'>
+                        <div className="flex-1 min-w-[250px] bg-gray-100 border border-gray-300 rounded-lg p-5 mb-5 lg:mb-0">
+                            <div className="text-xl font-bold mb-3">
+                                <span>Chi tiết sản phẩm</span>
+                            </div>
+                            <div className="text-base">
+                                <p>coffephe</p>
+                            </div>
+                        </div>
+                        <div className="flex-1 min-w-[250px] bg-gray-100 border border-gray-300 rounded-lg p-5 mb-5 lg:mb-0">
+                            <div className="text-xl font-bold mb-3">
+                                <span>Đánh giá về sản phẩm</span>
+                            </div>
+                            <div className="text-base">
+                                <p className="text-green-600">0 trên 5</p>
+                                <div className="text-yellow-500 text-xl">
+                                    <span>★★★★★</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div className=' basis-4/12 lg:pl-1'>
+                    <div className="flex flex-col min-w-[250px] bg-gray-100 border border-gray-300 rounded-lg p-5">
+                        <div className="text-xl font-bold mb-3">
+                            <span>Thông số kỹ thuật</span>
+                        </div>
+                        <div className="text-base">
+                            <table className="w-full border-collapse">
+                                <tbody>
+                                    <tr>
+                                        <td className="py-2 border-b border-gray-300">Loại thực phẩm</td>
+                                        <td className="py-2 border-b border-gray-300">Khác</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-2 border-b border-gray-300">Bán sỉ</td>
+                                        <td className="py-2 border-b border-gray-300">Thỏa thuận</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-2 border-b border-gray-300">Giá sỉ</td>
+                                        <td className="py-2 border-b border-gray-300">10000</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-2 border-b border-gray-300">Thời gian bảo quản</td>
+                                        <td className="py-2 border-b border-gray-300">6</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-2 border-b border-gray-300">Mã vùng</td>
+                                        <td className="py-2 border-b border-gray-300">565</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-2 border-b border-gray-300">Giảm cân đặc biệt</td>
+                                        <td className="py-2 border-b border-gray-300">Không gluten</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-2 border-b border-gray-300">Ngày hết hạn</td>
+                                        <td className="py-2 border-b border-gray-300">9</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-2 border-b border-gray-300">Ngày sản xuất</td>
+                                        <td className="py-2 border-b border-gray-300">8</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-2 border-b border-gray-300">Thành phần</td>
+                                        <td className="py-2 border-b border-gray-300">coffephe</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-2 border-b border-gray-300">Trọng lượng</td>
+                                        <td className="py-2 border-b border-gray-300">20g</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="py-2 border-b border-gray-300">Kiểu đóng gói</td>
+                                        <td className="py-2 border-b border-gray-300">gói, bình</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

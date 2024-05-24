@@ -3,11 +3,11 @@ import axios from 'axios';
 import imglogin from "../../../src/assets/images/imglogin.png";
 import logo from "../../../src/assets/images/logo.png";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import Toast from 'react-bootstrap/Toast';
-import ToastContainer from 'react-bootstrap/ToastContainer';
-import { ToastPosition } from "react-bootstrap/ToastContainer";
 import { BiSolidHide, BiSolidShow } from "react-icons/bi";
-import { Collapse } from "antd";
+import { Collapse, notification } from "antd";
+import { MdCheckCircleOutline } from "react-icons/md";
+import { IoWarningOutline } from "react-icons/io5";
+
 interface RegisterState {
     username: string;
     password: string;
@@ -22,16 +22,14 @@ const Register: React.FC = () => {
     const [phone, setPhone] = useState('');
     const [errors, setErrors] = useState<RegisterState['errors']>({});
     const [isSuccess, setIsSuccess] = useState(false);
-    const [successMessage, setSuccessMessage] = useState(''); // Added for success message
+    const [successMessage, setSuccessMessage] = useState('');
     const [isError, setIsError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const [position] = useState<ToastPosition>('top-end');
     const [showPassword, setShowPassword] = useState(false);
 
     const validateForm = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const newErrors = {} as RegisterState['errors'];
-
 
         if (!username) {
             newErrors.username = 'Vui lòng nhập tên người dùng';
@@ -65,30 +63,39 @@ const Register: React.FC = () => {
                 phone,
             });
 
-            setSuccessMessage(response.data.message); // Extract and set success message
+            setSuccessMessage(response.data.message);
             setIsSuccess(true);
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error(error);
-            // Set error state and message
             setIsError(true);
             setErrorMessage(error.response?.data.message || 'Unexpected error');
         }
     };
 
-
-    // Reset success state after toast timeout (optional, adjust timeout as needed)
     useEffect(() => {
-        let timeout: string | number | NodeJS.Timeout | undefined;
         if (isSuccess) {
-            timeout = setTimeout(() => setIsSuccess(false), 3000); // 3 seconds
+            notification.open({
+                message: 'Thông báo',
+                description: successMessage,
+                icon: <MdCheckCircleOutline style={{ color: '#52c41a' }} />,
+                duration: 3,
+            });
+            setTimeout(() => setIsSuccess(false), 3000);
         }
-        if (isError) {
-            timeout = setTimeout(() => setIsError(false), 3000); // 3 seconds
-        }
-        return () => clearTimeout(timeout);
-    }, [isSuccess, isError]);
+    }, [isSuccess, successMessage]);
 
+    useEffect(() => {
+        if (isError) {
+            notification.open({
+                message: 'Thông báo',
+                description: errorMessage,
+                icon: <IoWarningOutline style={{ color: '#ff4d4f' }} />,
+                duration: 3,
+            });
+            setTimeout(() => setIsError(false), 3000);
+        }
+    }, [isError, errorMessage]);
 
     return (
         <div>
@@ -122,8 +129,7 @@ const Register: React.FC = () => {
                                     </label>
                                     <div className="relative mt-1 ">
                                         <input
-                                            className={`p-2 w-full bg-gray-700 rounded-md text-white ${errors.username ? 'border-red-500 border-[1px]' : 'border-gray-600 border'
-                                                }`}
+                                            className={`p-2 w-full bg-gray-700 rounded-md text-white ${errors.username ? 'border-red-500 border-[1px]' : 'border-gray-600 border'}`}
                                             name="password"
                                             id="password"
                                             type={showPassword ? "text" : "password"}
@@ -131,8 +137,7 @@ const Register: React.FC = () => {
                                             onChange={(e) => setPassword(e.target.value)}
                                         />
                                         <i
-                                            className={`absolute inset-y-3 right-3 cursor-pointer text-[20px] hover:text-gray-400 ${showPassword ? 'text-gray-400' : ''
-                                                }`}
+                                            className={`absolute inset-y-3 right-3 cursor-pointer text-[20px] hover:text-gray-400 ${showPassword ? 'text-gray-400' : ''}`}
                                             onClick={() => setShowPassword(!showPassword)}
                                         >
                                             {showPassword ? <BiSolidShow /> : <BiSolidHide />}
@@ -140,7 +145,6 @@ const Register: React.FC = () => {
                                     </div>
                                     {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
                                 </div>
-
 
                                 <div className="mb-4">
                                     <label className="block text-sm font-medium text-gray-300" htmlFor="phone">
@@ -199,26 +203,6 @@ const Register: React.FC = () => {
                         <img src={imglogin} alt="imglogin" />
                     </div>
                 </div>
-                <ToastContainer className="p-3 z-50" position={position} >
-                    {isSuccess && (
-                        <Toast autohide className="bg-green-500 text-white">
-                            <Toast.Header >
-                                <strong className="me-auto">Thông báo</strong>
-                                <small></small>
-                            </Toast.Header>
-                            <Toast.Body>{successMessage}</Toast.Body>
-                        </Toast>
-                    )}
-                    {isError && (
-                        <Toast autohide className="bg-red-500 text-white">
-                            <Toast.Header >
-                                <strong className="me-auto">Lỗi</strong>
-                                <small></small>
-                            </Toast.Header>
-                            <Toast.Body>{errorMessage}</Toast.Body>
-                        </Toast>
-                    )}
-                </ToastContainer>
             </div>
         </div>
     );

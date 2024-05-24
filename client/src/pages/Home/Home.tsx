@@ -17,14 +17,53 @@ import CardNews from "./components/CardNews";
 import { Banner } from "../../services/Banner";
 import { New } from "../../services/New";
 import { useNavigate } from "react-router-dom";
-import MenuBar from "./components/Menu";
+// import MenuBar from "./components/Menu";
+// import { Menu } from 'antd';
 
+interface Category {
+  title: string;
+  subCategories: string[];
+}
+
+const categories: Category[] = [
+  {
+    title: 'Thiết Bị Văn Phòng',
+    subCategories: [],
+  },
+  {
+    title: 'Nội Thất Văn Phòng',
+    subCategories: [
+      'Ngành In Ấn & Bao Bì',
+      'Ngành Dệt May',
+      'Ngành Nhựa & Cao Su',
+      'Ngành Thực Phẩm & Đồ Uống',
+    ],
+  },
+  {
+    title: 'Phương Tiện Vận Tải',
+    subCategories: [
+      'Thiết Bị Kho & Đóng Gói',
+      'Máy Móc Cơ Khí & Xi Mạ',
+      'Máy Móc Vệ Sinh Công Nghiệp',
+    ],
+  },
+  {
+    title: 'Vật Tư Xây Dựng',
+    subCategories: [],
+  },
+  {
+    title: 'Thiết Bị Nội & Ngoại Thất',
+    subCategories: [],
+  },
+];
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const productsdata = useSelector((state: RootState) => state.product.products);
   const [newsdata, setNewsData] = useState<New[]>([]);
+
+  const slidesToShow = newsdata.length < 4 ? newsdata.length : 4;
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
@@ -58,7 +97,7 @@ const Home: React.FC = () => {
           path: `${import.meta.env.VITE_APP_API_URL}${banner.path}`
         }));
         setDataBanners(banners);
-        console.log("banners: " + JSON.stringify(banners));
+        // console.log("banners: " + JSON.stringify(banners));
       } catch (error) {
         console.error('Lỗi data slide', error)
       }
@@ -172,41 +211,46 @@ const Home: React.FC = () => {
       }
     ],
   };
-  const settingNews = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
-    arrows: false,
-    responsive: [
-      {
-        breakpoint: 1100,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true,
+  const settingNews = (slidesToShow: number) => {
+    // Ensure slidesToShow is not infinity or invalid
+    const validSlidesToShow = isNaN(slidesToShow) || slidesToShow <= 0 ? 1 : slidesToShow;
+
+    return {
+      dots: false,
+      infinite: validSlidesToShow > 1,
+      speed: 500,
+      slidesToShow: validSlidesToShow,
+      slidesToScroll: validSlidesToShow,
+      arrows: false,
+      responsive: [
+        {
+          breakpoint: 1100,
+          settings: {
+            slidesToShow: validSlidesToShow >= 3 ? 3 : validSlidesToShow,
+            slidesToScroll: validSlidesToShow >= 3 ? 3 : validSlidesToShow,
+            infinite: validSlidesToShow > 1,
+            dots: true,
+          }
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: validSlidesToShow >= 2 ? 2 : validSlidesToShow,
+            slidesToScroll: validSlidesToShow >= 2 ? 2 : validSlidesToShow,
+            infinite: validSlidesToShow > 1,
+            dots: true,
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            dots: true,
+          }
         }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
-          dots: true,
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          dots: true,
-        }
-      }
-    ],
+      ],
+    };
   };
 
   const products = [
@@ -334,27 +378,75 @@ const Home: React.FC = () => {
   //     window.removeEventListener('resize', handleResize);
   //   };
   // }, []);
+  const [currentSubCategories, setCurrentSubCategories] = useState<string[]>([]);
+  const [hovered, setHovered] = useState<boolean>(false);
+
+  const handleHover = (subCategories: string[]) => {
+    setCurrentSubCategories(subCategories);
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
   return (
-    <div className={` h-auto  mt-[56px] bg-gradient-to-b from-[#c2effa] via-[#f0f2f5] to-[#f0f2f5]`} >
-      <div className="z-[10] px-3 lg:px-0  bg-white">
+    <div className={` h-auto  bg-gradient-to-b from-[#c2effa] via-[#f0f2f5] to-[#f0f2f5]`} >
+      {/* <div className="z-[10] px-3 lg:px-0  bg-white">
         <MenuBar />
-      </div>
+      </div> */}
       <div className="wrapper">
 
 
         {/* menu - slider */}
-        <div className={`flex flex-col`}>
-          <div className="max-h-[500px] items-center  justify-between w-auto">
-            <Slider {...settings}>
-              {dataBanners.map((banner, id) => (
-                <Card
-                  key={id}
-                  banner={banner}
-                />
-              ))}
-            </Slider>
+        <div className="grid grid-cols-5">
+          <div className="hidden lg:inline-block">
+            <div className="flex relative h-full " onMouseLeave={handleMouseLeave}>
+              <div className="w-64 h-full bg-white p-5 ">
+                <div className="text-[#1a428a] font-medium leading-6 ">NGÀNH HÀNG NỔI BẬT</div>
+                {categories.map((category, index) => (
+                  <div
+                    className="flex justify-between items-center rounded-sm px-1 py-2 hover:bg-gray-100 truncate border-b-[1px] text-sm leading-5  text-[#1a428a] hover:text-[#ff6a00]"
+                    key={index}
+                    onMouseEnter={() => handleHover(category.subCategories)}
+                  >
+                    <div>{category.title}</div>
+                    <div>
+                      <svg viewBox="64 64 896 896" focusable="false" data-icon="right" width="10px" height="10px" fill="currentColor" aria-hidden="true"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"></path></svg>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {hovered && (
+                <div className="absolute p-4 border border-gray-200 rounded shadow-lg w-max left-full z-20 bg-white h-full  ">
+                  {currentSubCategories.length > 0 ? (
+                    <ul>
+                      {currentSubCategories.map((subCategory, index) => (
+                        <li key={index} className="py-1 rounded-sm  px-3 hover:bg-gray-100">
+                          {subCategory}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <div>Không có danh mục con</div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+          <div className={`flex flex-col col-span-full lg:col-span-4`}>
+            <div className="max-h-[400px] items-center  justify-between w-auto">
+              <Slider {...settings}>
+                {dataBanners.map((banner, id) => (
+                  <Card
+                    key={id}
+                    banner={banner}
+                  />
+                ))}
+              </Slider>
+            </div>
           </div>
         </div>
+
 
 
         <div>
@@ -476,8 +568,8 @@ const Home: React.FC = () => {
               <div className="font-bold text-[16px]">Tin tức</div>
             </div>
 
-            <div className="w-full h-auto py-[10px] ">
-              <Slider {...settingNews} className="news-slider">
+            <div className="w-full h-auto py-[10px]">
+              <Slider {...settingNews(slidesToShow)} className="news-slider">
                 {newsdata.map(news => (
                   <div onMouseDown={handleMouseDown} onMouseUp={(e) => handleMouseUp(e, news)} key={news.id}>
                     <CardNews news={news} />
@@ -487,7 +579,8 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-        
+
+
 
           {/* video */}
           {/* <div className="w-full flex justify-center items-center">

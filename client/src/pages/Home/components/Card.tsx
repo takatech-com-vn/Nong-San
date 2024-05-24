@@ -11,7 +11,7 @@ const Card: React.FC<CardBannerProps> = ({ banner }) => {
       <div className=" w-full  ">
         <div className="relative">
           <img
-            className="w-full object-fill h-[200px] md:h-[500px]"
+            className="w-full object-cover h-[200px] lg:h-[400px]"
             src={banner?.path}
             alt="Background"
           />

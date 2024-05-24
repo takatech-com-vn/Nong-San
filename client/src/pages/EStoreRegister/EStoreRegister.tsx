@@ -1,5 +1,5 @@
 // EStoreRegister.tsx
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, message, notification, Steps, theme } from 'antd';
 import Content1 from './Contents/Content1';
 import Content2 from './Contents/Content2';
@@ -81,12 +81,12 @@ const EStoreRegister: React.FC = () => {
             });
             console.log("data đăng ký bán hàng", data);
             axios.post(`${import.meta.env.VITE_APP_API_URL}/brand/createbrand`, data)
-            .then(reponse => {
-                message.success("Thêm brand thành công", reponse.data.success);
-            })
-            .catch(() => {
-                message.error("Thêm brand thất bại");
-            })
+                .then(reponse => {
+                    message.success("Thêm brand thành công", reponse.data.success);
+                })
+                .catch(() => {
+                    message.error("Thêm brand thất bại");
+                })
         } else {
             notification.error({
                 message: 'Vui lòng nhập captcha',
@@ -103,19 +103,19 @@ const EStoreRegister: React.FC = () => {
         marginTop: 16,
     };
 
-    const [isScrolled, setIsScrolled] = useState(false);
-    const checkScroll = () => {
-        setIsScrolled(window.pageYOffset > 1);
-    };
-    useEffect(() => {
-        window.addEventListener("scroll", checkScroll);
-        return () => {
-            window.removeEventListener("scroll", checkScroll);
-        };
-    }, []);
+    // const [isScrolled, setIsScrolled] = useState(false);
+    // const checkScroll = () => {
+    //     setIsScrolled(window.pageYOffset > 1);
+    // };
+    // useEffect(() => {
+    //     window.addEventListener("scroll", checkScroll);
+    //     return () => {
+    //         window.removeEventListener("scroll", checkScroll);
+    //     };
+    // }, []);
 
     return (
-        <div className={`wrapper h-auto bg-[#fafafb] rounded-[20px] p-[16px] mt-[20px] ${isScrolled ? "mt-[60px]" : "pt-3 md:pt-0"}`}>
+        <div className={`wrapper h-auto bg-[#fafafb] rounded-[20px] p-[16px] mt-[65px]`}>
             <div className='h-auto mt-[20px] leading-[20px] text-[14px]'>
                 <Steps current={current} items={items} className='w-[70%] m-auto' />
                 <div style={contentStyle}>{steps[current].content}</div>
