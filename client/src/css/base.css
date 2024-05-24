@@ -94,7 +94,7 @@ body {
 
 /* custom css */
 .li-navbar {
-    @apply p-[10px] text-sm uppercase text-[#ffffff] hover:border-b-2 border-[#ff8300] hover:text-[#ff8300];
+    @apply p-[10px] text-sm uppercase text-[#ffffff] border-b-2 border-[#0055aa] hover:text-[#ff8300] hover:border-[#ff8300];
 }
 
 /* custom slick-dots */

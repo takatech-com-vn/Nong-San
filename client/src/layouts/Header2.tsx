@@ -45,80 +45,14 @@ const Header2 = () => {
 
     return (
         <>
-            {/* <header className='fixed top-0 left-0 right-0 z-10 py-2 md:py-3  bg-[#1c4280] justify-center items-center p-2 w-screen'>
-                <div className=''>
-                    <div className='wrapper flex flex-row w-full justify-between'>
-                        <div className='w-full lg:w-[50%] h-[30px] lg:h-auto flex flex-row gap-2 items-center justify-center'>
-                            <div>
-                                <img src={logo} alt="" className='max-w-[200px] min-w-[100px]' />
-                            </div>
-
-
-                            <div className="hidden lg:flex bg-white rounded p-2 w-full h-[32px] items-center">
-                                <Select
-                                    defaultValue="product"
-                                    value={searchType}
-                                    onChange={handleChange}
-                                    className="min-w-[100px] border-none h-auto"
-                                    bordered={false}
-                                >
-                                    <Option value="product">Sản phẩm</Option>
-                                    <Option value="offer">Thư chào hàng</Option>
-                                    <Option value="quote">Yêu cầu báo giá</Option>
-                                    <Option value="company">Doanh nghiệp</Option>
-                                    <Option value="association">Hội / Hiệp hội</Option>
-                                    <Option value="industrial_zone">KCN / KCX / CCN</Option>
-                                    <Option value="user">Người dùng</Option>
-                                </Select>
-                                <Input
-                                    placeholder="Nhập tên sản phẩm..."
-                                    className="flex-grow border-none"
-                                    bordered={false}
-                                />
-                                <Button
-                                    type="default"
-                                    icon={<SearchOutlined />}
-                                    className="flex items-center justify-center"
-                                />
-                            </div>
-                        </div>
-
-
-                        <div className='hidden lg:flex flex-row  items-center gap-4 text-white justify-end'>
-                            <div className='flex flex-row items-center  gap-2'>
-                                <svg viewBox="64 64 896 896" focusable="false" data-icon="user" width="24px" height="24px" fill="currentColor" aria-hidden="true"><path d="M858.5 763.6a374 374 0 00-80.6-119.5 375.63 375.63 0 00-119.5-80.6c-.4-.2-.8-.3-1.2-.5C719.5 518 760 444.7 760 362c0-137-111-248-248-248S264 225 264 362c0 82.7 40.5 156 102.8 201.1-.4.2-.8.3-1.2.5-44.8 18.9-85 46-119.5 80.6a375.63 375.63 0 00-80.6 119.5A371.7 371.7 0 00136 901.8a8 8 0 008 8.2h60c4.4 0 7.9-3.5 8-7.8 2-77.2 33-149.5 87.8-204.3 56.7-56.7 132-87.9 212.2-87.9s155.5 31.2 212.2 87.9C779 752.7 810 825 812 902.2c.1 4.4 3.6 7.8 8 7.8h60a8 8 0 008-8.2c-1-47.8-10.9-94.3-29.5-138.2zM512 534c-45.9 0-89.1-17.9-121.6-50.4S340 407.9 340 362c0-45.9 17.9-89.1 50.4-121.6S466.1 190 512 190s89.1 17.9 121.6 50.4S684 316.1 684 362c0 45.9-17.9 89.1-50.4 121.6S557.9 534 512 534z"></path></svg>
-                                <div className='flex flex-col text-[13px] gap-2'>
-                                    <a href="">Đăng nhập</a>
-                                    <a href="">Đăng ký</a>
-                                </div>
-
-                            </div>
-                            <div className='flex flex-col items-center justify-center '>
-                                <svg viewBox="64 64 896 896" focusable="false" data-icon="bell" width="24px" height="24px" fill="currentColor" aria-hidden="true"><path d="M816 768h-24V428c0-141.1-104.3-257.7-240-277.1V112c0-22.1-17.9-40-40-40s-40 17.9-40 40v38.9c-135.7 19.4-240 136-240 277.1v340h-24c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h216c0 61.8 50.2 112 112 112s112-50.2 112-112h216c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM512 888c-26.5 0-48-21.5-48-48h96c0 26.5-21.5 48-48 48zM304 768V428c0-55.6 21.6-107.8 60.9-147.1S456.4 220 512 220c55.6 0 107.8 21.6 147.1 60.9S720 372.4 720 428v340H304z"></path></svg>
-                                <a href="" className='text-[13px]'>Thông báo</a>
-                            </div>
-                            <div className='flex flex-col items-center justify-center '>
-                                <svg viewBox="64 64 896 896" focusable="false" data-icon="read" width="24px" height="24px" fill="currentColor" aria-hidden="true"><path d="M928 161H699.2c-49.1 0-97.1 14.1-138.4 40.7L512 233l-48.8-31.3A255.2 255.2 0 00324.8 161H96c-17.7 0-32 14.3-32 32v568c0 17.7 14.3 32 32 32h228.8c49.1 0 97.1 14.1 138.4 40.7l44.4 28.6c1.3.8 2.8 1.3 4.3 1.3s3-.4 4.3-1.3l44.4-28.6C602 807.1 650.1 793 699.2 793H928c17.7 0 32-14.3 32-32V193c0-17.7-14.3-32-32-32zM324.8 721H136V233h188.8c35.4 0 69.8 10.1 99.5 29.2l48.8 31.3 6.9 4.5v462c-47.6-25.6-100.8-39-155.2-39zm563.2 0H699.2c-54.4 0-107.6 13.4-155.2 39V298l6.9-4.5 48.8-31.3c29.7-19.1 64.1-29.2 99.5-29.2H888v488zM396.9 361H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm223.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c0-4.1-3.2-7.5-7.1-7.5H627.1c-3.9 0-7.1 3.4-7.1 7.5zM396.9 501H211.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5zm416 0H627.1c-3.9 0-7.1 3.4-7.1 7.5v45c0 4.1 3.2 7.5 7.1 7.5h185.7c3.9 0 7.1-3.4 7.1-7.5v-45c.1-4.1-3.1-7.5-7-7.5z"></path></svg>
-                                <a href="" className='text-[13px]'>Tin tức</a>
-                            </div> <div className='flex flex-col items-center justify-center '>
-                                <svg viewBox="64 64 896 896" focusable="false" data-icon="schedule" width="24px" height="24px" fill="currentColor" aria-hidden="true"><path d="M928 224H768v-56c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v56H548v-56c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v56H328v-56c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v56H96c-17.7 0-32 14.3-32 32v576c0 17.7 14.3 32 32 32h832c17.7 0 32-14.3 32-32V256c0-17.7-14.3-32-32-32zm-40 568H136V296h120v56c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-56h148v56c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-56h148v56c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-56h120v496zM416 496H232c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8zm0 136H232c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8zm308.2-177.4L620.6 598.3l-52.8-73.1c-3-4.2-7.8-6.6-12.9-6.6H500c-6.5 0-10.3 7.4-6.5 12.7l114.1 158.2a15.9 15.9 0 0025.8 0l165-228.7c3.8-5.3 0-12.7-6.5-12.7H737c-5-.1-9.8 2.4-12.8 6.5z"></path></svg>
-                                <a href="" className='text-[13px]'>Công việc</a>
-                            </div> <div className='flex flex-col items-center justify-center '>
-                                <svg viewBox="64 64 896 896" focusable="false" data-icon="question-circle" width="24px" height="24px" fill="currentColor" aria-hidden="true"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M623.6 316.7C593.6 290.4 554 276 512 276s-81.6 14.5-111.6 40.7C369.2 344 352 380.7 352 420v7.6c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V420c0-44.1 43.1-80 96-80s96 35.9 96 80c0 31.1-22 59.6-56.1 72.7-21.2 8.1-39.2 22.3-52.1 40.9-13.1 19-19.9 41.8-19.9 64.9V620c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-22.7a48.3 48.3 0 0130.9-44.8c59-22.7 97.1-74.7 97.1-132.5.1-39.3-17.1-76-48.3-103.3zM472 732a40 40 0 1080 0 40 40 0 10-80 0z"></path></svg>
-                                <a href="" className='text-[13px]'>Trợ giúp</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header> */}
-
-
             <header className=" fixed top-0 left-0 right-0 z-10  bg-[#1c4280] justify-center items-center p-2 w-full">
                 <div className="wrapper flex flex-row w-full justify-between items-center">
                     <div className='flex flex-row  justify-between items-center'>
                         {/* <!-- logo --> */}
                         <div className="md:w-48">
-                            <img className="h-8 md:h-10" src={logo} alt=""></img>
+                            <a href="/">
+                                <img className="h-8 md:h-10" src={logo} alt=""></img>
+                            </a>
                         </div>
                         {/* <div className="mr-auto md:w-48 flex-shrink-0">
                             <img className="h-8 md:h-10" src={logo} alt=""></img>
@@ -133,7 +67,7 @@ const Header2 = () => {
                                 value={searchType}
                                 onChange={handleChange}
                                 className="min-w-[100px] bg-transparent uppercase font-bold text-sm p-3 mr-4"
-                                variant="borderless" 
+                                variant="borderless"
                             >
                                 <Option value="product">Sản phẩm</Option>
                                 <Option value="offer">Thư chào hàng</Option>
@@ -148,11 +82,6 @@ const Header2 = () => {
                         </div>
                     </div>
 
-                    {/* <!-- phone number --> */}
-                    {/* <div className="ml-auto md:w-48 hidden sm:flex flex-col place-items-end">
-                        <span className="font-bold md:text-xl">8 800 332 65-66</span>
-                        <span className="font-semibold text-sm text-gray-400">Support 24/7</span>
-                    </div> */}
                     {/* 
                     <!-- buttons --> */}
                     <nav className="contents ">
@@ -276,18 +205,12 @@ const Header2 = () => {
                             </div> */}
                         </ul>
                     </nav>
-
-                    {/* <!-- cart count --> */}
-                    {/* <div className="ml-4 hidden sm:flex flex-col font-bold">
-                        <span className="text-xs text-gray-400">Your Cart</span>
-                        <span>$2,650,59</span>
-                    </div> */}
                 </div>
 
                 {/* <hr/> */}
             </header>
             <div className='mt-[56px] z-[10] px-3 lg:px-0  bg-white'>
-                  <MenuBar />
+                <MenuBar />
             </div>
         </>
 

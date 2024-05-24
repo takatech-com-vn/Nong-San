@@ -8,6 +8,7 @@ export default {
     extend: {
       fontFamily: {
         font1: ["Inter", "sans-serif"],
+        font2: ["Roboto", "sans-serif"],
       },
       backgroundImage:  ({
         'bg-login': "url('https://vietnam.atalink.com/images/sign-in/bg.jpg')",

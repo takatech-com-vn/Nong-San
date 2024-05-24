@@ -12,7 +12,6 @@ export interface Product {
         price: number;
         capacity: string
     }
-
     ]
     category: string;
     danhmuc: string

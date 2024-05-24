@@ -1,17 +1,14 @@
 // Content2.tsx
-
 import React, { useEffect, useState } from 'react';
 import { Form, GetProp, Select, UploadFile, UploadProps } from 'antd';
 import { Cascader } from 'antd';
 import type { MultipleCascaderProps, } from 'antd/es/cascader';
-// import { InboxOutlined } from '@ant-design/icons';
-// import type { UploadFile, } from 'antd';
-// import { AiTwotoneDelete } from 'react-icons/ai';
+
 import { PlusOutlined } from '@ant-design/icons';
 
+const { Option } = Select;
 import { Image, Upload } from 'antd';
 import axios from 'axios';
-// const { SHOW_CHILD } = Cascader;
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 interface City {
@@ -38,47 +35,45 @@ interface Option {
     label: string;
     children?: Option[];
 }
-const options: Option[] = [
-    {
-        label: 'Nông sản đặc trưng tỉnh Đắk Lắk',
-        value: 'Nông sản đặc trưng tỉnh Đắk Lắk',
-    },
-    {
-        label: 'Sản phẩm',
-        value: 'Sản phẩm',
-        children: [
-            { value: 'Sầu riêng', label: 'Sầu riêng' },
-            { value: 'Bơ', label: 'Bơ' },
-            { value: 'Tiêu', label: 'Tiêu' },
-            { value: 'Rau củ', label: 'Rau củ' },
-            { value: 'Cacao', label: 'Cacao' },
-            { value: 'Hạt ngũ cốc', label: 'Hạt ngũ cốc' },
-            { value: 'Phân hữu cơ', label: 'Phân hữu cơ' },
-            { value: 'Phân bón', label: 'Phân bón' },
-            { value: 'Khác', label: 'Khác' },
-            { value: 'Macca', label: 'Macca' },
-            { value: 'Mít thái', label: 'Mít thái' },
-        ],
-    },
-];
-const option2: Option[] = [
-    {
-        label: 'Buôn đôn',
-        value: 'Buôn đôn',
-    },
-    {
-        label: 'Buôn ma thuột',
-        value: 'Buôn ma thột',
-    },
-    {
-        label: 'Buôn các loại hạt',
-        value: 'Buôn các loại hạt',
-    },
+// const options: Option[] = [
+//     {
+//         label: 'Nông sản đặc trưng tỉnh Đắk Lắk',
+//         value: 'Nông sản đặc trưng tỉnh Đắk Lắk',
+//     },
+//     {
+//         label: 'Sản phẩm',
+//         value: 'Sản phẩm',
+//         children: [
+//             { value: 'Sầu riêng', label: 'Sầu riêng' },
+//             { value: 'Bơ', label: 'Bơ' },
+//             { value: 'Tiêu', label: 'Tiêu' },
+//             { value: 'Rau củ', label: 'Rau củ' },
+//             { value: 'Cacao', label: 'Cacao' },
+//             { value: 'Hạt ngũ cốc', label: 'Hạt ngũ cốc' },
+//             { value: 'Phân hữu cơ', label: 'Phân hữu cơ' },
+//             { value: 'Phân bón', label: 'Phân bón' },
+//             { value: 'Khác', label: 'Khác' },
+//             { value: 'Macca', label: 'Macca' },
+//             { value: 'Mít thái', label: 'Mít thái' },
+//         ],
+//     },
+// ];
+// const option2: Option[] = [
+//     {
+//         label: 'Buôn đôn',
+//         value: 'Buôn đôn',
+//     },
+//     {
+//         label: 'Buôn ma thuột',
+//         value: 'Buôn ma thột',
+//     },
+//     {
+//         label: 'Buôn các loại hạt',
+//         value: 'Buôn các loại hạt',
+//     },
 
-];
-// const onChange2 = (value: string) => {
-//     console.log(`selected ${value}`);
-// };
+// ];
+
 
 const onSearch = (value: string) => {
     console.log('search:', value);
@@ -88,7 +83,6 @@ const onSearch = (value: string) => {
 const filterOption = (input: string, option?: { label: string; value: string }) =>
     (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
-// const { Dragger } = Upload;
 
 const getBase64 = (file: FileType): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -100,8 +94,8 @@ const getBase64 = (file: FileType): Promise<string> =>
 
 
 const Content2: React.FC = () => {
-    const [danhMucSanPham, setDanhMucSanPham] = useState<string[]>([]);
-    const [loaiGianHang, setLoaiGianHang] = useState<string[]>([])
+    const [danhMucSanPham, setDanhMucSanPham] = useState<(string | number)[]>([]);
+    const [loaiGianHang, setLoaiGianHang] = useState<string[]>([]);
     const [loaiDonVi, setLoaiDonVi] = useState('');
     const [nguoiDaiDien, setNguoiDaiDien] = useState('');
     const [tenCongTy, setTenCongTy] = useState('');
@@ -132,6 +126,85 @@ const Content2: React.FC = () => {
             console.error("Error fetching data:", error);
         }
     };
+
+
+    const fetchCategories = async () => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/product/getcategory`);
+            if (response.data.success) {
+                return response.data.productcategoris;
+            } else {
+                throw new Error('Failed to fetch categories');
+            }
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const transformCategories = (categories: any[]): Option[] => {
+        const mainCategories: { [key: string]: Option } = {};
+
+        categories.forEach(category => {
+            if (!mainCategories[category.name]) {
+                mainCategories[category.name] = {
+                    label: category.name,
+                    value: category.name,
+                    children: [],
+                };
+            }
+            mainCategories[category.name].children!.push({
+                label: category.name_category,
+                value: category.name_category,
+            });
+        });
+
+        return Object.values(mainCategories);
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const transformLoaiGianHang = (categories: any[]): JSX.Element[] => {
+        return categories.map(category => (
+            <Option key={category.id} value={category.name_category}>
+                {category.name_category}
+            </Option>
+        ));
+    };
+    
+
+    const [options, setOptions] = useState<Option[]>([]);
+    const [optionLoaiGianHang, setOptionLoaiGianHang] = useState<JSX.Element[]>([]);
+
+    useEffect(() => {
+        const getCategories = async () => {
+            const categories = await fetchCategories();
+            const transformedOptions = transformCategories(categories);
+            setOptions(transformedOptions);
+        };
+        getCategories();
+    }, []);
+
+    useEffect(() => {
+        const getCategories = async () => {
+            const categories = await fetchCategories();
+            const transformedCategories = transformLoaiGianHang(categories);
+            setOptionLoaiGianHang(transformedCategories);
+        };
+        getCategories();
+    }, []);
+
+    // const onChangeDanhMuc: (value: (string | number)[]) => void = (value) => {
+    //     const selectedValues = value as string[];
+    //     setDanhMucSanPham(selectedValues);
+    //     sessionStorage.setItem('danhMucSanPham', JSON.stringify(selectedValues));
+    // };
+    const onChangeDanhMuc: MultipleCascaderProps<Option>['onChange'] = (value) => {
+        const selectedValues = value as unknown as (string | number)[];
+        setDanhMucSanPham(selectedValues);
+        sessionStorage.setItem('danhMucSanPham', JSON.stringify(selectedValues));
+    };
+
     const handleCityChange = (value: string) => {
         setSelectedCity(value);
         sessionStorage.setItem('selectedCity', JSON.stringify(value));
@@ -156,7 +229,7 @@ const Content2: React.FC = () => {
         const storedImageData = sessionStorage.getItem('image');
         if (storedImageData) {
             setFileList(JSON.parse(storedImageData));
-             console.log('log img',fileList)
+            console.log('log img', fileList)
         }
     }, []);
 
@@ -232,20 +305,25 @@ const Content2: React.FC = () => {
     }, [nguoiDaiDien, tenCongTy, maSoDoanhNghiep, diaChiThuongTru, soGiayChungNhanDKKD, ngayCapGiayChungNhanDKKD, noiCapGiayChungNhanDKKD, phoneCongTy, maBuuDien, diaChiCongTy]);
 
     // Hàm xử lý sự kiện khi có sự thay đổi trong Cascader
-    const onChangeDanhMuc: MultipleCascaderProps<Option>['onChange'] = (value) => {
-        // Ép kiểu giá trị nhận được về mảng chuỗi và lưu vào state
-        const selectedValues = value as unknown as string[];
-        setDanhMucSanPham(selectedValues);
-        // Lưu giá trị vào sessionStorage
-        sessionStorage.setItem('danhMucSanPham', JSON.stringify(selectedValues));
+    // const onChangeDanhMuc: MultipleCascaderProps<Option>['onChange'] = (value) => {
+    //     // Ép kiểu giá trị nhận được về mảng chuỗi và lưu vào state
+    //     const selectedValues = value as unknown as string[];
+    //     setDanhMucSanPham(selectedValues);
+    //     // Lưu giá trị vào sessionStorage
+    //     sessionStorage.setItem('danhMucSanPham', JSON.stringify(selectedValues));
+    // };
+
+    // const onChangeLoaiGianHang: MultipleCascaderProps<Option>['onChange'] = (value) => {
+    //     // Ép kiểu giá trị nhận được về mảng chuỗi và lưu vào state
+    //     const selectedValues = value as unknown as string[];
+    //     setLoaiGianHang(selectedValues);
+    //     sessionStorage.setItem('loaiGianHang', JSON.stringify(selectedValues));
+    // };
+    const onChangeLoaiGianHang = (value: string[]) => {
+        setLoaiGianHang(value);
+        sessionStorage.setItem('loaiGianHang', JSON.stringify(value));
     };
 
-    const onChangeLoaiGianHang: MultipleCascaderProps<Option>['onChange'] = (value) => {
-        // Ép kiểu giá trị nhận được về mảng chuỗi và lưu vào state
-        const selectedValues = value as unknown as string[];
-        setLoaiGianHang(selectedValues);
-        sessionStorage.setItem('loaiGianHang', JSON.stringify(selectedValues));
-    };
 
     const onChangeLoaiDonVi = (value: string) => {
         setLoaiDonVi(value);
@@ -294,17 +372,18 @@ const Content2: React.FC = () => {
                         <label className="block text-sm font-medium text-gray-700" htmlFor="loaiGianHang">
                             Loại gian hàng
                         </label>
-                        <Cascader
-                            className='mt-1 h-[36px]'
-                            style={{ width: '100%' }}
-                            options={option2}
-                            onChange={onChangeLoaiGianHang}
+                        <Select
+                            id="loaiGianHang"
+                            className="mt-1 w-full"
+                            mode="multiple"
                             value={loaiGianHang}
-                            multiple
-                            maxTagCount="responsive"
+                            onChange={onChangeLoaiGianHang}
                             placeholder="Chọn"
-
-                        />
+                            maxTagCount="responsive"
+                            style={{ width: '100%' }}
+                        >
+                            {optionLoaiGianHang}
+                        </Select>
                     </div>
                 </div>
             </div>

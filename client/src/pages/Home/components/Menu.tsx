@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 
 import { AiOutlineClose, AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -53,6 +53,12 @@ const items: MenuItem[] = [
         ],
     },
 ];
+interface ProductCategory {
+    id: number;
+    maincategory_id: number;
+    name_category: string;
+    name: string;
+}
 const MenuBar = () => {
     const location = useLocation();
     const isHomePage = location.pathname === "/";
@@ -77,128 +83,124 @@ const MenuBar = () => {
     const onClick: MenuProps['onClick'] = (e) => {
         console.log('click ', e);
     };
+    const [productCategories, setProductCategories] = useState<ProductCategory[]>([]);
 
+    useEffect(() => {
+        fetch('http://localhost:3000/product/getcategory')
+            .then(res => res.json())
+            .then(data => setProductCategories(data.productcategoris))
+            .catch(error => console.error('Error fetching data:', error));
+    }, []); 
     return (
         <div>
             <div className="h-auto  home-sections z-10 lg:block hidden">
                 <div>
                     <ul className="flex flex-row justify-center ">
-                        <li
-                            className={`li-navbar relative group inline-block custom-menu  ${isHomePage
-                                ? "text-[#ff8300] home-sections border-b-2 border-[#ff8300]"
-                                : ""
-                                }`}
-                            // onMouseEnter={() => setIsOpen(true)}
-                            // onMouseLeave={() => setIsOpen(false)}
+                        <NavLink
+                            to="/"
+                            className={({ isActive }) =>
+                                `li-navbar relative group inline-block custom-menu ${isActive ? "text-[#ff8300] home-sections border-b-2 border-[#ff8300]" : ""}`
+                            }
                         >
-                            <a href="/">Trang Chủ</a>
-                            {/* <div
-                                className={`absolute left-0 transform transition duration-200 ease-in-out z-[10] ${isOpen
-                                    ? "translate-y-1 opacity-100"
-                                    : "translate-y-1/2 opacity-0 invisible"
-                                    }`}
-                            >
-                                <ul className="mt-2 space-y-2 bg-white text-black p-2 rounded-[12px] shadow-lg w-max normal-case">
-                                    <li>Nông sản đặc trưng tỉnh Đắk Lắk</li>
-                                    <li>Sản phẩm Ocop tỉnh Đắk Lắk</li>
-                                    <li>Sản phẩm Ocop 62 tỉnh, thành phố</li>
-                                    <li>Danh sách cửa hàng</li>
-                                </ul>
-                            </div> */}
+                            Trang Chủ
+                            <ul className="bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute z-20 left-0
+                                transition duration-150 ease-in-out origin-top-left min-w-32 z-20` mt-[14px] space-y-2  text-black p-2 shadow-lg w-max normal-case">
+                                {[...new Set(productCategories.map(category => category.name))].map(mainCategory => (
+                                    <li key={mainCategory} className="rounded-sm  px-3 py-1 hover:bg-gray-100">
+                                        <button
+                                            className="w-full text-left flex items-center outline-none focus:outline-none"
+                                        >
+                                            <span className="pr-1 flex-1">{mainCategory}</span>
+                                            <span className="mr-auto">
+                                                <svg
+                                                    className="fill-current h-4 w-4 transition duration-150 ease-in-out"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 20 20"
+                                                >
+                                                    <path
+                                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                                    />
+                                                </svg>
+                                            </span>
+                                        </button>
+                                        <ul
+                                            className="bg-white border rounded-sm absolute top-0 right-3 p-2 transition duration-150 ease-in-out origin-top-left w-max h-full"
+                                        >
+                                            {productCategories
+                                                .filter(category => category.name === mainCategory)
+                                                .map(category => (
+                                                    <li key={category.id} className="rounded-sm  px-3 py-1 hover:bg-gray-100">{category.name_category}</li>
+                                                ))}
+                                        </ul>
+                                    </li>
+                                ))}
+                            </ul>
+                        </NavLink>
+
+                        <NavLink
+                            to="TongQuan"
+                            className={({ isActive }) =>
+                                `li-navbar relative group inline-block custom-menu ${isActive ? "text-[#ff8300] home-sections border-b-2 border-[#ff8300]" : ""}`
+                            }
+                        >
+                            Tổng quan
+                        </NavLink>
+
+                        <NavLink
+                            to="products"
+                            className={({ isActive }) =>
+                                `li-navbar relative group inline-block custom-menu ${isActive ? "text-[#ff8300] home-sections border-b-2 border-[#ff8300]" : ""}`
+                            }
+                        >
+                            Sản phẩm
 
                             <ul className="bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute z-20 left-0
                                 transition duration-150 ease-in-out origin-top-left min-w-32 z-20` mt-[14px] space-y-2  text-black p-2 shadow-lg w-max normal-case">
-                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100">Nông sản đặc trưng tỉnh Đắk Lắk</li>
-                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100">Sản phẩm Ocop tỉnh Đắk Lắk</li>
-                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100">Sản phẩm Ocop 62 tỉnh, thành phố</li>
-                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100">Danh sách cửa hàng</li>
-                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100">
-                                    <button
-                                        className="w-full text-left flex items-center outline-none focus:outline-none"
-                                    >
-                                        <span className="pr-1 flex-1">Thiết bị văn phòng</span>
-                                        <span className="mr-auto">
-                                            <svg
-                                                className="fill-current h-4 w-4 transition duration-150 ease-in-out"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20"
-                                            >
-                                                <path
-                                                    d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                                                />
-                                            </svg>
-                                        </span>
-                                    </button>
-                                    <ul
-                                        className="bg-white border rounded-sm absolute top-0 right-3  transition duration-150 ease-in-out origin-top-left w-max h-full"
-                                    >
-                                        <li className="px-3 py-1 hover:bg-gray-100">Laptop & PC</li>
-                                        <li className="rounded-sm  px-3 py-1 hover:bg-gray-100">
-                                            <button
-                                                className="w-full text-left flex items-center outline-none focus:outline-none"
-                                            >
-                                                <span className="pr-1 flex-1">Máy móc văn phòng</span>
-                                                <span className="mr-auto">
-                                                    <svg
-                                                        className="fill-current h-4 w-4 transition duration-150 ease-in-out"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 20 20"
-                                                    >
-                                                        <path
-                                                            d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                                                        />
-                                                    </svg>
-                                                </span>
-                                            </button>
-                                            <ul
-                                                className="bg-white border rounded-sm absolute top-0 right-3 transition duration-150 ease-in-out origin-top-left w-max h-full
-      "
-                                            >
-                                                <li className="px-3 py-1 hover:bg-gray-100">Máy In</li>
-                                                <li className="px-3 py-1 hover:bg-gray-100">Máy Photocopy</li>
-                                                <li className="px-3 py-1 hover:bg-gray-100">Máy Photocopy</li>
-                                                <li className="px-3 py-1 hover:bg-gray-100">Máy Photocopy</li>
-                                                <li className="px-3 py-1 hover:bg-gray-100">Máy Photocopy</li>
-
-                                            </ul>
-                                        </li>
-                                        <li className="px-3 py-1 hover:bg-gray-100">Phụ Kiện Máy Tính</li>
-                                        <li className="px-3 py-1 hover:bg-gray-100">Giải Pháp CNTT</li>
-                                    </ul>
-                                </li>
+                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Sầu riêng</li>
+                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Bơ</li>
+                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Tiêu</li>
+                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Rau củ</li>
+                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Cacao</li>
+                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Hạt ngũ cốc</li>
+                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Phân hữu cơ</li>
+                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Phân bón</li>
+                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Khác</li>
+                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Macca</li>
+                                <li className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Mít thái</li>
                             </ul>
-
-                        </li>
-                        <li className="li-navbar">Tổng quan</li>
-                        <li
-                            className="li-navbar relative group inline-block custom-menu "
-                            // onMouseEnter={() => setIsProductOpen(true)}
-                            // onMouseLeave={() => setIsProductOpen(false)}
+                        </NavLink>
+                        <NavLink
+                            to="DanhChoNguoiMua"
+                            className={({ isActive }) =>
+                                `li-navbar relative group inline-block custom-menu ${isActive ? "text-[#ff8300] home-sections border-b-2 border-[#ff8300]" : ""}`
+                            }
                         >
-                            Sản phẩm
-                          
-                                <ul className="bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute z-20 left-0
-                                transition duration-150 ease-in-out origin-top-left min-w-32 z-20` mt-[14px] space-y-2  text-black p-2 shadow-lg w-max normal-case">
-                                    <li  className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Sầu riêng</li>
-                                    <li  className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Bơ</li>
-                                    <li  className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Tiêu</li>
-                                    <li  className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Rau củ</li>
-                                    <li  className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Cacao</li>
-                                    <li  className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Hạt ngũ cốc</li>
-                                    <li  className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Phân hữu cơ</li>
-                                    <li  className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Phân bón</li>
-                                    <li  className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Khác</li>
-                                    <li  className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Macca</li>
-                                    <li  className="rounded-sm  px-3 py-1 hover:bg-gray-100" >Mít thái</li>
-                                </ul>
-                           
-                        </li>
-                        <li className="li-navbar">Dành cho người mua</li>
-                        <li className="li-navbar">Dành cho người bán</li>
-                        <li className="li-navbar">Thông tin thị trường</li>
-                        <li className="li-navbar">Mời liên kết sản xuất - kinh doanh</li>
-                     
-
+                            Dành cho người mua
+                        </NavLink>
+                        <NavLink
+                            to="DanhChoNguoiBan"
+                            className={({ isActive }) =>
+                                `li-navbar relative group inline-block custom-menu ${isActive ? "text-[#ff8300] home-sections border-b-2 border-[#ff8300]" : ""}`
+                            }
+                        >
+                            Dành cho người bán
+                        </NavLink>
+                        <NavLink
+                            to="ThongTinThiTruong"
+                            className={({ isActive }) =>
+                                `li-navbar relative group inline-block custom-menu ${isActive ? "text-[#ff8300] home-sections border-b-2 border-[#ff8300]" : ""}`
+                            }
+                        >
+                            Thông tin thị trường
+                        </NavLink>
+                        <NavLink
+                            to="MoiLienKet-KD"
+                            className={({ isActive }) =>
+                                `li-navbar relative group inline-block custom-menu ${isActive ? "text-[#ff8300] home-sections border-b-2 border-[#ff8300]" : ""}`
+                            }
+                        >
+                            Mời liên kết sản xuất - kinh doanh
+                        </NavLink>
                     </ul>
                 </div>
             </div>

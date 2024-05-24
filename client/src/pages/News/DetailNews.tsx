@@ -35,21 +35,21 @@ const DetailNews = () => {
         });
     }, []);
 
-    const [isScrolled, setIsScrolled] = useState(false);
-    const checkScroll = () => {
-        setIsScrolled(window.pageYOffset > 1);
-    };
-    useEffect(() => {
-        window.addEventListener("scroll", checkScroll);
-        return () => {
-            window.removeEventListener("scroll", checkScroll);
-        };
-    }, []);
+    // const [isScrolled, setIsScrolled] = useState(false);
+    // const checkScroll = () => {
+    //     setIsScrolled(window.pageYOffset > 1);
+    // };
+    // useEffect(() => {
+    //     window.addEventListener("scroll", checkScroll);
+    //     return () => {
+    //         window.removeEventListener("scroll", checkScroll);
+    //     };
+    // }, []);
     return (
         <>
 
             <div
-                className={`wrapper h-auto bg-[#fafafb] p-[16px] mt-[20px] ${isScrolled ? "mt-[60px]" : "pt-3 md:pt-0"}
+                className={`wrapper h-auto bg-[#fafafb] p-[16px] mt-[10px]
             `}
             >
                 <div className='py-[10px]'>

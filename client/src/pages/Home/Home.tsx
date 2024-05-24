@@ -63,6 +63,8 @@ const Home: React.FC = () => {
   const productsdata = useSelector((state: RootState) => state.product.products);
   const [newsdata, setNewsData] = useState<New[]>([]);
 
+  const slidesToShow = newsdata.length < 4 ? newsdata.length : 4;
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
   //data product
@@ -95,7 +97,7 @@ const Home: React.FC = () => {
           path: `${import.meta.env.VITE_APP_API_URL}${banner.path}`
         }));
         setDataBanners(banners);
-        console.log("banners: " + JSON.stringify(banners));
+        // console.log("banners: " + JSON.stringify(banners));
       } catch (error) {
         console.error('Lỗi data slide', error)
       }
@@ -209,41 +211,46 @@ const Home: React.FC = () => {
       }
     ],
   };
-  const settingNews = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
-    arrows: false,
-    responsive: [
-      {
-        breakpoint: 1100,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true,
+  const settingNews = (slidesToShow: number) => {
+    // Ensure slidesToShow is not infinity or invalid
+    const validSlidesToShow = isNaN(slidesToShow) || slidesToShow <= 0 ? 1 : slidesToShow;
+
+    return {
+      dots: false,
+      infinite: validSlidesToShow > 1,
+      speed: 500,
+      slidesToShow: validSlidesToShow,
+      slidesToScroll: validSlidesToShow,
+      arrows: false,
+      responsive: [
+        {
+          breakpoint: 1100,
+          settings: {
+            slidesToShow: validSlidesToShow >= 3 ? 3 : validSlidesToShow,
+            slidesToScroll: validSlidesToShow >= 3 ? 3 : validSlidesToShow,
+            infinite: validSlidesToShow > 1,
+            dots: true,
+          }
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: validSlidesToShow >= 2 ? 2 : validSlidesToShow,
+            slidesToScroll: validSlidesToShow >= 2 ? 2 : validSlidesToShow,
+            infinite: validSlidesToShow > 1,
+            dots: true,
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            dots: true,
+          }
         }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
-          dots: true,
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          dots: true,
-        }
-      }
-    ],
+      ],
+    };
   };
 
   const products = [
@@ -561,8 +568,8 @@ const Home: React.FC = () => {
               <div className="font-bold text-[16px]">Tin tức</div>
             </div>
 
-            <div className="w-full h-auto py-[10px] ">
-              <Slider {...settingNews} className="news-slider">
+            <div className="w-full h-auto py-[10px]">
+              <Slider {...settingNews(slidesToShow)} className="news-slider">
                 {newsdata.map(news => (
                   <div onMouseDown={handleMouseDown} onMouseUp={(e) => handleMouseUp(e, news)} key={news.id}>
                     <CardNews news={news} />
@@ -571,6 +578,7 @@ const Home: React.FC = () => {
               </Slider>
             </div>
           </div>
+
 
 
 
