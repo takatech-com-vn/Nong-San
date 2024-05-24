@@ -7,6 +7,8 @@ import Content3 from './Contents/Content3';
 import Content4 from './Contents/Content4';
 import ValidationContext from './Contents/ValidationContext';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 const steps = [
     {
         title: 'Thông tin chung',
@@ -30,6 +32,7 @@ const EStoreRegister: React.FC = () => {
     const { token } = theme.useToken();
     const [current, setCurrent] = useState(0);
     const validationContext = useContext(ValidationContext);
+    const user = useSelector((state: RootState) => state.user.user);
     const next = () => {
         if (validationContext.validate()) {
             setCurrent(current + 1);
@@ -41,11 +44,13 @@ const EStoreRegister: React.FC = () => {
     const prev = () => {
         setCurrent(current - 1);
     };
+    
     const handleSubmit = () => {
         const captchaValid = sessionStorage.getItem('captchaValid');
         if (captchaValid === 'true') {
             // Đối tượng chứa các trường dữ liệu
             const data: { [key: string]: string } = {
+                "user": user?.id ? user.id.toString() : "",
                 "tenGianHang": "",
                 "tenChuGianHang": "",
                 "phoneCaNhan": "",
