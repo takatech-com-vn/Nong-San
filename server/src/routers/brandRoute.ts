@@ -21,6 +21,7 @@ const upload = multer({ storage: storage });
 
 const router = express.Router();
 
-router.post('/createbrand', upload.single('image'), brandController.CreateBrand)
+router.post('/createbrand', upload.single('image'), brandController.CreateBrand);
+router.post('/getbrand', brandController.GetBrand);
 
 export = router
