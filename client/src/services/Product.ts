@@ -8,11 +8,7 @@ export interface Product {
     mota: string;
     thongsokithuat: [];
     id: string;
-    variations: [{
-        price: number;
-        capacity: string
-    }
-    ]
+    variations: { price: number; capacity: string; }[]; 
     category: string;
     danhmuc: string
 }

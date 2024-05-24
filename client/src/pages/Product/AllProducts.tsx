@@ -1,6 +1,8 @@
 // src/App.tsx
 import React, { useState, useEffect } from 'react';
 import { Product } from '../../services/Product';
+import Filter from './components/Filter';
+import ProductList from './components/ProductList';
 const initialProducts: Product[] = [
   {
     createdAt: "2023-05-10T10:30:00Z",
@@ -44,6 +46,61 @@ const initialProducts: Product[] = [
     category: "Laptop",
     danhmuc: "Công nghệ",
   },
+  {
+    createdAt: "2023-11-25T10:00:00Z",
+    name: "Bánh mì hoa cúc sourdough",
+    thumbnail: ["https://via.placeholder.com/150"],
+    price: 45000,
+    quantity: 25,
+    brand: "The Bread Basket",
+    mota: "Bánh mì sourdough hoa cúc thơm ngon, vỏ giòn ruột mềm.",
+    thongsokithuat: [], // Mảng rỗng
+    id: "201",
+    variations: [
+      { 'price': 60000, 'capacity': "500g" }
+    ],
+    category: "Bánh mì",
+    danhmuc: "Thực phẩm"
+  },
+  {
+    createdAt: "2023-11-25T12:30:00Z",
+    name: "Cà phê Arabica rang mộc nguyên chất",
+    thumbnail: ["https://via.placeholder.com/150"],
+    price: 300000,
+    quantity: 10,
+    brand: "Highland Coffee",
+    mota: "Cà phê Arabica rang mộc, hương vị đậm đà, hậu vị ngọt.",
+    thongsokithuat: [],
+    id: "202",
+    variations: [
+      {
+        "price": 28990000,
+        "capacity": "250g"
+      },
+      {
+        'price': 650000,
+        'capacity': "500g"
+      }
+    ],
+    category: "Cà phê",
+    danhmuc: "Thực phẩm"
+  },
+  {
+    createdAt: "2023-11-26T08:45:00Z",
+    name: "Trà sữa trân châu đường đen",
+    thumbnail: ["https://via.placeholder.com/150"],
+    price: 55000,
+    quantity: 80,
+    brand: "Ding Tea",
+    mota: "Trà sữa thơm ngon với trân châu đường đen dai mềm.",
+    thongsokithuat: [],
+    id: "203",
+    variations: [
+      { 'price': 65000, 'capacity': "Size L" }
+    ],
+    category: "Đồ uống",
+    danhmuc: "Thực phẩm"
+  }
   // ... thêm các sản phẩm khác
 ];
 const AllProducts: React.FC = () => {
@@ -66,159 +123,19 @@ const AllProducts: React.FC = () => {
     setProducts(initialProducts);
     setFilteredProducts(initialProducts);
   }, []);
-
-  // Filter logic
-  useEffect(() => {
-    const filtered = products.filter((product) => {
-      const categoryMatch =
-        !selectedFilters.category || product.category === selectedFilters.category;
-      const brandMatch =
-        !selectedFilters.brand || product.brand === selectedFilters.brand;
-      const priceMatch =
-        (!selectedFilters.minPrice ||
-          product.price >= selectedFilters.minPrice) &&
-        (!selectedFilters.maxPrice ||
-          product.price <= selectedFilters.maxPrice);
-      return categoryMatch && brandMatch && priceMatch;
-    });
-    setFilteredProducts(filtered);
-  }, [products, selectedFilters]);
-
-  // Remove filter
-  const removeFilter = (filterKey: keyof typeof selectedFilters) => {
-    setSelectedFilters({ ...selectedFilters, [filterKey]: null });
-  };
-  // Remove all filters
-  const removeAllFilters = () => {
-    setSelectedFilters({
-      category: null,
-      brand: null,
-      minPrice: null,
-      maxPrice: null,
-    });
-  };
   return (
-    <div className="container mx-auto p-4 flex">
+    <div className="wrapper mx-auto p-4 flex">
       {/* Filter Section (left side) */}
-      <div className="w-1/4 mr-4">
-        <div className="mb-2">
-          <label htmlFor="category">Danh mục:</label>
-          <select
-            id="category"
-            value={selectedFilters.category || ""}
-            onChange={(e) =>
-              setSelectedFilters({
-                ...selectedFilters,
-                category: e.target.value || null,
-              })
-            }
-          >
-            <option value="">Tất cả</option>
-            {[...new Set(products.map((p) => p.category))].map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="mb-2">
-          <label htmlFor="brand">Thương hiệu:</label>
-          <select
-            id="brand"
-            value={selectedFilters.brand || ""}
-            onChange={(e) =>
-              setSelectedFilters({
-                ...selectedFilters,
-                brand: e.target.value || null,
-              })
-            }
-          >
-            <option value="">Tất cả</option>
-            {[...new Set(products.map((p) => p.brand))].map((brand) => (
-              <option key={brand} value={brand}>
-                {brand}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="mb-2">
-          <label htmlFor="minPrice">Giá từ:</label>
-          <input
-            type="number"
-            id="minPrice"
-            value={selectedFilters.minPrice || ""}
-            onChange={(e) =>
-              setSelectedFilters({
-                ...selectedFilters,
-                minPrice: e.target.value ? parseInt(e.target.value, 10) : null,
-              })
-            }
-          />
-        </div>
-
-        <div className="mb-2">
-          <label htmlFor="maxPrice">Giá đến:</label>
-          <input
-            type="number"
-            id="maxPrice"
-            value={selectedFilters.maxPrice || ""}
-            onChange={(e) =>
-              setSelectedFilters({
-                ...selectedFilters,
-                maxPrice: e.target.value ? parseInt(e.target.value, 10) : null,
-              })
-            }
-          />
-        </div>
-
-        {/* Nút xóa tất cả bộ lọc */}
-        <button
-          onClick={removeAllFilters}
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
-        >
-          Xóa tất cả bộ lọc
-        </button>
+      <div className="w-1/6 mr-2 bg-white">
+        <Filter
+          selectedFilters={selectedFilters}
+          setSelectedFilters={setSelectedFilters}
+          products={products}
+        />
       </div>
-
-      {/* Selected Filters (below Filter Section) */}
-      <div className="w-1/4 mb-4">
-        {Object.entries(selectedFilters).map(([key, value]) =>
-          value ? (
-            <div key={key} className="flex items-center">
-              <span className="mr-2">
-                {key}: {value}
-              </span>
-              <button
-                onClick={() => removeFilter(key as keyof typeof selectedFilters)}
-                className="text-red-500 hover:underline"
-              >
-                Xóa
-              </button>
-            </div>
-          ) : null
-        )}
-      </div>
-
       {/* Product List (right side) */}
-      <div className="w-3/4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredProducts.map((product) => (
-            <div key={product.id} className="border rounded-lg p-4 shadow-md">
-              <img
-                src={product.thumbnail[0]}
-                alt={product.name}
-                className="w-full h-48 object-cover mb-2"
-              />
-              <h2 className="text-lg font-semibold">{product.name}</h2>
-              <p className="text-gray-600">{product.brand}</p>
-              <p className="text-red-500 font-bold">
-                {product.price.toLocaleString()} VND
-              </p>
-            </div>
-          ))}
-        </div>
+      <div className="w-5/6 ">
+        <ProductList products={filteredProducts} />
       </div>
     </div>
   );
