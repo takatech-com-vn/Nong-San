@@ -8,7 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 const callbackToPromise_1 = require("../util/callbackToPromise");
+const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
 class brandController {
     CreateBrand(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -28,7 +33,7 @@ class brandController {
                 const result = yield (0, callbackToPromise_1.excuteQuery)(sql, [data.user, data.tenGianHang, data.tenChuGianHang, data.phoneCaNhan, data.emailCaNhan, JSON.stringify(data), `${data.selectedCity}, ${data.selectedDistrict}, ${data.selectedWard}, ${data.diaChiCongTy}`, imagePath]);
                 console.log('Thêm brand thành công: ', result.insertId);
                 // Lưu brand_id vào bảng ware_house
-                const sqlWarehouse = `INSERT INTO ware_house (brand_id, name_warehouse, address_warehouse, location_warehouse, phone_warehouse) VALUES (?, ?, ?, ?, ?)`;
+                const sqlWarehouse = `INSERT INTO ware_houses (brand_id, name_warehouse, address_warehouse, location_warehouse, phone_warehouse) VALUES (?, ?, ?, ?, ?)`;
                 const resultWarehouse = yield (0, callbackToPromise_1.excuteQuery)(sqlWarehouse, [result.insertId, data.tenNguoiLienHe, data.diaChiKhoHang, data.toaDoKhoHang, data.phoneKhoHang]);
                 console.log('Thêm warehouse thành công: ', resultWarehouse.insertId);
                 // Cập nhật cột 'role' trong bảng 'users'
@@ -38,10 +43,11 @@ class brandController {
             }
             catch (error) {
                 console.error(error);
-                // // Xóa hình ảnh đã được lưu nếu có lỗi
-                // fs.unlink(path.join(__dirname, '../../public', imagePath), err => {
-                //     if (err) console.log(`Error removing file: ${err}`);
-                // });
+                // Xóa hình ảnh đã được lưu nếu có lỗi
+                fs_1.default.unlink(path_1.default.join(__dirname, '../../public', imagePath), err => {
+                    if (err)
+                        console.log(`Error removing file: ${err}`);
+                });
                 res.status(500).json({ success: false, message: 'Thêm brand và warehouse thất bại' });
             }
         });

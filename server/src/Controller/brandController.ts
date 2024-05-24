@@ -25,7 +25,7 @@ class brandController {
             console.log('Thêm brand thành công: ', result.insertId);
     
             // Lưu brand_id vào bảng ware_house
-            const sqlWarehouse = `INSERT INTO ware_house (brand_id, name_warehouse, address_warehouse, location_warehouse, phone_warehouse) VALUES (?, ?, ?, ?, ?)`;
+            const sqlWarehouse = `INSERT INTO ware_houses (brand_id, name_warehouse, address_warehouse, location_warehouse, phone_warehouse) VALUES (?, ?, ?, ?, ?)`;
     
             const resultWarehouse = await excuteQuery(sqlWarehouse, [result.insertId, data.tenNguoiLienHe, data.diaChiKhoHang, data.toaDoKhoHang, data.phoneKhoHang]) as any;
             console.log('Thêm warehouse thành công: ', resultWarehouse.insertId);
@@ -38,10 +38,10 @@ class brandController {
             res.json({ success: true, message: 'Thêm brand và warehouse thành công' });
         } catch (error) {
             console.error(error);
-            // // Xóa hình ảnh đã được lưu nếu có lỗi
-            // fs.unlink(path.join(__dirname, '../../public', imagePath), err => {
-            //     if (err) console.log(`Error removing file: ${err}`);
-            // });
+            // Xóa hình ảnh đã được lưu nếu có lỗi
+            fs.unlink(path.join(__dirname, '../../public', imagePath), err => {
+                if (err) console.log(`Error removing file: ${err}`);
+            });
             res.status(500).json({ success: false, message: 'Thêm brand và warehouse thất bại' });
         }
     }    
