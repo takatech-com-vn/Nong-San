@@ -3,6 +3,11 @@ import { excuteQuery } from '../util/callbackToPromise';
 
 class productController {
 
+    CreateProduct(req: Request, res: Response) {
+        const data = req.body;
+        console.log("data: " + JSON.stringify(data));
+    }
+
     MainCreateCategory(req: Request, res: Response) {
         const name = req.body.name;
 

@@ -4,7 +4,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 const express_1 = __importDefault(require("express"));
 const productController_1 = __importDefault(require("../Controller/productController"));
+const multer_1 = __importDefault(require("multer"));
+const path_1 = __importDefault(require("path"));
 const router = express_1.default.Router();
+// Cấu hình multer
+const storage = multer_1.default.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/images/product');
+    },
+    filename: function (req, file, cb) {
+        const filename = Date.now() + path_1.default.extname(file.originalname);
+        // Lưu đường dẫn tương đối vào cơ sở dữ liệu
+        req.body.path = `product/${filename}`;
+        cb(null, filename);
+    }
+});
+const upload = (0, multer_1.default)({ storage: storage });
+router.post('/createproduct', upload.array('image', 10), productController_1.default.CreateProduct);
 router.post('/maincreatecategory', productController_1.default.MainCreateCategory);
 router.get('/getmaincategory', productController_1.default.GetMainCategory);
 router.delete('/deletemaincategory/:id', productController_1.default.DeleteMainCategory);

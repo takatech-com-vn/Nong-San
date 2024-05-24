@@ -1,6 +1,10 @@
 "use strict";
 const callbackToPromise_1 = require("../util/callbackToPromise");
 class productController {
+    CreateProduct(req, res) {
+        const data = req.body;
+        console.log("data: " + JSON.stringify(data));
+    }
     MainCreateCategory(req, res) {
         const name = req.body.name;
         const query = 'Insert into maincategoris (name) Values (?)';
