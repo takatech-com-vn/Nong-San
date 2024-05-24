@@ -44,7 +44,21 @@ class brandController {
             });
             res.status(500).json({ success: false, message: 'Thêm brand và warehouse thất bại' });
         }
-    }    
+    }
+
+    GetBrand (req: Request, res: Response) {
+        const id = req.body.userId;
+        const query = 'Select id, brand_name, owner_name, path from brands where user_id = ?';
+
+        excuteQuery(query, id)
+            .then(brands => {
+                res.json({ success: true, brands});
+            })
+            .catch(error => {
+                console.log(error)
+                res.status(500).json({ success: false, message: "Lấy dữ liệu brand không thành công"});
+            })
+    }
 }
 
 export = new brandController();
