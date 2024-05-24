@@ -5,7 +5,13 @@ class productController {
 
     CreateProduct(req: Request, res: Response) {
         const data = req.body;
+        const file = req.file;
         console.log("data: " + JSON.stringify(data));
+    
+        // Kiểm tra xem có hình ảnh được tải lên không
+        if (!file) {
+            console.log("Không tìm thấy hình ảnh")
+        }
     }
 
     MainCreateCategory(req: Request, res: Response) {
