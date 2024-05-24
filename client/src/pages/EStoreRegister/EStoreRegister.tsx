@@ -9,6 +9,7 @@ import ValidationContext from './Contents/ValidationContext';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
+import { UploadFile } from 'antd/lib/upload/interface';
 const steps = [
     {
         title: 'Thông tin chung',
@@ -44,8 +45,8 @@ const EStoreRegister: React.FC = () => {
     const prev = () => {
         setCurrent(current - 1);
     };
-    
-    const handleSubmit = () => {
+
+    const handleSubmit = async () => {
         const captchaValid = sessionStorage.getItem('captchaValid');
         if (captchaValid === 'true') {
             // Đối tượng chứa các trường dữ liệu
@@ -71,27 +72,42 @@ const EStoreRegister: React.FC = () => {
                 "selectedDistrict": "",
                 "selectedWard": "",
                 "diaChiCongTy": "",
-                "image": "",
                 "tenNguoiLienHe": "",
                 "diaChiKhoHang": "",
                 "toaDoKhoHang": "",
                 "phoneKhoHang": "",
                 "yeuCauDapUng": "",
             };
-            Object.keys(data).forEach(key => {
-                const value = sessionStorage.getItem(key);
-                if (value) {
-                    data[key] = value;
-                }
+            // Khởi tạo FormData
+            const formData = new FormData();
+          
+            // Lấy dữ liệu hình ảnh từ sessionStorage
+            const imageDataString = sessionStorage.getItem('image');
+            console.log('hinhf',imageDataString)
+            let imageFile = null;
+            if (imageDataString) {
+                const fileList: UploadFile[] = JSON.parse(imageDataString);
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                imageFile = fileList[0].originFileObj;
+            }
+
+            // Thêm hình ảnh vào formData nếu có
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+            // Thêm các trường dữ liệu khác vào formData
+            Object.entries(data).forEach(([key, value]) => {
+                formData.append(key, value);
             });
-            console.log("data đăng ký bán hàng", data);
-            axios.post(`${import.meta.env.VITE_APP_API_URL}/brand/createbrand`, data)
-                .then(reponse => {
-                    message.success("Thêm brand thành công", reponse.data.success);
-                })
-                .catch(() => {
-                    message.error("Thêm brand thất bại");
-                })
+
+            console.log("data đăng ký bán hàng", formData);
+            try {
+                const response = await axios.post(`${import.meta.env.VITE_APP_API_URL}/brand/createbrand`, formData);
+                message.success("Thêm brand thành công", response.data.success);
+                sessionStorage.removeItem('image');
+            } catch (error) {
+                message.error("Thêm brand thất bại");
+            }
         } else {
             notification.error({
                 message: 'Vui lòng nhập captcha',
