@@ -3,9 +3,10 @@ import { excuteQuery } from "../util/callbackToPromise";
 
 class wareHouseController {
     GetWareHouse(req: Request, res: Response) {
-        const query = 'Select * from ware_houses';
+        const id = req.body.id;
+        const query = 'Select * from ware_houses where brand_id = ?';
 
-        excuteQuery(query, [])
+        excuteQuery(query, id)
             .then(ware_houses => {
                 res.json({ success: true, ware_houses});
             })

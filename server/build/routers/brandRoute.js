@@ -21,4 +21,5 @@ const storage = multer_1.default.diskStorage({
 const upload = (0, multer_1.default)({ storage: storage });
 const router = express_1.default.Router();
 router.post('/createbrand', upload.single('image'), brandController_1.default.CreateBrand);
+router.post('/getbrand', brandController_1.default.GetBrand);
 module.exports = router;

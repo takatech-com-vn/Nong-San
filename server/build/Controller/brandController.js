@@ -52,5 +52,17 @@ class brandController {
             }
         });
     }
+    GetBrand(req, res) {
+        const id = req.body.userId;
+        const query = 'Select id, brand_name, owner_name, path from brands where user_id = ?';
+        (0, callbackToPromise_1.excuteQuery)(query, id)
+            .then(brands => {
+            res.json({ success: true, brands });
+        })
+            .catch(error => {
+            console.log(error);
+            res.status(500).json({ success: false, message: "Lấy dữ liệu brand không thành công" });
+        });
+    }
 }
 module.exports = new brandController();
