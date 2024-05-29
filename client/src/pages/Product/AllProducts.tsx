@@ -1,8 +1,9 @@
-// src/App.tsx
 import React, { useState, useEffect } from 'react';
 import { Product } from '../../services/Product';
 import Filter from './components/Filter';
 import ProductList from './components/ProductList';
+import Sort from './components/Sort';
+
 const initialProducts: Product[] = [
   {
     createdAt: "2023-05-10T10:30:00Z",
@@ -103,11 +104,12 @@ const initialProducts: Product[] = [
   }
   // ... thêm các sản phẩm khác
 ];
+
 const AllProducts: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(initialProducts);
+  const [sortedProducts, setSortedProducts] = useState<Product[]>(initialProducts);
   const [selectedFilters, setSelectedFilters] = useState<{
-    category: string | null;
+    category: string[] | null;
     brand: string | null;
     minPrice: number | null;
     maxPrice: number | null;
@@ -118,25 +120,58 @@ const AllProducts: React.FC = () => {
     maxPrice: null,
   });
 
-  // Fetch data from API (replace with your own fetch logic)
   useEffect(() => {
-    setProducts(initialProducts);
-    setFilteredProducts(initialProducts);
-  }, []);
+    const filtered = initialProducts.filter((product) => {
+      const matchesCategory = !selectedFilters.category || selectedFilters.category.includes(product.category);
+      const matchesBrand = !selectedFilters.brand || product.brand === selectedFilters.brand;
+      //  Sử dụng price thay vì firstVariationPrice để lọc giá
+      const matchesMinPrice = !selectedFilters.minPrice || product.price >= selectedFilters.minPrice;
+      const matchesMaxPrice = !selectedFilters.maxPrice || product.price <= selectedFilters.maxPrice;
+  
+      return matchesCategory && matchesBrand && matchesMinPrice && matchesMaxPrice;
+    });
+  
+    setFilteredProducts(filtered);
+    setSortedProducts(filtered); // Cập nhật sortedProducts ngay khi filterProducts thay đổi
+  }, [selectedFilters]); // Chỉ chạy lại khi selectedFilters thay đổi
+  
+
+  const handleSort = (field: "price" | "createdAt", order: "asc" | "desc") => {
+    const sorted = [...filteredProducts].sort((a, b) => {
+      if (field === "price") {
+        return order === "asc" ? a.price - b.price : b.price - a.price;
+      } else {
+        return order === "asc"
+          ? new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      }
+    });
+    setSortedProducts(sorted);
+  };
+
   return (
-    <div className="wrapper mx-auto p-4 flex">
-      {/* Filter Section (left side) */}
-      <div className="w-1/6 mr-2 bg-white">
-        <Filter
-          selectedFilters={selectedFilters}
-          setSelectedFilters={setSelectedFilters}
-          products={products}
-        />
+    <div className="wrapper mx-auto p-4 flex flex-col gap-2 ">
+      <div className='flex justify-between bg-white p-1 rounded'>
+        <div>
+        </div>
+        <div>
+          <Sort onSort={handleSort} />
+        </div>
       </div>
-      {/* Product List (right side) */}
-      <div className="w-5/6 ">
-        <ProductList products={filteredProducts} />
+
+      <div className='flex'>
+        <div className="w-1/6 mr-2 bg-white p-2 rounded">
+          <Filter
+            selectedFilters={selectedFilters}
+            setSelectedFilters={setSelectedFilters}
+            products={initialProducts}
+          />
+        </div>
+        <div className="w-5/6 ">
+          <ProductList products={sortedProducts} />
+        </div>
       </div>
+
     </div>
   );
 };

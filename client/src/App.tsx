@@ -19,6 +19,8 @@ import DetailNews from './pages/News/DetailNews';
 import DetailPolicy from './pages/Policy/DetailPolicy';
 import AllProducts from './pages/Product/AllProducts';
 import Header2 from './layouts/Header2';
+import ButtonConnect from './components/FloatingButtonConnect/ButtonConnect';
+import { FloatButton } from 'antd';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -116,10 +118,12 @@ function App() {
               <Route path="/policy/:id" element={<DetailPolicy />} />
               <Route path="/products" element={<AllProducts />} />
             </Routes>
-            <Footer/>
+            <ButtonConnect />
+            <Footer />
           </>
         } />
       </Routes>
+      <FloatButton.BackTop style={{ bottom: 15, left:15 }}/>
     </>
 
   )

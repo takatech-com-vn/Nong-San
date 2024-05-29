@@ -2,7 +2,6 @@ import { message } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaFacebook, FaInstagram, FaTiktok, FaTwitter, FaYoutube } from 'react-icons/fa';
-import ScrollToTop from 'react-scroll-to-top';
 import { Policy } from '../services/Policy';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,7 +31,6 @@ const Footer = () => {
     };
     return (
         <footer className=' w-full  border-t mt-[40px]'>
-            <ScrollToTop smooth style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', right: '10px', }} className='Glassmorphism' />
             <div className=" mt-[16px]">
                 <div className="footer">
                     <div className="wrapper w-full  h-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">

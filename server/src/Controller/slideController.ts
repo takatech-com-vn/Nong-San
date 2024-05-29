@@ -14,6 +14,7 @@ class slideController {
     CreateSlide(req: Request, res: Response) {
         const data = req.body;
         const file = req.file; // Truy cập file từ req.file
+        console.log("data: " + JSON.stringify(data));
     
         if (file) {
             // Tạo đường dẫn hình ảnh từ req.body.path

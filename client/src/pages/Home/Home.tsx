@@ -17,45 +17,7 @@ import CardNews from "./components/CardNews";
 import { Banner } from "../../services/Banner";
 import { New } from "../../services/New";
 import { useNavigate } from "react-router-dom";
-// import MenuBar from "./components/Menu";
-// import { Menu } from 'antd';
-
-interface Category {
-  title: string;
-  subCategories: string[];
-}
-
-const categories: Category[] = [
-  {
-    title: 'Thiết Bị Văn Phòng',
-    subCategories: [],
-  },
-  {
-    title: 'Nội Thất Văn Phòng',
-    subCategories: [
-      'Ngành In Ấn & Bao Bì',
-      'Ngành Dệt May',
-      'Ngành Nhựa & Cao Su',
-      'Ngành Thực Phẩm & Đồ Uống',
-    ],
-  },
-  {
-    title: 'Phương Tiện Vận Tải',
-    subCategories: [
-      'Thiết Bị Kho & Đóng Gói',
-      'Máy Móc Cơ Khí & Xi Mạ',
-      'Máy Móc Vệ Sinh Công Nghiệp',
-    ],
-  },
-  {
-    title: 'Vật Tư Xây Dựng',
-    subCategories: [],
-  },
-  {
-    title: 'Thiết Bị Nội & Ngoại Thất',
-    subCategories: [],
-  },
-];
+import { ProductCategory } from "../../services/ProductCategory";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -123,6 +85,17 @@ const Home: React.FC = () => {
     fetchData();
   }, []);
 
+
+  const [productCategories, setProductCategories] = useState<ProductCategory[]>([]);
+
+  useEffect(() => {
+    fetch('http://localhost:3000/product/getcategory')
+      .then(res => res.json())
+      .then(data => setProductCategories(data.productcategoris))
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
+
+
   const [mouseDownTime, setMouseDownTime] = useState<number>(0);
   const handleMouseDown = () => {
     setMouseDownTime(Date.now());
@@ -130,7 +103,7 @@ const Home: React.FC = () => {
   // chi tiết tin tức
   const handleMouseUp = (e: React.MouseEvent<HTMLElement>, news: New) => {
     const mouseUpTime = Date.now();
-    if (mouseUpTime - mouseDownTime < 150) { // Chỉ xử lý nhấp nếu thời gian nhấn xuống rất ngắn
+    if (mouseUpTime - mouseDownTime < 150) {
       e.stopPropagation();
       navigate(`/news/${news.id}`);
     }
@@ -139,21 +112,7 @@ const Home: React.FC = () => {
 
 
   //-------------//
-  // const [isScrolled, setIsScrolled] = useState(false);
-  // const checkScroll = () => {
-  //   if (window.pageYOffset > 1) {
-  //     setIsScrolled(true);
-  //   } else {
-  //     setIsScrolled(false);
-  //   }
-  // };
 
-  // useEffect(() => {
-  //   window.addEventListener("scroll", checkScroll);
-  //   return () => {
-  //     window.removeEventListener("scroll", checkScroll);
-  //   };
-  // }, []);
   // slider setting
   const settings = {
     dots: true,
@@ -345,50 +304,8 @@ const Home: React.FC = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = productsdata.slice(indexOfFirstItem, indexOfLastItem);
-  // const [headerHeight, setHeaderHeight] = useState(60); // Giá trị ban đầu là chiều cao ước tính của header
-  // const [isShow, setIsShow] = useState(false); // Tạo biến isShow để kiểm tra xem header đã được kéo xuống hay chưa
 
-  // const handleScroll = () => {
-  //   if (window.pageYOffset > 1) {
-  //     setIsShow(true);
-  //   } else {
-  //     setIsShow(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     const headerElement = document.getElementById('header');
-  //     if (headerElement) {
-  //       setHeaderHeight(headerElement.offsetHeight);
-
-  //     }
-  //   };
-
-  //   window.addEventListener('resize', handleResize);
-  //   handleResize(); // Gọi ngay lần đầu để lấy chiều cao chính xác
-
-  //   return () => {
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-  // }, []);
-  const [currentSubCategories, setCurrentSubCategories] = useState<string[]>([]);
-  const [hovered, setHovered] = useState<boolean>(false);
-
-  const handleHover = (subCategories: string[]) => {
-    setCurrentSubCategories(subCategories);
-    setHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setHovered(false);
-  };
+  
   return (
     <div className={` h-auto  bg-gradient-to-b from-[#c2effa] via-[#f0f2f5] to-[#f0f2f5]`} >
       {/* <div className="z-[10] px-3 lg:px-0  bg-white">
@@ -400,37 +317,36 @@ const Home: React.FC = () => {
         {/* menu - slider */}
         <div className="grid grid-cols-5">
           <div className="hidden lg:inline-block">
-            <div className="flex relative h-full " onMouseLeave={handleMouseLeave}>
-              <div className="w-64 h-full bg-white p-5 ">
-                <div className="text-[#1a428a] font-medium leading-6 ">NGÀNH HÀNG NỔI BẬT</div>
-                {categories.map((category, index) => (
-                  <div
-                    className="flex justify-between items-center rounded-sm px-1 py-2 hover:bg-gray-100 truncate border-b-[1px] text-sm leading-5  text-[#1a428a] hover:text-[#ff6a00]"
-                    key={index}
-                    onMouseEnter={() => handleHover(category.subCategories)}
-                  >
-                    <div>{category.title}</div>
-                    <div>
-                      <svg viewBox="64 64 896 896" focusable="false" data-icon="right" width="10px" height="10px" fill="currentColor" aria-hidden="true"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"></path></svg>
-                    </div>
-                  </div>
-                ))}
+            <div className="flex  h-full ">
+              <div className="w-64 h-full relative bg-white py-5 pl-5 ">
+                <div className="text-[#ff8300] font-medium leading-6 uppercase">Danh mục hàng hóa</div>
+                <ul >
+                  {[...new Set(productCategories.map(category => category.name))].map(mainCategory => (
+                    <li className="group " key={mainCategory}>
+                      <div
+                        className="flex justify-between items-center rounded-sm px-1 py-2 hover:bg-gray-100 truncate border-b-[1px] text-sm leading-5
+                          text-[#1a428a] group-hover:text-[#ff6a00] pr-5 group-hover:pr-1"
+                      >
+                        <div>{mainCategory}</div>
+                        <div>
+                          <svg viewBox="64 64 896 896" focusable="false" data-icon="right" width="10px" height="10px" fill="currentColor" aria-hidden="true"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"></path></svg>
+                        </div>
+                      </div>
+                      <div className="absolute hidden group-hover:block p-4 border border-gray-200 rounded shadow-lg w-full z-10 bg-white h-full top-0 left-full  ">
+                        <ul>
+                          {productCategories
+                            .filter(category => category.name === mainCategory)
+                            .map(category => (
+                              <li key={category.id} className="py-1 rounded-sm  px-3 hover:bg-gray-100 text-[#1a428a]  text-sm leading-5 hover:text-[#ff6a00]">
+                                {category.name_category}
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              {hovered && (
-                <div className="absolute p-4 border border-gray-200 rounded shadow-lg w-max left-full z-20 bg-white h-full  ">
-                  {currentSubCategories.length > 0 ? (
-                    <ul>
-                      {currentSubCategories.map((subCategory, index) => (
-                        <li key={index} className="py-1 rounded-sm  px-3 hover:bg-gray-100">
-                          {subCategory}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <div>Không có danh mục con</div>
-                  )}
-                </div>
-              )}
             </div>
           </div>
           <div className={`flex flex-col col-span-full lg:col-span-4`}>

@@ -1,11 +1,13 @@
 import React from "react";
 import { Product } from "../../../services/Product";
+import { formatPriceVND } from "../../../utils/formatPriceVND";
 
 interface ProductListProps {
   products: Product[];
 }
 
 const ProductList: React.FC<ProductListProps> = ({ products }) => {
+  
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
       {products.map((product) => (
@@ -18,7 +20,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
           <h2 className="text-lg font-semibold">{product.name}</h2>
           <p className="text-gray-600">{product.brand}</p>
           <p className="text-red-500 font-bold">
-            {product.price.toLocaleString()} VND
+            {formatPriceVND(product.price)}
           </p>
         </div>
       ))}

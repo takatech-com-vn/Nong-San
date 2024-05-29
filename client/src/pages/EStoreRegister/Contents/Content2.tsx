@@ -238,15 +238,29 @@ const Content2: React.FC = () => {
     }, [fileList]);
 
     const handleBeforeUpload = ({ fileList }: { fileList: UploadFile[] }) => {
-        // Chỉ giữ lại ảnh cuối cùng được chọn
         if (fileList.length > 1) {
             fileList.shift();
         }
-
-        // Lưu fileList vào sessionStorage
-        sessionStorage.setItem('image', JSON.stringify(fileList));
+    
+        const updatedFileList = fileList.map(file => ({
+            uid: file.uid,
+            name: file.name,
+            lastModified: file.lastModified,
+            size: file.size,
+            type: file.type,
+            originFileObj: file.originFileObj ? { // Kiểm tra nếu originFileObj tồn tại
+                uid: file.originFileObj.uid,
+                name: file.originFileObj.name,
+                type: file.originFileObj.type,
+                size: file.originFileObj.size,
+                lastModified: file.originFileObj.lastModified
+            } : null // Hoặc có thể gán là null nếu bạn không muốn xử lý nếu originFileObj không tồn tại
+        }));
+    
+        sessionStorage.setItem('image', JSON.stringify(updatedFileList.map(file => file.name)));
         setFileList(fileList);
     };
+    
     // const handleRemove = () => {
     //     // Xóa hình ảnh khỏi state và sessionStorage khi người dùng loại bỏ nó
     //     setFileList([]);

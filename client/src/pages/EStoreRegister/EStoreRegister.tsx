@@ -1,6 +1,6 @@
 // EStoreRegister.tsx
 import React, { useContext, useState } from 'react';
-import { Button, message, notification, Steps, theme, UploadFile } from 'antd';
+import { Button, message, notification, Steps, theme,  } from 'antd';
 import Content1 from './Contents/Content1';
 import Content2 from './Contents/Content2';
 import Content3 from './Contents/Content3';
@@ -49,7 +49,6 @@ const EStoreRegister: React.FC = () => {
     const handleSubmit = async () => {
         const captchaValid = sessionStorage.getItem('captchaValid');
         if (captchaValid === 'true') {
-            // Đối tượng chứa các trường dữ liệu
             const data = {
                 "user": user?.id ? user.id.toString() : "",
                 "tenGianHang": sessionStorage.getItem("tenGianHang") || "",
@@ -78,24 +77,30 @@ const EStoreRegister: React.FC = () => {
                 "phoneKhoHang": sessionStorage.getItem("phoneKhoHang") || "",
                 "yeuCauDapUng": sessionStorage.getItem("yeuCauDapUng") || ""
             };
-
+    
             const formData = new FormData();
-
-            // Thêm dữ liệu từ đối tượng data vào formData
+    
             Object.entries(data).forEach(([key, value]) => {
                 formData.append(key, value);
             });
-
+    
             const imageDataString = sessionStorage.getItem('image');
-            let imageFile: File | null = null;
-
+            let imageFile = null;
+    
             if (imageDataString) {
                 try {
-                    const fileList: UploadFile[] = JSON.parse(imageDataString);
-
-                    // Kiểm tra xem có ảnh không và lấy ảnh duy nhất
+                    const fileList = JSON.parse(imageDataString);
                     if (fileList.length > 0) {
-                        imageFile = fileList[0].originFileObj as File; // Chuyển đổi thành File
+                        const fileData = fileList[0];
+                        if (fileData.originFileObj) {
+                            imageFile = new File(
+                                [fileData.originFileObj],
+                                fileData.name,
+                                { type: fileData.type }
+                            );
+                        } else {
+                            console.error("Không tìm thấy tệp hình ảnh hợp lệ trong danh sách");
+                        }
                     } else {
                         console.error("Không tìm thấy hình ảnh hợp lệ trong danh sách");
                     }
@@ -105,29 +110,24 @@ const EStoreRegister: React.FC = () => {
             } else {
                 console.error("Không tìm thấy dữ liệu hình ảnh trong sessionStorage");
             }
-
-console.log('vvv',imageFile)
-            // Thêm hình ảnh duy nhất vào formData
+    
             if (imageFile) {
                 formData.append('image', imageFile);
+            } else {
+                console.error("Không tìm thấy tệp hình ảnh để gửi đi");
             }
-
-            // Log dữ liệu trong formData ra để kiểm tra
-            // for (const pair of formData.entries()) {
-            //     console.log(pair[0] + ':', pair[1]);
-            // }
+    
             formData.forEach((value, key) => {
                 console.log(key, value);
             });
-
+    
             axios.post(`${import.meta.env.VITE_APP_API_URL}/brand/createbrand`, formData)
-                .then(response => {
-                    message.success("Thêm tin tức thành công", response.data.success);
-                })
-                .catch(() => {
-                    message.error("Thêm tin tức thất bại");
-                })
-
+            .then(response => {
+                message.success("Thêm brand thành công", response.data.success);
+            })
+            .catch(() => {
+                message.error("Thêm brand thất bại");
+            })
         } else {
             notification.error({
                 message: 'Vui lòng nhập captcha',
@@ -135,6 +135,7 @@ console.log('vvv',imageFile)
             });
         }
     };
+    
     const items = steps.map((item) => ({ key: item.title, title: item.title }));
 
     const contentStyle: React.CSSProperties = {
