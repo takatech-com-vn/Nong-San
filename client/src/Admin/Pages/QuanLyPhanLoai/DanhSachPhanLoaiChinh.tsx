@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Table, message } from 'antd';
+import { Modal, Popconfirm, Table, message } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
 import { MainCategory } from '../../../services/MainCategory';
 import EditPhanLoaiChinh from './Modal/EditPhanLoaiChinh';
-
+import { GrEdit } from 'react-icons/gr';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 function DanhSachPhanLoaiChinh() {
     const [data, setData] = useState<MainCategory[]>([]);
     const [openModal, setOpenModal] = useState(false);
@@ -63,21 +65,25 @@ function DanhSachPhanLoaiChinh() {
         key: 'action',
         width: '30%',
         render: (_, maincategoryData) => (
-          <div>
-            <button
-              className="button-edit"
-              onClick={() => handleEdit(maincategoryData)}
-            >
-              Sửa
-            </button>
-  
-            <button
-              className="button-delete"
-              onClick={() => handleDelete(maincategoryData)}
-            >
-              Xóa
-            </button>
-          </div>
+          <div className='flex gap-4 '>
+          {/* ----- Sửa ----- */}
+          <GrEdit size={20}
+            className='text-[#26A65D]'
+            onClick={() => handleEdit(maincategoryData)}
+          />
+
+          {/* ----- Xóa ----- */}
+          <Popconfirm
+            title="Cảnh báo!"
+            description="Bạn có chắc chắn muốn xóa?"
+            okText="Yes"
+            cancelText="No"
+            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+            onConfirm={() => handleDelete(maincategoryData)}
+          >
+            <RiDeleteBinLine size={20} className='text-red-500' />
+          </Popconfirm>
+        </div>
         ),
       },
     ];

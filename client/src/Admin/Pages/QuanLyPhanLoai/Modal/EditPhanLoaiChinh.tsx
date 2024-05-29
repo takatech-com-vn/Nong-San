@@ -41,7 +41,7 @@ function EditPhanLoaiChinh({ mainCategory, setModal, onUpdateSuccess }: EditPhan
     }
 
     return (
-        <Form className="w-full rounded" onFinish={handleSubmit}>
+        <Form className="w-full rounded" onFinish={handleSubmit} layout='vertical'>
             <h2 className="mb-4 text-xl font-bold text-gray-700">Sửa phân loại chính</h2>
             <div>
                 <Form.Item label="Tên phân loại chính">
@@ -51,7 +51,7 @@ function EditPhanLoaiChinh({ mainCategory, setModal, onUpdateSuccess }: EditPhan
 
             <div className="flex mt-4 items-end justify-end">
                 <Button type="primary" htmlType="submit">
-                    submit
+                    OK
                 </Button>
             </div>
         </Form>

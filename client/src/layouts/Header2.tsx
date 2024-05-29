@@ -98,10 +98,10 @@ const Header2 = () => {
                                                     </div>
                                                 </Menu.Item>
                                                 <Menu.Item>
-                                                    <div className="flex items-center">
+                                                    <a className="flex items-center" href='/profile'>
                                                         <CiUser />
                                                         <span>Trang cá nhân</span>
-                                                    </div>
+                                                    </a>
                                                 </Menu.Item>
                                                 <Menu.Item>
                                                     <div className="flex items-center">

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Table, message } from 'antd';
+import { Modal, Popconfirm, Table, message } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
 import { Banner } from '../../../services/Banner';
 import '../Admin.css';
 import EditSlider from './Modal/EditSlider';
+import { GrEdit } from 'react-icons/gr';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const DanhSachSlide: React.FC = () => {
   const [data, setData] = useState<Banner[]>([]);
@@ -93,20 +96,24 @@ const DanhSachSlide: React.FC = () => {
       key: 'action',
       width: '25%',
       render: (_, banner) => (
-        <div>
-          <button
-            className="button-edit"
+        <div className='flex gap-4 '>
+          {/* ----- Sửa ----- */}
+          <GrEdit size={20}
+            className='text-[#26A65D]'
             onClick={() => handleEdit(banner)}
-          >
-            Sửa
-          </button>
+          />
 
-          <button
-            className="button-delete"
-            onClick={() => handleDelete(banner)}
+          {/* ----- Xóa ----- */}
+          <Popconfirm
+            title="Cảnh báo!"
+            description="Bạn có chắc chắn muốn xóa?"
+            okText="Yes"
+            cancelText="No"
+            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+            onConfirm={() => handleDelete(banner)}
           >
-            Xóa
-          </button>
+            <RiDeleteBinLine size={20} className='text-red-500' />
+          </Popconfirm>
         </div>
       ),
     },

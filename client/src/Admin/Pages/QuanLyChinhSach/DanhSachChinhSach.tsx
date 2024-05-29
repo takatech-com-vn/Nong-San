@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Table, message } from 'antd';
+import { Modal, Popconfirm, Table, message } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
 import { Policy } from '../../../services/Policy';
 import '../Admin.css';
 import EditChinhSach from './Modal/EditChinhSach';
+import { GrEdit } from 'react-icons/gr';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const DanhSachChinhSach: React.FC = () => {
 
@@ -91,20 +94,24 @@ const DanhSachChinhSach: React.FC = () => {
       key: 'action',
       width: '30%',
       render: (_, policy) => (
-        <div>
-          <button
-            className="button-edit"
+        <div className='flex gap-4 '>
+          {/* ----- Sửa ----- */}
+          <GrEdit size={20}
+            className='text-[#26A65D]'
             onClick={() => handleEdit(policy)}
-          >
-            Sửa
-          </button>
+          />
 
-          <button
-            className="button-delete"
-            onClick={() => handleDelete(policy)}
+          {/* ----- Xóa ----- */}
+          <Popconfirm
+            title="Cảnh báo!"
+            description="Bạn có chắc chắn muốn xóa?"
+            okText="Yes"
+            cancelText="No"
+            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+            onConfirm={() => handleDelete(policy)}
           >
-            Xóa
-          </button>
+            <RiDeleteBinLine size={20} className='text-red-500' />
+          </Popconfirm>
         </div>
       ),
     },

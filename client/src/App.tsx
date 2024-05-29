@@ -21,6 +21,7 @@ import AllProducts from './pages/Product/AllProducts';
 import Header2 from './layouts/Header2';
 import ButtonConnect from './components/FloatingButtonConnect/ButtonConnect';
 import { FloatButton } from 'antd';
+import Profile from './pages/Profile/Profile';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -117,13 +118,17 @@ function App() {
               <Route path="/news/:id" element={<DetailNews />} />
               <Route path="/policy/:id" element={<DetailPolicy />} />
               <Route path="/products" element={<AllProducts />} />
+              <Route
+                path="/profile/*"
+                element={user ? <Profile /> : <Navigate to="/" />}
+              />
             </Routes>
             <ButtonConnect />
             <Footer />
           </>
         } />
       </Routes>
-      <FloatButton.BackTop style={{ bottom: 15, left:15 }}/>
+      <FloatButton.BackTop style={{ bottom: 15, left: 15 }} />
     </>
 
   )

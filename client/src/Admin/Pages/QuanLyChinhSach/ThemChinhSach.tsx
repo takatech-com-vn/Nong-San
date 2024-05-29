@@ -31,7 +31,7 @@ function ThemChinhSach() {
 
 
   return (
-    <Form className="w-full rounded" onFinish={handleSubmit}>
+    <Form className="w-full rounded" onFinish={handleSubmit} layout='vertical'>
       <h2 className="mb-4 text-xl font-bold text-gray-700">Thêm chính sách</h2>
       <div>
         <Form.Item label="Tên chính sách" name="name_product">

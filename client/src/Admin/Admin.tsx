@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MenuFoldOutlined, MenuUnfoldOutlined, } from '@ant-design/icons';
-import { Button, Layout, Menu, theme } from 'antd';
+import { Affix, Avatar, Button, Dropdown, Layout, Menu, MenuProps, Tooltip, theme } from 'antd';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { FaBalanceScale, FaChartLine, FaGift, FaListUl, FaStore, FaTachometerAlt, FaUserAlt, FaWarehouse } from 'react-icons/fa';
 import DanhSachChinhSach from './Pages/QuanLyChinhSach/DanhSachChinhSach';
@@ -20,10 +20,36 @@ import Themhangsx from './Pages/QuanLyPhanLoai/Themhangsx';
 import DanhSachHangsx from './Pages/QuanLyPhanLoai/DanhSachHangsx';
 import ThemPhanLoaiChinh from './Pages/QuanLyPhanLoai/ThemPhanLoaiChinh';
 import DanhSachPhanLoaiChinh from './Pages/QuanLyPhanLoai/DanhSachPhanLoaiChinh';
+import { GoHome } from 'react-icons/go';
+import { UserOutlined } from '@ant-design/icons';
+import { IoIosLogOut } from 'react-icons/io';
+import TongQuan from './Pages/TongQuan/TongQuan';
 
 const { Header, Sider, Content } = Layout;
 
+
+const items: MenuProps['items'] = [
+    {
+        key: '0',
+        label: <a href="#">Tài khoản của tôi</a>,
+        icon: <UserOutlined />,
+    },
+    {
+        type: 'divider',
+    },
+    {
+        key: '1',
+        label: <a href="#">Đăng xuất</a>,
+        icon: <IoIosLogOut size={20} />
+    },
+
+
+];
+
 const Admin: React.FC = () => {
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [top, setTop] = React.useState<number>(0);
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
 
@@ -43,12 +69,14 @@ const Admin: React.FC = () => {
 
     const [collapsed, setCollapsed] = useState(false);
     const [currentItem, setCurrentItem] = useState('');
+
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
     if (isLoading) {
         return <div><Loader /></div>;
     }
+
     return (
         <Layout>
             <Sider trigger={null} collapsible collapsed={collapsed} style={{ height: '100vh', position: 'fixed' }}
@@ -58,7 +86,7 @@ const Admin: React.FC = () => {
                     <span> Admin</span>
                 </div>
                 <Menu
-                    style={{ height: '100%', overflow: 'auto' , paddingBottom:'60px'}}
+                    style={{ height: '100%', overflow: 'auto', paddingBottom: '60px' }}
                     className='custom-scrollbar'
                     theme="dark"
                     mode="inline"
@@ -67,7 +95,7 @@ const Admin: React.FC = () => {
                         {
                             key: '1',
                             icon: <FaTachometerAlt />,
-                            label: 'Tổng quan',
+                            label: <Link to="*">Tổng quan</Link>,
                             onClick: () => setCurrentItem('Tổng quan'),
                         },
                         {
@@ -222,20 +250,40 @@ const Admin: React.FC = () => {
                 />
             </Sider>
             <Layout className={`${!collapsed ? 'ml-[200px]' : "ml-[80px]"}`}>
-                <Header style={{ padding: 0, background: colorBgContainer, }}>
-                    <Button
-                        type="text"
-                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                        onClick={() => setCollapsed(!collapsed)}
-                        style={{
-                            fontSize: '16px',
-                            width: 64,
-                            height: 64,
-                        }}
-                    />
-                    <span>{currentItem}</span>
+                <Affix offsetTop={top}>
+                    <Header style={{ padding: 0, background: colorBgContainer, }} className='border-b'>
+                        <div className='flex flex-row justify-between'>
+                            <div>
+                                <Button
+                                    type="text"
+                                    icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                                    onClick={() => setCollapsed(!collapsed)}
+                                    style={{
+                                        fontSize: '16px',
+                                        width: 64,
+                                        height: 40,
+                                    }}
+                                />
+                                <span>{currentItem}</span>
+                            </div>
+                            <div className='mr-5 flex flex-row items-center gap-2'>
 
-                </Header>
+                                <Tooltip title="Trang chủ">
+                                    <button>
+                                        <Link to="/">
+                                            <GoHome size={20} />
+                                        </Link>
+                                    </button>
+                                </Tooltip>
+                                <Dropdown menu={{ items }} trigger={['hover']}>
+                                    <Avatar icon={<UserOutlined />} />
+                                </Dropdown>
+                            </div>
+                        </div>
+
+
+                    </Header>
+                </Affix>
                 <Content
                     style={{
                         margin: '24px 16px',
@@ -247,6 +295,7 @@ const Admin: React.FC = () => {
                     }}
                 >
                     <Routes>
+                        <Route path="*" element={<TongQuan />} />
                         <Route path="themslidepc" element={<ThemSlidePC />} />
                         <Route path="themslidemobile" element={<ThemSlideMobile />} />
                         <Route path="danhsachslide" element={<DanhSachSlide />} />
@@ -256,13 +305,13 @@ const Admin: React.FC = () => {
 
                         <Route path="quanlysanpham" element={<QuanLySanPham />} />
 
-                        <Route path="themphanloaichinh" element={<ThemPhanLoaiChinh/>} />
-                        <Route path="themphanloai" element={<ThemPhanLoai/>} />
-                        <Route path="themhangsanxuat" element={<Themhangsx/>} />
-                        <Route path="danhsachphanloaichinh" element={<DanhSachPhanLoaiChinh/>} />
-                        <Route path="danhsachphanloai" element={<DanhSachPhanLoai/>} />
-                        <Route path="danhsachhangsx" element={<DanhSachHangsx/>} />
-               
+                        <Route path="themphanloaichinh" element={<ThemPhanLoaiChinh />} />
+                        <Route path="themphanloai" element={<ThemPhanLoai />} />
+                        <Route path="themhangsanxuat" element={<Themhangsx />} />
+                        <Route path="danhsachphanloaichinh" element={<DanhSachPhanLoaiChinh />} />
+                        <Route path="danhsachphanloai" element={<DanhSachPhanLoai />} />
+                        <Route path="danhsachhangsx" element={<DanhSachHangsx />} />
+
                         <Route path="themchinhsach" element={<ThemChinhSach />} />
                         <Route path="danhsachchinhsach" element={<DanhSachChinhSach />} />
                     </Routes>

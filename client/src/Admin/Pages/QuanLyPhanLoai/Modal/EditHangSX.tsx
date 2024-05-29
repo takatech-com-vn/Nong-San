@@ -29,17 +29,17 @@ function EditHangSX({ productManufacturer, setModal, onUpdateSuccess }: EditHang
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_APP_API_URL}/product/getcategory`)
-          .then(response => {
-            if (response.data.success) {
-              setCategories(response.data.productcategoris);
-            } else {
-              console.error('Failed to fetch categories');
-            }
-          })
-          .catch(error => {
-            console.error('An error occurred while fetching categories:', error);
-          });
-      }, []);
+            .then(response => {
+                if (response.data.success) {
+                    setCategories(response.data.productcategoris);
+                } else {
+                    console.error('Failed to fetch categories');
+                }
+            })
+            .catch(error => {
+                console.error('An error occurred while fetching categories:', error);
+            });
+    }, []);
 
     useEffect(() => {
         if (productManufacturer) {
@@ -64,32 +64,35 @@ function EditHangSX({ productManufacturer, setModal, onUpdateSuccess }: EditHang
             })
         setModal(false);
     }
-    
+
 
     return (
-        <Form className="w-full rounded" onFinish={handleSubmit}>
+        <Form className="w-full rounded" onFinish={handleSubmit} layout="vertical">
             <h2 className="mb-4 text-xl font-bold text-gray-700">Sửa hãng sản xuất</h2>
-            <div className="flex space-x-4">
-                <div className="flex-1">
-                    <Select value={selectedCategory} onChange={value => setSelectedCategory(value)}>
-                        {categories.map(category => (
-                            <option key={category.id} value={category.id}>
-                                {category.name_category}
-                            </option>
-                        ))}
-                    </Select>
+            <div className="flex flex-row gap-2">
+                <div className="w-full">
+                    <Form.Item label="Phân loại">
+                        <Select value={selectedCategory} onChange={value => setSelectedCategory(value)}  placeholder='Chọn phân loại'>
+                            {categories.map(category => (
+                                <option key={category.id} value={category.id}>
+                                    {category.name_category}
+                                </option>
+                            ))}
+                        </Select>
+                    </Form.Item>
+
                 </div>
 
-                <div className="flex-1">
-                <Form.Item label="Tên phân loại">
-                    <Input style={{ width: '500px' }} placeholder="Nhập tên hãng sản xuất" onChange={e => setName(e.target.value)} value={name} />
-                </Form.Item>
-            </div>
+                <div className="w-full">
+                    <Form.Item label="Hãng sản xuất">
+                        <Input placeholder="Nhập tên hãng sản xuất" onChange={e => setName(e.target.value)} value={name} />
+                    </Form.Item>
+                </div>
             </div>
 
             <div className="flex mt-4 items-end justify-end">
                 <Button type="primary" htmlType="submit">
-                    submit
+                    OK
                 </Button>
             </div>
         </Form>

@@ -29,17 +29,17 @@ function EditPhanLoai({ productCategory, setModal, onUpdateSuccess }: EditPhanLo
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_APP_API_URL}/product/getmaincategory`)
-          .then(response => {
-            if (response.data.success) {
-              setMainCategories(response.data.maincategoris);
-            } else {
-              console.error('Failed to fetch categories');
-            }
-          })
-          .catch(error => {
-            console.error('An error occurred while fetching categories:', error);
-          });
-      }, []);
+            .then(response => {
+                if (response.data.success) {
+                    setMainCategories(response.data.maincategoris);
+                } else {
+                    console.error('Failed to fetch categories');
+                }
+            })
+            .catch(error => {
+                console.error('An error occurred while fetching categories:', error);
+            });
+    }, []);
 
     useEffect(() => {
         if (productCategory) {
@@ -66,18 +66,20 @@ function EditPhanLoai({ productCategory, setModal, onUpdateSuccess }: EditPhanLo
     }
 
     return (
-        <Form className="w-full rounded" onFinish={handleSubmit}>
+        <Form className="w-full rounded" onFinish={handleSubmit} layout='vertical'>
             <h2 className="mb-4 text-xl font-bold text-gray-700">Sửa phân loại</h2>
 
             <div className="flex space-x-4">
                 <div className="flex-1">
-                    <Select value={selectedCategory} onChange={value => setSelectedCategory(value)}>
-                        {maincategories.map(category => (
-                            <option key={category.id} value={category.id}>
-                                {category.name}
-                            </option>
-                        ))}
-                    </Select>
+                    <Form.Item label="Phân loại chính">
+                        <Select value={selectedCategory} onChange={value => setSelectedCategory(value)}  placeholder='Chọn phân loại chính'>
+                            {maincategories.map(category => (
+                                <option key={category.id} value={category.id}>
+                                    {category.name}
+                                </option>
+                            ))}
+                        </Select>
+                    </Form.Item>
                 </div>
 
                 <div>
@@ -89,7 +91,7 @@ function EditPhanLoai({ productCategory, setModal, onUpdateSuccess }: EditPhanLo
 
             <div className="flex mt-4 items-end justify-end">
                 <Button type="primary" htmlType="submit">
-                    submit
+                    OK
                 </Button>
             </div>
         </Form>
