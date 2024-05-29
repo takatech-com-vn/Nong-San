@@ -1,6 +1,6 @@
 // EStoreRegister.tsx
 import React, { useContext, useState } from 'react';
-import { Button, message, notification, Steps, theme } from 'antd';
+import { Button, message, notification, Steps, theme,  } from 'antd';
 import Content1 from './Contents/Content1';
 import Content2 from './Contents/Content2';
 import Content3 from './Contents/Content3';
@@ -9,6 +9,7 @@ import ValidationContext from './Contents/ValidationContext';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
+// import { UploadFile } from 'antd/lib/upload/interface';
 const steps = [
     {
         title: 'Thông tin chung',
@@ -44,54 +45,89 @@ const EStoreRegister: React.FC = () => {
     const prev = () => {
         setCurrent(current - 1);
     };
-    
-    const handleSubmit = () => {
+
+    const handleSubmit = async () => {
         const captchaValid = sessionStorage.getItem('captchaValid');
         if (captchaValid === 'true') {
-            // Đối tượng chứa các trường dữ liệu
-            const data: { [key: string]: string } = {
+            const data = {
                 "user": user?.id ? user.id.toString() : "",
-                "tenGianHang": "",
-                "tenChuGianHang": "",
-                "phoneCaNhan": "",
-                "emailCaNhan": "",
-                "danhMucSanPham": "",
-                "loaiGianHang": "",
-                "loaiDonVi": "",
-                "nguoiDaiDien": "",
-                "tenCongTy": "",
-                "maSoDoanhNghiep": "",
-                "diaChiThuongTru": "",
-                "soGiayChungNhanDKKD": "",
-                "ngayCapGiayChungNhanDKKD": "",
-                "noiCapGiayChungNhanDKKD": "",
-                "phoneCongTy": "",
-                "maBuuDien": "",
-                "selectedCity": "",
-                "selectedDistrict": "",
-                "selectedWard": "",
-                "diaChiCongTy": "",
-                "image": "",
-                "tenNguoiLienHe": "",
-                "diaChiKhoHang": "",
-                "toaDoKhoHang": "",
-                "phoneKhoHang": "",
-                "yeuCauDapUng": "",
+                "tenGianHang": sessionStorage.getItem("tenGianHang") || "",
+                "tenChuGianHang": sessionStorage.getItem("tenChuGianHang") || "",
+                "phoneCaNhan": sessionStorage.getItem("phoneCaNhan") || "",
+                "emailCaNhan": sessionStorage.getItem("emailCaNhan") || "",
+                "danhMucSanPham": sessionStorage.getItem("danhMucSanPham") || "",
+                "loaiGianHang": sessionStorage.getItem("loaiGianHang") || "",
+                "loaiDonVi": sessionStorage.getItem("loaiDonVi") || "",
+                "nguoiDaiDien": sessionStorage.getItem("nguoiDaiDien") || "",
+                "tenCongTy": sessionStorage.getItem("tenCongTy") || "",
+                "maSoDoanhNghiep": sessionStorage.getItem("maSoDoanhNghiep") || "",
+                "diaChiThuongTru": sessionStorage.getItem("diaChiThuongTru") || "",
+                "soGiayChungNhanDKKD": sessionStorage.getItem("soGiayChungNhanDKKD") || "",
+                "ngayCapGiayChungNhanDKKD": sessionStorage.getItem("ngayCapGiayChungNhanDKKD") || "",
+                "noiCapGiayChungNhanDKKD": sessionStorage.getItem("noiCapGiayChungNhanDKKD") || "",
+                "phoneCongTy": sessionStorage.getItem("phoneCongTy") || "",
+                "maBuuDien": sessionStorage.getItem("maBuuDien") || "",
+                "selectedCity": sessionStorage.getItem("selectedCity") || "",
+                "selectedDistrict": sessionStorage.getItem("selectedDistrict") || "",
+                "selectedWard": sessionStorage.getItem("selectedWard") || "",
+                "diaChiCongTy": sessionStorage.getItem("diaChiCongTy") || "",
+                "tenNguoiLienHe": sessionStorage.getItem("tenNguoiLienHe") || "",
+                "diaChiKhoHang": sessionStorage.getItem("diaChiKhoHang") || "",
+                "toaDoKhoHang": sessionStorage.getItem("toaDoKhoHang") || "",
+                "phoneKhoHang": sessionStorage.getItem("phoneKhoHang") || "",
+                "yeuCauDapUng": sessionStorage.getItem("yeuCauDapUng") || ""
             };
-            Object.keys(data).forEach(key => {
-                const value = sessionStorage.getItem(key);
-                if (value) {
-                    data[key] = value;
-                }
+    
+            const formData = new FormData();
+    
+            Object.entries(data).forEach(([key, value]) => {
+                formData.append(key, value);
             });
-            console.log("data đăng ký bán hàng", data);
-            axios.post(`${import.meta.env.VITE_APP_API_URL}/brand/createbrand`, data)
-                .then(reponse => {
-                    message.success("Thêm brand thành công", reponse.data.success);
-                })
-                .catch(() => {
-                    message.error("Thêm brand thất bại");
-                })
+    
+            const imageDataString = sessionStorage.getItem('image');
+            let imageFile = null;
+    
+            if (imageDataString) {
+                try {
+                    const fileList = JSON.parse(imageDataString);
+                    if (fileList.length > 0) {
+                        const fileData = fileList[0];
+                        if (fileData.originFileObj) {
+                            imageFile = new File(
+                                [fileData.originFileObj],
+                                fileData.name,
+                                { type: fileData.type }
+                            );
+                        } else {
+                            console.error("Không tìm thấy tệp hình ảnh hợp lệ trong danh sách");
+                        }
+                    } else {
+                        console.error("Không tìm thấy hình ảnh hợp lệ trong danh sách");
+                    }
+                } catch (error) {
+                    console.error("Lỗi khi parse dữ liệu hình ảnh:", error);
+                }
+            } else {
+                console.error("Không tìm thấy dữ liệu hình ảnh trong sessionStorage");
+            }
+    
+            if (imageFile) {
+                formData.append('image', imageFile);
+            } else {
+                console.error("Không tìm thấy tệp hình ảnh để gửi đi");
+            }
+    
+            formData.forEach((value, key) => {
+                console.log(key, value);
+            });
+    
+            axios.post(`${import.meta.env.VITE_APP_API_URL}/brand/createbrand`, formData)
+            .then(response => {
+                message.success("Thêm brand thành công", response.data.success);
+            })
+            .catch(() => {
+                message.error("Thêm brand thất bại");
+            })
         } else {
             notification.error({
                 message: 'Vui lòng nhập captcha',
@@ -99,7 +135,7 @@ const EStoreRegister: React.FC = () => {
             });
         }
     };
-
+    
     const items = steps.map((item) => ({ key: item.title, title: item.title }));
 
     const contentStyle: React.CSSProperties = {

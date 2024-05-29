@@ -3,9 +3,7 @@ body {
     @apply bg-[#f0f2f5] text-black font-font1
 }
 
-/* since nested groupes are not supported we have to use 
-     regular css for the nested dropdowns 
-  */
+
 .custom-menu li>ul {
     transform: translateX(100%) scale(0);
 }
@@ -22,12 +20,6 @@ body {
     transform: rotate(-270deg);
 }
 
-/* Below styles fake what can be achieved with the tailwind config
-     you need to add the group-hover variant to scale and define your custom
-     min width style.
-  	 See https://codesandbox.io/s/tailwindcss-multilevel-dropdown-y91j7?file=/index.html
-  	 for implementation with config file
-  */
 .group:hover .group-hover\:scale-100 {
     transform: scale(1)
 }
@@ -113,7 +105,6 @@ body {
     border-radius: 5px;
     content: "";
     @apply border border-[#ff8300]
-
 }
 
 .slick-dots li.slick-active button:before {
@@ -327,7 +318,35 @@ body {
     border-block-start: 0 rgba(5, 5, 5, 0.06);
 }
 
-/* end custom ant dsn */
+/* custom upload ảnh */
+:where(.css-dev-only-do-not-override-1qfezbu).ant-upload-wrapper.ant-upload-picture-card-wrapper .ant-upload-list.ant-upload-list-picture-card .ant-upload-list-item-container,
+:where(.css-dev-only-do-not-override-1qfezbu).ant-upload-wrapper.ant-upload-picture-circle-wrapper .ant-upload-list.ant-upload-list-picture-card .ant-upload-list-item-container,
+:where(.css-dev-only-do-not-override-1qfezbu).ant-upload-wrapper.ant-upload-picture-card-wrapper .ant-upload-list.ant-upload-list-picture-circle .ant-upload-list-item-container,
+:where(.css-dev-only-do-not-override-1qfezbu).ant-upload-wrapper.ant-upload-picture-circle-wrapper .ant-upload-list.ant-upload-list-picture-circle .ant-upload-list-item-container {
+    display: inline-block;
+    width: 160px;
+    height: 160px;
+    vertical-align: top;
+
+    /* custom upload ảnh */
+}
+
+:where(.css-dev-only-do-not-override-1qfezbu).ant-upload-wrapper.ant-upload-picture-card-wrapper .ant-upload.ant-upload-select,
+:where(.css-dev-only-do-not-override-1qfezbu).ant-upload-wrapper.ant-upload-picture-circle-wrapper .ant-upload.ant-upload-select {
+    width: 160px;
+    height: 160px;
+    text-align: center;
+    vertical-align: top;
+    background-color: rgba(0, 0, 0, 0.02);
+    border: 1px dashed #d9d9d9;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+/*  */
+/* ---------- end custom ant dsn ---------- */
+/*  */
 
 .footer-item {
     @apply text-[14px] py-[10px] text-gray-700

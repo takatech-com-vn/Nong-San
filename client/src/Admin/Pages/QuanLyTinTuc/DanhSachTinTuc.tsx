@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Table, message } from 'antd';
+import { Modal, Popconfirm, Table, message } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
 import { New } from '../../../services/New';
 import '../Admin.css';
 import EditNew from './Modal/EditNew';
+import { GrEdit } from 'react-icons/gr';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const DanhSachTinTuc: React.FC = () => {
   const [data, setData] = useState<New[]>([]);
@@ -105,20 +108,24 @@ const DanhSachTinTuc: React.FC = () => {
       key: 'action',
       width: '20%',
       render: (_, news) => (
-        <div>
-          <button
-            className="button-edit"
+        <div className='flex gap-4 '>
+          {/* ----- Sửa ----- */}
+          <GrEdit size={20}
+            className='text-[#26A65D]'
             onClick={() => handleEdit(news)}
-          >
-            Sửa
-          </button>
+          />
 
-          <button
-            className="button-delete"
-            onClick={() => handleDelete(news)}
+          {/* ----- Xóa ----- */}
+          <Popconfirm
+            title="Cảnh báo!"
+            description="Bạn có chắc chắn muốn xóa?"
+            okText="Yes"
+            cancelText="No"
+            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+            onConfirm={() => handleDelete(news)}
           >
-            Xóa
-          </button>
+            <RiDeleteBinLine size={20} className='text-red-500' />
+          </Popconfirm>
         </div>
       ),
     },
