@@ -27,6 +27,7 @@
     "react-scroll-to-top": "^3.0.0",
     "react-simple-captcha": "^9.3.1",
     "react-slick": "^0.30.2",
+    "react-sticky-box": "^2.0.5",
     "slick-carousel": "^1.8.1",
     "uuid": "^9.0.1"
   },
