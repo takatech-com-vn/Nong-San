@@ -20,8 +20,8 @@ import DetailPolicy from './pages/Policy/DetailPolicy';
 import AllProducts from './pages/Product/AllProducts';
 import Header2 from './layouts/Header2';
 import ButtonConnect from './components/FloatingButtonConnect/ButtonConnect';
-import { FloatButton } from 'antd';
 import Profile from './pages/Profile/Profile';
+import BackToTopButton from './components/BackToTopButton/BackToTopButton';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -128,7 +128,7 @@ function App() {
           </>
         } />
       </Routes>
-      <FloatButton.BackTop style={{ bottom: 15, left: 15 }} />
+      <BackToTopButton />
     </>
 
   )

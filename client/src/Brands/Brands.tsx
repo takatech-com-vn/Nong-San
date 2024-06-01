@@ -23,7 +23,7 @@ import TongQuan from './Pages/TongQuan/TongQuan';
 const items: MenuProps['items'] = [
     {
         key: '0',
-        label: <a href="#">Tài khoản của tôi</a>,
+        label: <a href="/profile">Tài khoản của tôi</a>,
         icon: <UserOutlined />,
     },
     {
@@ -59,6 +59,7 @@ const Brands: React.FC = () => {
     }, [user, navigate]);
 
     const [collapsed, setCollapsed] = useState(false);
+    const [currentItem, setCurrentItem] = useState('');
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
@@ -75,7 +76,7 @@ const Brands: React.FC = () => {
                     <span>  Brand Name</span>
                 </div>
                 <Menu
-                    style={{ height: '100%', overflow: 'auto', paddingBottom:'60px'}}
+                    style={{ height: '100%', overflow: 'auto', paddingBottom: '60px' }}
                     className='custom-scrollbar'
                     theme="dark"
                     mode="inline"
@@ -85,6 +86,7 @@ const Brands: React.FC = () => {
                             key: '1',
                             icon: <FaTachometerAlt />,
                             label: <Link to="*">Tổng quan</Link>,
+                            onClick: () => setCurrentItem('Tổng quan'),
                         },
                         {
                             key: '2',
@@ -95,6 +97,7 @@ const Brands: React.FC = () => {
                                     key: "9",
                                     icon: <FaListUl />,
                                     label: <Link to="quanlydonhang">Danh sách đơn hàng</Link>,
+                                    onClick: () => setCurrentItem('Danh sách đơn hàng'),
                                 },
                             ],
                         },
@@ -107,18 +110,21 @@ const Brands: React.FC = () => {
                                     key: "10",
                                     icon: <FaListUl />,
                                     label: <Link to="sanpham">Sản phẩm</Link>,
+                                    onClick: () => setCurrentItem('Sản phẩm'),
                                 },
 
                                 {
                                     key: "11",
                                     icon: <FaListUl />,
                                     label: <Link to="themsanpham">Thêm sản phẩm</Link>,
+                                    onClick: () => setCurrentItem('Thêm sản phẩm'),
                                 },
 
                                 {
                                     key: "12",
                                     icon: <FaListUl />,
                                     label: <Link to="khohang">Kho hàng</Link>,
+                                    onClick: () => setCurrentItem('Kho hàng'),
                                 },
                             ],
                         },
@@ -126,16 +132,19 @@ const Brands: React.FC = () => {
                             key: '4',
                             icon: <FaUserAlt />,
                             label: 'Quản lý khách hàng',
+                            onClick: () => setCurrentItem('Quản lý khách hàng'),
                         },
                         {
                             key: '5',
                             icon: <FaGift />,
                             label: 'Quản lý khuyến mãi',
+                            onClick: () => setCurrentItem('Quản lý khuyến mãi'),
                         },
                         {
                             key: '6',
                             icon: <FaBalanceScale />,
                             label: 'Đối soát',
+                            onClick: () => setCurrentItem('Đối soát'),
                         },
                         {
                             key: '7',
@@ -146,36 +155,42 @@ const Brands: React.FC = () => {
                                     key: "13",
                                     icon: <FaListUl />,
                                     label: <Link to="baocaodoanhthu">Doanh thu</Link>,
+                                    onClick: () => setCurrentItem('Doanh thu'),
                                 },
 
                                 {
                                     key: "14",
                                     icon: <FaListUl />,
                                     label: <Link to="baocaokhohang">Kho hàng</Link>,
+                                    onClick: () => setCurrentItem('Kho hàng'),
                                 },
 
                                 {
                                     key: "15",
                                     icon: <FaListUl />,
                                     label: <Link to="baocaobanhang">Bán hàng</Link>,
+                                    onClick: () => setCurrentItem('Bán hàng'),
                                 },
 
                                 {
                                     key: "16",
                                     icon: <FaListUl />,
-                                    label: <Link to="baocaosanpham">sanpham</Link>,
+                                    label: <Link to="baocaosanpham">Sản phẩm</Link>,
+                                    onClick: () => setCurrentItem('Sản phẩm'),
                                 },
 
                                 {
                                     key: "17",
                                     icon: <FaListUl />,
                                     label: <Link to="baocaovanchuyen">Vận chuyển</Link>,
+                                    onClick: () => setCurrentItem('Vận chuyển'),
                                 },
 
                                 {
                                     key: "18",
                                     icon: <FaListUl />,
                                     label: <Link to="baocaokhachhang">Khách hàng</Link>,
+                                    onClick: () => setCurrentItem('Khách hàng'),
                                 },
                             ],
                         },
@@ -183,6 +198,7 @@ const Brands: React.FC = () => {
                             key: '8',
                             icon: <FaStore />,
                             label: 'Thiết lập gian hàng',
+                            onClick: () => setCurrentItem('Thiết lập gian hàng'),
                         },
 
 
@@ -205,6 +221,7 @@ const Brands: React.FC = () => {
                                         height: 40,
                                     }}
                                 />
+                                <span>{currentItem}</span>
                             </div>
                             <div className='mr-5 flex flex-row items-center gap-2'>
 
