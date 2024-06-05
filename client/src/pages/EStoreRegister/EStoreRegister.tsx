@@ -9,7 +9,6 @@ import ValidationContext from './Contents/ValidationContext';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-// import { UploadFile } from 'antd/lib/upload/interface';
 const steps = [
     {
         title: 'Thông tin chung',
@@ -38,7 +37,7 @@ const EStoreRegister: React.FC = () => {
         if (validationContext.validate()) {
             setCurrent(current + 1);
         } else {
-            // Hiển thị thông báo lỗi nếu dữ liệu không hợp lệ
+            // Hiển thị thông báo lỗi nếu dữ liệu không hợp l
         }
     };
 
@@ -144,16 +143,6 @@ const EStoreRegister: React.FC = () => {
         marginTop: 16,
     };
 
-    // const [isScrolled, setIsScrolled] = useState(false);
-    // const checkScroll = () => {
-    //     setIsScrolled(window.pageYOffset > 1);
-    // };
-    // useEffect(() => {
-    //     window.addEventListener("scroll", checkScroll);
-    //     return () => {
-    //         window.removeEventListener("scroll", checkScroll);
-    //     };
-    // }, []);
 
     return (
         <div className={`wrapper h-auto bg-[#fafafb] rounded-[20px] p-[16px] mt-[65px]`}>

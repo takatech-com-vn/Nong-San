@@ -7,7 +7,7 @@ import { RiMessengerLine } from 'react-icons/ri';
 
 const ButtonConnect = () => {
     return (
-        <div className="fixed bottom-[15px] right-[15px] group"> {/* Thay đổi vị trí của wrapper div */}
+        <div className="fixed bottom-[15px] right-[15px] group"> 
             <div className="relative flex h-10 w-10 justify-center items-center">
                 <span className="animate-ping group-hover:animate-none absolute top-0 right-0 inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span> {/* Thay đổi vị trí của span.animate-ping */}
                 <FloatButton.Group

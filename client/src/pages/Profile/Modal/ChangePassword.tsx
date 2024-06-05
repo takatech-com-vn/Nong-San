@@ -14,9 +14,8 @@ function ChangePassword({setModal}:ChangePasswordProps) {
     const [form] = Form.useForm();
 
     const onFinish = (values: FormValues) => {
-        // Xử lý logic thay đổi mật khẩu ở đây (ví dụ: gửi yêu cầu API)
         console.log('Mật khẩu mới:', values);
-        form.resetFields(); // Reset form sau khi thay đổi thành công
+        form.resetFields();
     };
 
     return (

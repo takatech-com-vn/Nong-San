@@ -102,7 +102,6 @@ const initialProducts: Product[] = [
     category: "Đồ uống",
     danhmuc: "Thực phẩm"
   }
-  // ... thêm các sản phẩm khác
 ];
 
 const AllProducts: React.FC = () => {
@@ -124,7 +123,6 @@ const AllProducts: React.FC = () => {
     const filtered = initialProducts.filter((product) => {
       const matchesCategory = !selectedFilters.category || selectedFilters.category.includes(product.category);
       const matchesBrand = !selectedFilters.brand || product.brand === selectedFilters.brand;
-      //  Sử dụng price thay vì firstVariationPrice để lọc giá
       const matchesMinPrice = !selectedFilters.minPrice || product.price >= selectedFilters.minPrice;
       const matchesMaxPrice = !selectedFilters.maxPrice || product.price <= selectedFilters.maxPrice;
   
@@ -132,8 +130,8 @@ const AllProducts: React.FC = () => {
     });
   
     setFilteredProducts(filtered);
-    setSortedProducts(filtered); // Cập nhật sortedProducts ngay khi filterProducts thay đổi
-  }, [selectedFilters]); // Chỉ chạy lại khi selectedFilters thay đổi
+    setSortedProducts(filtered); 
+  }, [selectedFilters]); 
   
 
   const handleSort = (field: "price" | "createdAt", order: "asc" | "desc") => {

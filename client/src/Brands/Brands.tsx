@@ -52,7 +52,6 @@ const Brands: React.FC = () => {
             if (user.role === 'Brand') {
                 setIsLoading(false);
             } else {
-                // Nếu người dùng không phải là Brand, điều hướng về trang chính
                 navigate('/');
             }
         }
