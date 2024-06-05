@@ -81,11 +81,11 @@ const Filter: React.FC<ProductFilterProps> = ({
               value: category,
             })
           )}
-          value={selectedFilters.category || []} // Ensure this is always an array
+          value={selectedFilters.category || []} 
           onChange={(checkedValues) =>
             setSelectedFilters({
               ...selectedFilters,
-              category: checkedValues as string[], // Type assertion to string[]
+              category: checkedValues as string[], 
             })
           }
         />

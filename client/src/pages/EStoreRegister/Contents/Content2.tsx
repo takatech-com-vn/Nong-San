@@ -35,44 +35,7 @@ interface Option {
     label: string;
     children?: Option[];
 }
-// const options: Option[] = [
-//     {
-//         label: 'Nông sản đặc trưng tỉnh Đắk Lắk',
-//         value: 'Nông sản đặc trưng tỉnh Đắk Lắk',
-//     },
-//     {
-//         label: 'Sản phẩm',
-//         value: 'Sản phẩm',
-//         children: [
-//             { value: 'Sầu riêng', label: 'Sầu riêng' },
-//             { value: 'Bơ', label: 'Bơ' },
-//             { value: 'Tiêu', label: 'Tiêu' },
-//             { value: 'Rau củ', label: 'Rau củ' },
-//             { value: 'Cacao', label: 'Cacao' },
-//             { value: 'Hạt ngũ cốc', label: 'Hạt ngũ cốc' },
-//             { value: 'Phân hữu cơ', label: 'Phân hữu cơ' },
-//             { value: 'Phân bón', label: 'Phân bón' },
-//             { value: 'Khác', label: 'Khác' },
-//             { value: 'Macca', label: 'Macca' },
-//             { value: 'Mít thái', label: 'Mít thái' },
-//         ],
-//     },
-// ];
-// const option2: Option[] = [
-//     {
-//         label: 'Buôn đôn',
-//         value: 'Buôn đôn',
-//     },
-//     {
-//         label: 'Buôn ma thuột',
-//         value: 'Buôn ma thột',
-//     },
-//     {
-//         label: 'Buôn các loại hạt',
-//         value: 'Buôn các loại hạt',
-//     },
 
-// ];
 
 
 const onSearch = (value: string) => {
@@ -107,7 +70,6 @@ const Content2: React.FC = () => {
     const [phoneCongTy, setPhoneCongTy] = useState('');
     const [maBuuDien, setMaBuuDien] = useState('');
     const [diaChiCongTy, setDiaChiCongTy] = useState('');
-    // const [fileChupBanDangKyDoanhNghiep, setFileChupBanDangKyDoanhNghiep] = useState<string | null>(null);
     const [cities, setCities] = useState<City[]>([]);
     const [selectedCity, setSelectedCity] = useState<string>("");
     const [selectedDistrict, setSelectedDistrict] = useState<string>("");
@@ -194,11 +156,6 @@ const Content2: React.FC = () => {
         getCategories();
     }, []);
 
-    // const onChangeDanhMuc: (value: (string | number)[]) => void = (value) => {
-    //     const selectedValues = value as string[];
-    //     setDanhMucSanPham(selectedValues);
-    //     sessionStorage.setItem('danhMucSanPham', JSON.stringify(selectedValues));
-    // };
     const onChangeDanhMuc: MultipleCascaderProps<Option>['onChange'] = (value) => {
         const selectedValues = value as unknown as (string | number)[];
         setDanhMucSanPham(selectedValues);
@@ -260,12 +217,7 @@ const Content2: React.FC = () => {
         sessionStorage.setItem('image', JSON.stringify(updatedFileList.map(file => file.name)));
         setFileList(fileList);
     };
-    
-    // const handleRemove = () => {
-    //     // Xóa hình ảnh khỏi state và sessionStorage khi người dùng loại bỏ nó
-    //     setFileList([]);
-    //     sessionStorage.removeItem('image');
-    // };
+ 
 
     useEffect(() => {
         const storedDanhMucSanPham = sessionStorage.getItem('danhMucSanPham');
@@ -302,7 +254,6 @@ const Content2: React.FC = () => {
         if (storedQuanHuyen) { setSelectedDistrict(storedQuanHuyen); }
         if (storedPhuongXa) { setSelectedWard(storedPhuongXa); }
         if (storedDiaChiCongTy) { setDiaChiCongTy(storedDiaChiCongTy); }
-        // if (storedFileChupBanDangKyDoanhNghiep) { setFileChupBanDangKyDoanhNghiep(storedFileChupBanDangKyDoanhNghiep); }
     }, []);
 
     useEffect(() => {
@@ -318,21 +269,6 @@ const Content2: React.FC = () => {
         sessionStorage.setItem('diaChiCongTy', diaChiCongTy);
     }, [nguoiDaiDien, tenCongTy, maSoDoanhNghiep, diaChiThuongTru, soGiayChungNhanDKKD, ngayCapGiayChungNhanDKKD, noiCapGiayChungNhanDKKD, phoneCongTy, maBuuDien, diaChiCongTy]);
 
-    // Hàm xử lý sự kiện khi có sự thay đổi trong Cascader
-    // const onChangeDanhMuc: MultipleCascaderProps<Option>['onChange'] = (value) => {
-    //     // Ép kiểu giá trị nhận được về mảng chuỗi và lưu vào state
-    //     const selectedValues = value as unknown as string[];
-    //     setDanhMucSanPham(selectedValues);
-    //     // Lưu giá trị vào sessionStorage
-    //     sessionStorage.setItem('danhMucSanPham', JSON.stringify(selectedValues));
-    // };
-
-    // const onChangeLoaiGianHang: MultipleCascaderProps<Option>['onChange'] = (value) => {
-    //     // Ép kiểu giá trị nhận được về mảng chuỗi và lưu vào state
-    //     const selectedValues = value as unknown as string[];
-    //     setLoaiGianHang(selectedValues);
-    //     sessionStorage.setItem('loaiGianHang', JSON.stringify(selectedValues));
-    // };
     const onChangeLoaiGianHang = (value: string[]) => {
         setLoaiGianHang(value);
         sessionStorage.setItem('loaiGianHang', JSON.stringify(value));

@@ -28,45 +28,8 @@ function App() {
   const user = useSelector((state: RootState) => state.user.user);
 
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
-
-  //   // console.log('token:' + token)
-  //   if (token) {
-  //     axios
-  //       .get(`${import.meta.env.VITE_APP_API_URL}/login/user`, {
-  //         headers: { 'x-access-token': token }
-  //       })
-  //       .then((res) => {
-  //         console.log('tai', res.data);
-  //         dispatch(setUser(res.data.user))
-  //       })
-  //       .catch((error) => console.log(error));
-  //   }
-  // }, [dispatch]);
-
   const navigate = useNavigate();
-
   useEffect(() => {
-    // const checkExpiry = setInterval(() => {
-    //   const token = localStorage.getItem('token');
-    //   const expiryTime = Number(localStorage.getItem('expiryTime'));
-
-    //   if (token && new Date().getTime() > expiryTime) {
-    //     alert('Phiên làm việc của bạn đã hết hạn. Vui lòng đăng nhập lại.');
-    //     localStorage.removeItem("data");
-    //     localStorage.removeItem("expiryTime");
-    //     localStorage.removeItem("token");
-    //     localStorage.removeItem("isLogin");
-    //     dispatch(logout());
-    //     navigate('/login');
-    //     clearInterval(checkExpiry);
-    //   }
-    // }, 1000);
-
-    // // Dọn dẹp khi unmount
-    // return () => clearInterval(checkExpiry);
   }, [navigate]);
 
   useEffect(() => {
@@ -80,19 +43,19 @@ function App() {
         })
         .then((res) => {
           dispatch(setUser(res.data));
-          setIsLoading(false); // Set loading to false after data is fetched
+          setIsLoading(false); 
         })
         .catch((error) => {
           console.log(error);
-          setIsLoading(false); // Also set loading to false if there's an error
+          setIsLoading(false); 
         });
     } else {
-      setIsLoading(false); // If there's no token, we're not loading
+      setIsLoading(false);
     }
   }, [dispatch]);
 
   if (isLoading) {
-    return <div><Loader /></div>; // Or your custom loading component
+    return <div><Loader /></div>;
   }
 
 

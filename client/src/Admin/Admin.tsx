@@ -61,7 +61,6 @@ const Admin: React.FC = () => {
             if (user.role === 'Admin') {
                 setIsLoading(false);
             } else {
-                // Nếu người dùng không phải là Brand, điều hướng về trang chính
                 navigate('/');
             }
         }

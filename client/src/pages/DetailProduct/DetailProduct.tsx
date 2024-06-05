@@ -8,17 +8,10 @@ import Slider from 'react-slick';
 import { NextArrow, PrevArrow } from '../../components/slick';
 import axios from 'axios';
 import { Product } from '../../services/Product';
-// import { FaStar } from 'react-icons/fa';
 import { CiHeart } from 'react-icons/ci';
 import { PiShoppingCartSimple } from 'react-icons/pi';
 import { formatCurrencyVND } from '../../utils/formatCurrency';
-// interface CarouselInstance {
-//     goTo: (index: number) => void;
-//     next: () => void;
-//     prev: () => void;
-//     autoPlay: (play: boolean) => void;
-//     innerSlider: never;
-// }
+
 interface PreviewState {
     [key: number]: boolean;
 }
@@ -27,7 +20,6 @@ const DetailProduct = () => {
     const { id } = useParams();
     const [Detail, setDetail] = useState<Product | null>(null);
     const [currentImage, setCurrentImage] = useState(0);
-    // const carouselRef = React.useRef<CarouselInstance | null>(null);
     /* eslint-disable @typescript-eslint/no-explicit-any */
     const carouselRef = React.useRef<any>(null);
 
@@ -43,11 +35,8 @@ const DetailProduct = () => {
             .get(`https://66383a474253a866a24d16fe.mockapi.io/fake-api-product/product/${id}`)
             .then((response) => {
                 const data = response.data;
-                // Lưu thông tin chi tiết của sản phẩm vào state
                 setDetail(data);
 
-                // Lưu thông tin cấu hình của sản phẩm vào state
-                // setConfiguration(data.configuration);
             })
             .catch((error) => {
                 console.error("There was an error!", error);
@@ -71,31 +60,6 @@ const DetailProduct = () => {
             throw new Error("Function not implemented.");
         }} />,
     };
-
-
-
-    // // Hàm xử lý sự kiện khi nhấp vào hình thu nhỏ
-    // const handleThumbnailHover = (index: number) => {
-    //     setCurrentImage(index);
-    //     if (carouselRef.current !== null) {
-    //         carouselRef.current.goTo(index)
-    //     }
-    // };
-
-
-
-
-    // const [isScrolled, setIsScrolled] = useState(false);
-    // const checkScroll = () => {
-    //     setIsScrolled(window.pageYOffset > 1);
-    // };
-
-    // useEffect(() => {
-    //     window.addEventListener("scroll", checkScroll);
-    //     return () => {
-    //         window.removeEventListener("scroll", checkScroll);
-    //     };
-    // }, []);
 
     const [preview, setPreview] = useState<PreviewState>({});
 
@@ -139,7 +103,7 @@ const DetailProduct = () => {
     };
     const getPriceForSelectedType = (): number => {
         const selectedProduct = Detail?.variations.find(product => product.capacity === selectedCapacity);
-        return selectedProduct ? selectedProduct.price : Detail?.price ?? 0; // Trả về 0 nếu Detail?.price là undefined
+        return selectedProduct ? selectedProduct.price : Detail?.price ?? 0; 
     };
 
     return (
